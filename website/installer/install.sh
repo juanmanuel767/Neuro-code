@@ -13,13 +13,13 @@ ARCH="x86_64"
 mkdir -p ~/.aquila_cache
 mkdir -p ~/.vscode/extensions/aquila-lang
 
-# 3. Descargar/Instalar Binario (Simulado con el que ya tenemos)
-# En producción esto descargaría de un bucket de AWS o GitHub Releases
-sudo cp /usr/local/bin/aq /usr/local/bin/aq 2>/dev/null || echo "Ya instalado globalmente."
+# 3. Descargar/Instalar Binario (Copiando el binario local recién compilado)
+sudo cp /home/user/lenguaje\ de\ programacion/aquila/target/debug/aquila /usr/local/bin/aquila
+sudo chmod +x /usr/local/bin/aquila
 
 # 4. Instalar Extensión de VS Code (Copiando los archivos locales)
-cp -r /home/user/lenguaje\ de\ programacion/nexus/vscode-extension/* ~/.vscode/extensions/aquila-lang/ 2>/dev/null
+cp -r /home/user/lenguaje\ de\ programacion/aquila/vscode-extension/* ~/.vscode/extensions/aquila-lang/ 2>/dev/null
 
 echo "✅ Instalación completada con éxito."
-echo "🚀 Escribe 'aq --version' para empezar."
+echo "🚀 Escribe 'aquila --version' para empezar."
 echo "💡 Abre VS Code para ver la magia de la sintaxis."
