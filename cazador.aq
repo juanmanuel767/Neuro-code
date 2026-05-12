@@ -1,0 +1,14 @@
+imprimir("🦅 [Cazador] Aquila ha detectado una presa: presa.py")
+
+// Aquí Aquila captura todo el archivo Python
+usar "presa" como serpiente
+
+imprimir("🐍 [Presa] Librería de Python capturada exitosamente.")
+imprimir("🦅 [Cazador] Obligando a Python a procesar datos pesados...")
+
+// Llamamos a la función Python como si fuera nativa de Aquila
+resultado = serpiente.super_procesamiento("secreto_vital")
+
+imprimir("🔥 [Cazador] Resultado extraído de la serpiente:")
+imprimir(">>> " + resultado)
+imprimir("✅ ¡Devorada con éxito! Cero configuración requerida.")

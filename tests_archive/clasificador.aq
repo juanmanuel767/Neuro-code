@@ -1,0 +1,21 @@
+imprimir("🏷️ CLASIFICADOR SEMÁNTICO AQUILA")
+imprimir("-------------------------------")
+
+objetos = ["Manzana", "Martillo", "Pizza", "Avión", "Destornillador", "Bicicleta", "Sushi"]
+
+asincrono funcion clasificar(item) {
+    imprimir("🔎 Analizando item:", item, "...")
+    categoria = esperar ia("Clasifica este objeto en una sola palabra (Comida, Herramienta o Vehículo): " + item)
+    retornar categoria
+}
+
+asincrono funcion main() {
+    para objeto en objetos {
+        resultado = esperar clasificar(objeto)
+        imprimir(">>", objeto, "es un/a:", resultado)
+    }
+    imprimir("-------------------------------")
+    imprimir("✅ Clasificación completada con éxito.")
+}
+
+esperar main()

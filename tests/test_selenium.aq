@@ -1,0 +1,22 @@
+// Automatización de Navegador con Aquila + Selenium
+usar "selenium.webdriver" como webdriver
+usar "selenium.webdriver.firefox.options" como ff_options
+
+imprimir("🛡️ Iniciando Driver de Automatización (Firefox)...")
+
+options = ff_options.Options()
+options.add_argument("--headless")
+
+// Instanciar el driver (Sin argumentos de palabra clave)
+driver = webdriver.Firefox(options)
+
+imprimir("🌐 Navegando a Google con Selenium...")
+driver.get("https://www.google.com")
+
+t = driver.title
+imprimir("✅ Título de la página: " + t)
+
+imprimir("🧹 Cerrando sesión...")
+driver.quit()
+
+imprimir("🚀 Automatización COMPLETADA.")

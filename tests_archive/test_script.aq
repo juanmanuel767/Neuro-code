@@ -1,0 +1,28 @@
+imprimir("--- Test Bloque 1 ---")
+
+edad = 20
+dinero = 100
+si edad >= 18 y dinero > 50 {
+    imprimir("Puede entrar al club.")
+}
+si edad < 18 o dinero == 0 {
+    imprimir("No puede entrar.")
+}
+
+es_adulto = verdadero
+no_es_adulto = no es_adulto
+imprimir("No es adulto:", no_es_adulto)
+imprimir("Corto circuito:", falso y (1 / 0)) // No debe petar
+
+imprimir("Tipo de 42:", tipo(42))
+imprimir("Tipo de 'hola':", tipo("hola"))
+imprimir("Longitud de 'aquila':", longitud("aquila"))
+imprimir("Longitud de [1,2,3]:", longitud([1,2,3]))
+
+num = convertir_entero("100")
+imprimir("Texto convertido a entero + 50 =", num + 50)
+imprimir("Entero convertido a texto:", convertir_texto(200))
+
+escribir_archivo("prueba.txt", "Hola desde Aquila v3.0!!")
+contenido = leer_archivo("prueba.txt")
+imprimir("Leído del disco:", contenido)

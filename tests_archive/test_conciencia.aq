@@ -1,0 +1,6 @@
+// Prueba de Conciencia IA
+imprimir("Iniciando test de inteligencia...")
+
+si verdadero {
+    imprimir("Esto tiene un error al final...")
+// Olvidamos cerrar la llave '}' intencionalmente

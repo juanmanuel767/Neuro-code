@@ -1,0 +1,42 @@
+{
+    "name": "aquila-lang",
+    "displayName": "Aquila Programming Language",
+    "description": "Syntax highlighting for the Aquila Autonomous Language",
+    "version": "1.0.0",
+    "engines": {
+        "vscode": "^1.50.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "aquila",
+            "aliases": ["Aquila", "aquila"],
+            "extensions": [".aq"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "aquila",
+            "scopeName": "source.aq",
+            "path": "./syntaxes/aquila.tmLanguage.json"
+        }],
+        "commands": [{
+            "command": "aquila.run",
+            "title": "Aquila: Ejecutar Script con 'aq'",
+            "category": "Aquila"
+        }],
+        "keybindings": [{
+            "command": "aquila.run",
+            "key": "ctrl+f5",
+            "when": "editorLangId == aquila"
+        }],
+        "menus": {
+            "editor/context": [{
+                "command": "aquila.run",
+                "group": "navigation",
+                "when": "editorLangId == aquila"
+            }]
+        }
+    }
+}

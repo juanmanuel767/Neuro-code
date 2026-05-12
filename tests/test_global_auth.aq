@@ -1,0 +1,10 @@
+imprimir("===============================")
+imprimir("    TEST: AUTENTICACIÓN GLOBAL")
+imprimir("===============================")
+
+imprimir("Consultando sin pasar diccionario...")
+respuesta = ia("Dile hola al mundo en frances, solo eso.")
+
+imprimir("Respuesta de la IA Nativa (que usando la variable auth debería ser Groq) ->")
+imprimir(respuesta)
+imprimir("===============================")

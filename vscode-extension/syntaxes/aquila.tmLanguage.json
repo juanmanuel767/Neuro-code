@@ -1,0 +1,53 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Aquila",
+    "scopeName": "source.aq",
+    "patterns": [
+        { "include": "#keywords" },
+        { "include": "#strings" },
+        { "include": "#comments" },
+        { "include": "#constants" }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.control.aquila",
+                    "match": "\\b(si|sino|mientras|para|retornar|esperar|asincrono|usar|como|intentar|capturar|lanzar|de|nuevo|clase|exportar)\\b"
+                },
+                {
+                    "name": "keyword.other.fn.aquila",
+                    "match": "\\b(funcion)\\b"
+                },
+                {
+                    "name": "support.function.builtin.aquila",
+                    "match": "\\b(imprimir|ia|a_numero|a_texto|longitud|rango|entrada|http_get|http_post|tipo)\\b"
+                },
+                {
+                    "name": "support.class.builtin.aquila",
+                    "match": "\\b(BaseDatos|ServidorWeb)\\b"
+                }
+            ]
+        },
+        "strings": {
+            "name": "string.quoted.double.aquila",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                { "name": "constant.character.escape.aquila", "match": "\\\\." }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                { "name": "comment.line.double-slash.aquila", "match": "//.*$" },
+                { "name": "comment.block.aquila", "begin": "/\\*", "end": "\\*/" }
+            ]
+        },
+        "constants": {
+            "patterns": [
+                { "name": "constant.language.aquila", "match": "\\b(verdadero|falso|nulo)\\b" },
+                { "name": "constant.numeric.aquila", "match": "\\b\\d+(\\.\\d+)?\\b" }
+            ]
+        }
+    }
+}

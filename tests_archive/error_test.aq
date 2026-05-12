@@ -1,0 +1,7 @@
+imprimir("Iniciando prueba de error...")
+
+// Error intencional: falta el cierre del corchete ']'
+lista = [1, 2, 3
+para i en lista {
+    imprimir(i)
+}

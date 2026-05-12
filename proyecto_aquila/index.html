@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aquila Vision Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background: #0f172a; color: white; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-12">
+            <h1 class="text-4xl font-bold text-blue-400">🦅 Aquila <span class="text-white">Vision</span></h1>
+            <div class="px-4 py-2 glass rounded-full text-sm font-mono text-emerald-400">● Sistema Activo</div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="glass p-6 rounded-2xl">
+                <p class="text-slate-400 text-sm mb-1">Total Ventas</p>
+                <h2 class="text-3xl font-bold">$1,200.50</h2>
+            </div>
+            <div class="glass p-6 rounded-2xl">
+                <p class="text-slate-400 text-sm mb-1">Nodos Activos</p>
+                <h2 class="text-3xl font-bold text-blue-400">12</h2>
+            </div>
+            <div class="glass p-6 rounded-2xl">
+                <p class="text-slate-400 text-sm mb-1">Latencia IA</p>
+                <h2 class="text-3xl font-bold text-emerald-400">120ms</h2>
+            </div>
+        </div>
+
+        <div class="glass p-8 rounded-3xl mb-12">
+            <h3 class="text-xl font-bold mb-6">Tendencia de Datos en Tiempo Real</h3>
+            <canvas id="ventasChart" height="100"></canvas>
+        </div>
+        <footer class=\"text-center text-slate-500 text-sm mt-8\">
+            Creado por <span class=\"text-blue-400 font-semibold\">Juan Manuel Peralta</span> | Aquila v2.1 🦅
+        </footer>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('ventasChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00'],
+                datasets: [{
+                    label: 'Ventas (USD)',
+                    data: [400, 600, 800, 500, 1000, 1200],
+                    borderColor: '#60a5fa',
+                    backgroundColor: 'rgba(96, 165, 250, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: { plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#1e293b' } }, x: { grid: { display: false } } } }
+        });
+
+        async function updateData() {
+            try {
+                const res = await fetch('/api/datos');
+                const data = await res.json();
+                console.log("Datos de Aquila:", data);
+            } catch (e) {
+                console.warn("API de Aquila no disponible aún.");
+            }
+        }
+        setInterval(updateData, 5000);
+    </script>
+</body>
+</html>

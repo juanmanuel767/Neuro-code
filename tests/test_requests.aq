@@ -1,0 +1,19 @@
+// Prueba de Requests vía Python FFI
+usar "requests" como req
+
+imprimir("📡 Realizando solicitud HTTP vía Python Requests...")
+
+r = req.get("https://pokeapi.co/api/v2/pokemon/pikachu")
+
+status = r.propiedad("status_code")
+url = r.propiedad("url")
+
+imprimir("✅ Código de Estado: " + status)
+imprimir("✅ URL: " + url)
+
+// Acceder a datos JSON (r.json() es un método)
+datos = r.json()
+nombre = datos["name"]
+imprimir("✅ Nombre del Pokémon obtenido: " + nombre)
+
+imprimir("🚀 FFI con librerías externas: EXITOSO.")

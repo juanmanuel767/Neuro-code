@@ -1,0 +1,16 @@
+// Framework de Evaluación para Aquila
+
+funcion afirmar(condicion, mensaje) {
+    si no condicion {
+        lanzar "❌ FAIL: " + mensaje
+    }
+}
+
+funcion afirmar_igual(actual, esperado, mensaje) {
+    si actual != esperado {
+        lanzar "❌ FAIL: " + mensaje + " (Esperado: " + texto(esperado) + ", Actual: " + texto(actual) + ")"
+    }
+}
+
+exportar afirmar
+exportar afirmar_igual

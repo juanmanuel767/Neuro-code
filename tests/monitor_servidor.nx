@@ -1,0 +1,20 @@
+node alerta_activa = { health_score < 40 }
+node cpu_load = python { import psutil; RESULT = psutil.cpu_percent() }
+node health_score = { 100 - (cpu_load * 0.5 + ram_usage * 0.5) }
+node ram_usage = python { import psutil; RESULT = psutil.virtual_memory().percent }
+node risk_level = python { 
+load = val1 # cpu_load
+mem = val2  # ram_usage
+if load > 80 and mem > 80: RESULT = 'CRÍTICO'
+elif load > 70 or mem > 80: RESULT = 'ALTO'
+elif load > 50: RESULT = 'MEDIO'
+else: RESULT = 'BAJO'
+ }
+cpu_load -> health_score
+cpu_load -> risk_level
+health_score -> alerta_activa
+ram_usage -> health_score
+ram_usage -> risk_level
+risk_level -> ram_usage
+
+// @layout {"alerta_activa": {"x": 0.0, "y": 0.0}, "cpu_load": {"x": 0.0, "y": 0.0}, "health_score": {"x": 0.0, "y": 0.0}, "ram_usage": {"x": 0.0, "y": 0.0}, "risk_level": {"x": 0.0, "y": 0.0}}

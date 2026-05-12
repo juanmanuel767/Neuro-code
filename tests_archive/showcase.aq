@@ -1,0 +1,77 @@
+imprimir("🦅 AQUILA ULTIMATE SHOWCASE v1.0")
+imprimir("================================")
+
+// 1. Configuración de Base de Datos
+db = nuevo BaseDatos("showcase.db")
+db.ejecutar("CREATE TABLE IF NOT EXISTS pensamientos (id INTEGER PRIMARY KEY, frase TEXT, sentimiento TEXT, origen TEXT)")
+
+// 2. Lógica Asíncrona de Inteligencia
+asincrono funcion procesar_pensamiento(texto) {
+    imprimir(">> [Brain] Analizando sentimiento del Águila...")
+    análisis = ia("Determina el sentimiento de esta frase en una sola palabra profesional: " + texto)
+    retornar análisis
+}
+
+asincrono funcion sincronizar_datos() {
+    imprimir(">> [Network] Descargando sabiduría de la red...")
+    mensajes = esperar http_get("https://jsonplaceholder.typicode.com/posts")
+    
+    contador = 0
+    para m en mensajes {
+        si contador < 5 {
+            sentimiento = esperar procesar_pensamiento(m.title)
+            db.ejecutar("INSERT INTO pensamientos (frase, sentimiento, origen) VALUES ('" + m.title + "', '" + sentimiento + "', 'API Exterior')")
+            contador = contador + 1
+        }
+    }
+    imprimir("✅ Sincronización completada:", contador, "pensamientos procesados.")
+    retornar contador
+}
+
+// 3. Servidor Web de Visualización
+servidor = nuevo ServidorWeb(9000)
+
+servidor.ruta("GET", "/", funcion(req) {
+    retornar "
+    <html>
+        <head>
+            <title>Aquila Wisdom 🦅</title>
+            <style>
+                body { background: #0a0a0c; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 50px; }
+                .card { background: linear-gradient(135deg, #1a1a1f 0%, #111 100%); border: 1px solid #333; padding: 25px; border-radius: 15px; margin-bottom: 20px; border-left: 5px solid #00d2ff; }
+                .mood { color: #00d2ff; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+                h1 { background: linear-gradient(to right, #00d2ff, #9333ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+            </style>
+        </head>
+        <body>
+            <h1>Aquila Wisdom Showcase 🦅</h1>
+            <p>Datos procesados con IA asíncrona y persistidos en SQLite local.</p>
+            <div id='content'>" + "Cargando visión del águila..." + "</div>
+            <script>
+                async function load() {
+                    const r = await fetch('/api');
+                    const data = await r.json();
+                    document.getElementById('content').innerHTML = data.map(i => `
+                        <div class='card'>
+                            <div class='mood'>Sentimiento: ${i.sentimiento}</div>
+                            <p>${i.frase}</p>
+                        </div>
+                    `).join('');
+                }
+                load();
+            </script>
+        </body>
+    </html>"
+})
+
+servidor.ruta("GET", "/api", funcion(req) {
+    datos = db.consultar("SELECT * FROM pensamientos ORDER BY id DESC")
+    retornar datos
+})
+
+// 4. Inicio del Programa
+imprimir("🚀 Iniciando motor asíncrono...")
+esperar sincronizar_datos()
+
+imprimir("📈 Servidor de resultados en http://localhost:9000")
+servidor.iniciar()

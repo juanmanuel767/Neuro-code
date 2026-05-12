@@ -1,0 +1,68 @@
+// ==========================================
+// RED NEURONAL ARTIFICIAL (AQUILA AI)
+// ==========================================
+
+// CAPA DE ENTRADA (Sensores Oculares/Datos)
+node OjoIzquierdo = 0.8
+node OjoDerecho = 0.2
+
+// SINAPSIS CAPA 1 (Pesos de conexión W1, W2, etc.)
+// Usamos FFI de Python para multiplicar el Pulso Eléctrico por los Pesos
+node Peso_Izq_H1 = Python("RESULT = INPUT * 0.4")
+node Peso_Der_H1 = Python("RESULT = INPUT * 0.9")
+
+node Peso_Izq_H2 = Python("RESULT = INPUT * -0.5")
+node Peso_Der_H2 = Python("RESULT = INPUT * 0.3")
+
+// CAPA OCULTA (El Soma/Cuerpo de las Neuronas)
+// Sumamos la corriente eléctrica que llega de las dendritas
+node Suma_H1 = Add
+node Suma_H2 = Add
+
+// FUNCIÓN DE ACTIVACIÓN (Relu - Neurona Biológica)
+node Neurona_H1 = Python("RESULT = max(0.0, INPUT)")
+node Neurona_H2 = Python("RESULT = max(0.0, INPUT)")
+
+// SINAPSIS SALIDA
+node Peso_H1_Out = Python("RESULT = INPUT * 0.8")
+node Peso_H2_Out = Python("RESULT = INPUT * -0.2")
+
+node Suma_Out = Add
+
+// NEURONA DE SALIDA (Función Sigmoide para Toma de Decisiones)
+// Predice entre 0 (Falso) a 1 (Verdadero)
+node InteligenciaLogica = Python("import math; RESULT = 1.0 / (1.0 + math.exp(-INPUT))")
+
+
+// ==========================================
+// CONEXIONES DEL SISTEMA NERVIOSO (Topología)
+// ==========================================
+
+// Dendritas conectando a las Sinapsis
+OjoIzquierdo -> Peso_Izq_H1
+OjoDerecho -> Peso_Der_H1
+
+OjoIzquierdo -> Peso_Izq_H2
+OjoDerecho -> Peso_Der_H2
+
+// Sinapsis convergiendo al centro sumador (Soma)
+Peso_Izq_H1 -> Suma_H1
+Peso_Der_H1 -> Suma_H1
+
+Peso_Izq_H2 -> Suma_H2
+Peso_Der_H2 -> Suma_H2
+
+// Sumatoria excitando la Activación Relu
+Suma_H1 -> Neurona_H1
+Suma_H2 -> Neurona_H2
+
+// Las neuronas emiten su pulso a la Sinapsis Final
+Neurona_H1 -> Peso_H1_Out
+Neurona_H2 -> Peso_H2_Out
+
+// Convergencia de la decisión final
+Peso_H1_Out -> Suma_Out
+Peso_H2_Out -> Suma_Out
+
+// Activación Sigmoide arroja el resultado del pensamiento
+Suma_Out -> InteligenciaLogica

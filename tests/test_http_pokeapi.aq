@@ -1,0 +1,17 @@
+asincrono funcion principal() {
+    imprimir("===============================")
+    imprimir(" TEST DE CONECTIVIDAD: POKEAPI")
+    imprimir("===============================")
+    
+    imprimir("Consultando datos de Pikachu a la nube...")
+    pokemon = esperar http_get("https://pokeapi.co/api/v2/pokemon/pikachu")
+    
+    imprimir("Nombre:", pokemon.name)
+    imprimir("Peso Base:", pokemon.weight)
+    
+    primer_habilidad = pokemon.abilities[0].ability.name
+    imprimir("Habilidad Estrella:", primer_habilidad)
+    imprimir("===============================")
+}
+
+esperar principal()

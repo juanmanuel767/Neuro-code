@@ -1,0 +1,18 @@
+asincrono funcion principal() {
+    imprimir("Vamos a intentar una locura");
+    
+    // Definir variable "vez"
+    vez = 0;
+    
+    // Intento de bucle
+    mientras(vez < 5) {
+        imprimir(vez + 1);
+        vez++;
+    }
+    
+    // Intento llamar función IA
+    var respuesta = esperar ia("Dime algo");
+    imprimir(respuesta);
+}
+
+esperar principal();

@@ -1,0 +1,63 @@
+imprimir("🤖 AQUILA AI PROXY v1.0")
+imprimir("-----------------------")
+
+servidor = nuevo ServidorWeb(8080)
+
+asincrono funcion obtener_respuesta_ia(pregunta) {
+    imprimir(">> [IA] Consultando al cerebro del Águila...")
+    respuesta = ia("Responde de forma concisa y profesional: " + pregunta)
+    retornar respuesta
+}
+
+servidor.ruta("GET", "/", funcion(req) {
+    retornar "
+    <html>
+        <head>
+            <style>
+                body { background: #050505; color: #00d2ff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+                .box { background: rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; border: 1px solid #00d2ff; text-align: center; max-width: 600px; box-shadow: 0 0 30px rgba(0,210,255,0.2); }
+                input { background: #111; border: 1px solid #00d2ff; color: white; padding: 15px; width: 80%; border-radius: 10px; margin-bottom: 20px; font-size: 1.1rem; }
+                button { background: #00d2ff; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; color: #000; }
+                h1 { letter-spacing: 2px; }
+            </style>
+        </head>
+        <body>
+            <div class='box'>
+                <h1>🦅 AQUILA AI</h1>
+                <p>Pregúntale cualquier cosa al águila:</p>
+                <input type='text' id='p' name='q' placeholder='Escribe aquí...'>
+                <br>
+                <button onclick='consultar()'>CONSULTAR</button>
+                <div id='res' style='margin-top: 30px; line-height: 1.6; color: #fff; white-space: pre-wrap;'></div>
+            </div>
+            <script>
+                async function consultar() {
+                    const p = document.getElementById('p').value;
+                    const r = document.getElementById('res');
+                    if(!p) return alert('Escribe algo');
+                    r.innerHTML = '⏳ El Águila está pensando...';
+                    try {
+                        const url = '/preguntar?q=' + encodeURIComponent(p);
+                        const resp = await fetch(url);
+                        const text = await resp.text();
+                        r.innerHTML = text;
+                    } catch (e) { r.innerHTML = '❌ Error de conexión'; }
+                }
+            </script>
+        </body>
+    </html>"
+})
+
+servidor.ruta("GET", "/preguntar", funcion(req) {
+    pregunta = req.parametros.q
+    si pregunta == nulo {
+        retornar "Escribe algo para preguntarle al águila."
+    }
+    
+    imprimir(">> [Server] Pregunta recibida:", pregunta)
+    respuesta = esperar obtener_respuesta_ia(pregunta)
+    retornar respuesta
+})
+
+imprimir("🚀 AI Proxy en http://localhost:8080")
+servidor.iniciar()

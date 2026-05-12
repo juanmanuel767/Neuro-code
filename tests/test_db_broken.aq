@@ -1,0 +1,24 @@
+asincrono funcion test_roto() {
+    imprimir("Iniciando prueba de desastre...")
+    
+    // Utilizar 'usar' en lugar de 'importar'
+    usar "db" como db
+    
+    // Instanciar la clase BaseDatos
+    midb = nuevo BaseDatos("mi_error.db")
+    
+    // Agregar 'esperar' y corregir método a 'ejecutar'
+    esperar midb.ejecutar("CREATE TABLE IF NOT EXISTS usuarios (id INTEGER)")
+    
+    // Corregir sintaxis de strings
+    imprimir("Insertando datos...")
+    esperar midb.ejecutar("INSERT INTO usuarios VALUES (1)")
+    
+    // Agregar 'esperar' en consulta
+    datos = esperar midb.consultar("SELECT * FROM usuarios")
+    imprimir(datos)
+}
+
+// Agregar 'esperar' para la llamada principal
+esperar test_roto()
+esperar principal()

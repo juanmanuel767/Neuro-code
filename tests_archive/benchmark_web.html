@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Tradicional: Carrito de Compras</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; background: #eee; }
+        .carrito { background: white; padding: 20px; border-radius: 8px; max-width: 400px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .fila { margin-bottom: 15px; }
+        input { padding: 5px; width: 100px; }
+        .resultado { font-size: 20px; font-weight: bold; color: green; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="carrito">
+        <h2>Carrito de Compras (PHP/JS Tradicional)</h2>
+        <div class="fila">
+            <label>Precio del Producto ($):</label><br>
+            <input type="number" id="precio" value="250" oninput="calcularTotal()">
+        </div>
+        <div class="fila">
+            <label>Cantidad:</label><br>
+            <input type="number" id="cantidad" value="1" oninput="calcularTotal()">
+        </div>
+        <div class="fila">
+            <label>Impuesto (IVA %):</label><br>
+            <input type="number" id="iva" value="19" oninput="calcularTotal()">
+        </div>
+        
+        <div class="resultado">Total a Pagar: $<span id="total">297.50</span></div>
+        <br>
+        <p style="font-size:11px; color:#666;">
+            Nota: El programador tradicional tuvo que escribir todo este HTML, todas estas etiquetas, todo el CSS, enlazar Ids y programar eventos JavaScript manualmente para que esto funcionara.
+        </p>
+    </div>
+
+    <script>
+        function calcularTotal() {
+            let p = parseFloat(document.getElementById('precio').value) || 0;
+            let c = parseFloat(document.getElementById('cantidad').value) || 0;
+            let i = parseFloat(document.getElementById('iva').value) || 0;
+            
+            let subtotal = p * c;
+            let impuestos = subtotal * (i / 100);
+            let total = subtotal + impuestos;
+            
+            document.getElementById('total').innerText = total.toFixed(2);
+        }
+    </script>
+</body>
+</html>

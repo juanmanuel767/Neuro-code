@@ -1,0 +1,9 @@
+/target/
+/debug/
+**/*.rs.bk
+__pycache__/
+*.py[cod]
+*$py.class
+.vscode/
+node_modules/
+.DS_Store

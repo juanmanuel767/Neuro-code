@@ -1,0 +1,28 @@
+imprimir("--- Test Bloque 4: Clases y OOP ---")
+
+clase Persona {
+    funcion crear(nombre_ini, edad_ini) {
+        esto.nombre = nombre_ini
+        esto.edad = edad_ini
+    }
+
+    funcion saludar() {
+        imprimir("Hola, me llamo", esto.nombre, "y tengo", esto.edad, "años.")
+    }
+
+    funcion cumplir_anos() {
+        esto.edad = esto.edad + 1
+        imprimir(esto.nombre, "ahora tiene", esto.edad, "años!")
+    }
+}
+
+p1 = nuevo Persona("Ana", 28)
+p2 = nuevo Persona("Carlos", 35)
+
+p1.saludar()
+p2.saludar()
+
+p1.cumplir_anos()
+p1.saludar()
+
+imprimir("Test finalizado con éxito!")

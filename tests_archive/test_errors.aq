@@ -1,0 +1,24 @@
+imprimir("--- Test Bloque 3: Manejo de Errores ---")
+intentar {
+    imprimir("Antes de lanzar...")
+    lanzar "¡Hubo un error crítico en el sistema!"
+    imprimir("Esto nunca deberia imprimirse")
+} capturar error {
+    imprimir("Capturado exitosamente =>", error)
+}
+
+intentar {
+    imprimir("Forzando un error del intérprete (dividir por cero)...")
+    res = 10 / 0
+} capturar {
+    imprimir("Bloquemos el crash del divisor por cero!")
+}
+
+intentar {
+    lista = [1,2]
+    imprimir(lista[5])
+} capturar e {
+    imprimir("Error de índice atrapado =>", e)
+}
+
+imprimir("Todo funcionó sin crashear!")

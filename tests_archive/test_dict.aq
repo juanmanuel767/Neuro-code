@@ -1,0 +1,18 @@
+imprimir("--- Test Mutabilidad Estructural (Bloque 2 + Avanzado) ---")
+mi_diccionario = {
+    "nombre": "Carlos",
+    "edad": 25,
+    "lenguajes": ["Rust", "Python", "Aquila"]
+}
+
+imprimir("Diccionario Original:", mi_diccionario)
+
+mi_diccionario.edad = 26
+mi_diccionario["nombre"] = "Carlos (Actualizado)"
+mi_diccionario.lenguajes[0] = "RUST SUPER RAPIDO"
+
+imprimir("Diccionario Actualizado:", mi_diccionario)
+
+si mi_diccionario.edad == 26 y mi_diccionario["nombre"] == "Carlos (Actualizado)" {
+    imprimir("¡Mutabilidad por referencia funcionando al 100%!")
+}

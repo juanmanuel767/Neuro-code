@@ -1,0 +1,10 @@
+imprimir("--- AQUILA v5.0: Prueba de Integración IA ---")
+imprimir("Invocando Primitiva de Inteligencia Artificial (ia)")
+
+intentar {
+    respuesta = ia("Dime un chiste muy corto sobre programadores")
+    imprimir("\nIA responde:\n", respuesta)
+} capturar error {
+    imprimir("\n[Aviso] El módulo de IA falló (Asegurate de tener Ollama o AQUILA_AI_KEY activos):")
+    imprimir(error)
+}

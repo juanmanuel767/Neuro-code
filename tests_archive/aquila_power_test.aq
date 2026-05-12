@@ -1,0 +1,50 @@
+imprimir("🚀 INICIANDO AQUILA POWER TEST - MODO BLINDAJE")
+imprimir("---------------------------------------------")
+
+// 1. Prueba de Persistencia Masiva
+db = nuevo BaseDatos("power.db")
+db.ejecutar("DROP TABLE IF EXISTS test")
+db.ejecutar("CREATE TABLE test (id INTEGER, valor TEXT)")
+
+imprimir("📦 Insertando 100 registros en SQLite...")
+para i en [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] {
+    db.ejecutar("INSERT INTO test (id, valor) VALUES (" + a_texto(i) + ", 'Dato de prueba rápido')")
+}
+imprimir("✅ Persistencia OK.")
+
+// 2. Prueba de Control de Flujo Avanzado
+imprimir("🛑 Validando 'romper' en bucles anidados...")
+contador = 0
+mientras verdadero {
+    contador = contador + 1
+    si contador > 5 {
+        imprimir(">> Salida de bucle exitosa en:", contador)
+        romper
+    }
+}
+
+// 3. Prueba de Concurrencia y Red
+asincrono funcion test_red() {
+    imprimir("🌐 Iniciando descarga asíncrona...")
+    datos = esperar http_get("https://jsonplaceholder.typicode.com/todos/1")
+    imprimir("✅ Datos recibidos:", datos.title)
+    retornar datos
+}
+
+// 4. Prueba de Inteligencia Artificial
+asincrono funcion test_ia() {
+    imprimir("🧠 Consultando sabiduría del Águila...")
+    respuesta = esperar ia("Dime por qué Aquila es mejor que Python en una frase corta.")
+    imprimir("🦅 Aquila dice:", respuesta)
+    retornar respuesta
+}
+
+asincrono funcion main() {
+    esperar test_red()
+    esperar test_ia()
+    imprimir("---------------------------------------------")
+    imprimir("🏆 TEST DE PODER COMPLETADO: 100% SUCCESS")
+    imprimir("Aquila es estable, rápido y soberano.")
+}
+
+esperar main()

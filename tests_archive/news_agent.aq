@@ -1,0 +1,42 @@
+imprimir("🦅 AQUILA NEWS SERVICE v2.0")
+imprimir("----------------------------")
+
+// 1. Inicialización de Datos
+db = nuevo BaseDatos("noticias.db")
+db.ejecutar("CREATE TABLE IF NOT EXISTS noticias (id INTEGER PRIMARY KEY, titulo TEXT, contenido TEXT)")
+
+asincrono funcion descargar_noticias() {
+    imprimir(">> [Async] Sincronizando con la nube...")
+    lista = esperar http_get("https://jsonplaceholder.typicode.com/posts")
+    numero = 0
+    para item en lista {
+        si numero < 10 {
+            db.ejecutar("INSERT INTO noticias (titulo, contenido) VALUES ('" + item.title + "', 'Contenido de Aquila')")
+            numero = numero + 1
+        }
+    }
+    imprimir(">> [Async] Sincronización completada:", numero, "entradas nuevas.")
+    retornar numero
+}
+
+// 2. Configuración del Servidor Web
+servidor = nuevo ServidorWeb(5000)
+
+servidor.ruta("GET", "/", funcion(req) {
+    retornar leer_archivo("news_dashboard.html")
+})
+
+servidor.ruta("GET", "/noticias", funcion(req) {
+    imprimir(">> [Server] Petición recibida en /noticias")
+    datos = db.consultar("SELECT * FROM noticias ORDER BY id DESC")
+    retornar datos
+})
+
+servidor.ruta("GET", "/sincronizar", funcion(req) {
+    imprimir(">> [Server] Iniciando sincronización manual...")
+    n = descargar_noticias() // Nota: Aquí no usamos esperar porque el handler no es asíncrono aún en el motor del servidor, pero funcionará.
+    retornar {"mensaje": "Sincronización iniciada", "nuevos": n}
+})
+
+imprimir("🚀 Iniciando servidor en http://localhost:5000")
+servidor.iniciar()

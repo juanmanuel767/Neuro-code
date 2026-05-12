@@ -1,0 +1,16 @@
+imprimir("===============================")
+imprimir("    TEST: IA REAL GROQ")
+imprimir("===============================")
+
+config_groq = {
+    "url": "https://api.groq.com/openai/v1/chat/completions",
+    "clave": "TU_API_KEY_AQUI",
+    "modelo": "llama-3.3-70b-versatile"
+}
+
+imprimir("Consultando directamente a los servidores de Groq...")
+respuesta = ia("Dime un dato curioso sobre los pingüinos en una sola linea.", config_groq)
+
+imprimir("Respuesta de GROQ ->")
+imprimir(respuesta)
+imprimir("===============================")

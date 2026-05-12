@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquila | El Depredador de Python</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --text-color: #e2e8f0;
+            --accent-gold: #fbbf24;
+            --accent-blue: #38bdf8;
+            --card-bg: #1e293b;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            text-align: center;
+            padding: 80px 0 40px;
+            border-bottom: 1px solid #1e293b;
+            background: radial-gradient(circle at top, #1e293b, transparent);
+        }
+        .logo-img {
+            max-width: 300px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+            margin-bottom: 30px;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #94a3b8;
+            margin-top: 10px;
+        }
+        .btn {
+            display: inline-block;
+            background: var(--accent-gold);
+            color: #000;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.6);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 80px 0;
+        }
+        .feature-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 4px solid var(--accent-blue);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .feature-card h3 {
+            color: var(--accent-blue);
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+        
+        pre {
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            border: 1px solid #334155;
+            color: #38bdf8;
+            font-family: 'Fira Code', monospace;
+        }
+        .code-gold { color: #fbbf24; }
+        .code-white { color: #f8fafc; }
+        
+        .code-section {
+            padding: 40px 0;
+        }
+        .vs-python {
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #334155;
+        }
+        th { color: var(--accent-gold); font-size: 1.2rem; }
+        td:first-child { font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <!-- Reemplaza con la ruta real al logo final -->
+        <img src="/home/user/.gemini/antigravity/brain/361838db-e606-456d-b6d5-6e3bd1915f6c/nexus_eagle_logo_1778537758742.png" alt="Aquila Logo" class="logo-img">
+        <h1>Aquila</h1>
+        <h2>El águila que devora a la pitón. Más rápido, más alto, más letal.</h2>
+        <a href="#install" class="btn">Empezar a volar 🦅</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="features">
+        <div class="feature-card">
+            <h3>🤖 IA como Primitiva</h3>
+            <p>El único lenguaje del mundo que compila la inteligencia artificial directamente en su sintaxis base, cero configuraciones (Ollama / OpenAI nativo).</p>
+        </div>
+        <div class="feature-card">
+            <h3>⚡ Corazón de Rust</h3>
+            <p>Velocidad ultra-rápida nativa. Adiós al Global Interpreter Lock (GIL). Código rápido como el rayo, sintaxis fácil e intuitiva.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🐍 Absorbe a su presa</h3>
+            <p>Aquila es capaz de importar y ejecutar cualquier biblioteca asíncrona y estándar de Python de manera nativa mediante FFI bidireccional.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🌐 Servidor Integrado</h3>
+            <p>Levantar un API REST o endpoint HTTP requiere 3 líneas y 0 librerías adicionales: está construido directamente en el binario sin pesadillas de dependencias.</p>
+        </div>
+    </div>
+
+    <div class="vs-python">
+        <h2>🦅 Aquila vs 🐍 Python</h2>
+        <table>
+            <tr>
+                <th>Característica</th>
+                <th>Aquila</th>
+                <th>Python</th>
+            </tr>
+            <tr>
+                <td>Motor Base</td>
+                <td>Rust (Ultrarrápido)</td>
+                <td>C (Antiguo)</td>
+            </tr>
+            <tr>
+                <td>Extensión</td>
+                <td><code>.aq</code></td>
+                <td><code>.py</code></td>
+            </tr>
+            <tr>
+                <td>Llamada a IA</td>
+                <td>1 Palabra (<code>ia()</code>)</td>
+                <td>Instalar Request/OpenAI + Setup</td>
+            </tr>
+            <tr>
+                <td>Base de Datos</td>
+                <td>SQLite Embebido</td>
+                <td>Requiere librerías y connection pools complejos</td>
+            </tr>
+            <tr>
+                <td>Servidor Web</td>
+                <td>Nativo HTTP (TCP)</td>
+                <td>Flask / Django / FastAPI</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="code-section">
+        <h2>Código Limpio y Majestuoso</h2>
+        <p>Levantar un servidor web:</p>
+        <pre>
+<span class="code-white">servidor</span> = <span class="code-gold">nuevo</span> ServidorWeb(<span class="code-white">3000</span>)
+
+<span class="code-white">servidor</span>.ruta(<span class="code-gold">"GET"</span>, <span class="code-gold">"/"</span>, <span class="code-gold">funcion</span>(req) {
+    <span class="code-gold">retornar</span> {<span class="code-gold">"mensaje"</span>: <span class="code-gold">"Aquila está volando alto 🦅"</span>, <span class="code-gold">"version"</span>: <span class="code-gold">"1.0"</span>}
+})
+
+<span class="code-white">servidor</span>.iniciar()</pre>
+    </div>
+
+    <div class="code-section">
+        <h2>Inteligencia Artificial Integrada</h2>
+        <pre>
+<span class="code-gold">intentar</span> {
+    <span class="code-white">respuesta</span> = ia(<span class="code-gold">"Dame 3 razones por las que el águila domina a la serpiente"</span>)
+    imprimir(<span class="code-white">respuesta</span>)
+} <span class="code-gold">capturar</span> error {
+    imprimir(<span class="code-gold">"No estoy conectado a la IA:"</span>, <span class="code-white">error</span>)
+}</pre>
+    </div>
+</div>
+
+</body>
+</html>

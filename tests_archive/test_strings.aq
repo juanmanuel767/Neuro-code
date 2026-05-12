@@ -1,0 +1,30 @@
+imprimir("--- AQUILA v2.0: TEXTO, LISTAS Y COLECCIONES ---")
+
+imprimir("\n1. Manipulación de Texto")
+texto_og = "Python es Complicado"
+imprimir("Original:", texto_og)
+imprimir("Mayúsculas:", mayusculas(texto_og))
+imprimir("Minúsculas:", minusculas(texto_og))
+imprimir("¿Contiene 'Python'?:", contiene(texto_og, "Python"))
+
+imprimir("\n2. Dividir y Unir")
+csv = "manzana,banana,pera"
+lista_frutas = dividir(csv, ",")
+imprimir("Lista generada:", lista_frutas)
+imprimir("Unido con guiones:", unir(lista_frutas, " - "))
+
+imprimir("\n3. Mutación de Listas")
+agregar(lista_frutas, "sandia")
+imprimir("Lista con sandía:", lista_frutas)
+quitar(lista_frutas, 1) // Quita 'banana'
+imprimir("Lista sin banana:", lista_frutas)
+
+imprimir("\n4. Sistema de Tipos Explícito")
+imprimir("Tipo de número:", tipo(42))
+imprimir("Tipo de texto:", tipo("Hola"))
+imprimir("Convertir cadena '42' a Entero:", entero("42") + 10)
+imprimir("Convertir cadena '3.14' a Decimal:", decimal("3.14") + 1.0)
+imprimir("Longitud de nuestro CSV:", longitud(csv))
+imprimir("Longitud de la lista final:", longitud(lista_frutas))
+
+imprimir("\nTests Completados!")

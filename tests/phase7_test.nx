@@ -1,0 +1,20 @@
+// Test Nexus Phase 7: Visual Analytics
+// Demostración de IA con visualización de mapa de calor
+
+node Base = 1.0
+node Tamaño = 12
+
+// Generamos un mapa de activación dinámico
+node RedNeuronal = AI.map(Base, Tamaño)
+
+// Sensor que varía
+node Sensor = 0.5
+node Pesos = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+
+// Cálculo intenso para el Benchmark
+node Prediccion = Sensor.AI.predict(Pesos)
+
+// Conexiones
+Base -> RedNeuronal
+Sensor -> Prediccion
+Pesos -> Prediccion

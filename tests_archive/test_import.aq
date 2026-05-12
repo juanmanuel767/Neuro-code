@@ -1,0 +1,12 @@
+imprimir("--- Test Bloque 5: Módulos Nativos ---")
+
+usar "math_lib.nx" como libreria
+
+imprimir("Libreria cargada:", libreria)
+imprimir("Valor de PI externo:", libreria.PI)
+
+res = libreria.sumar(100, 25)
+imprimir("La suma de 100 y 25 es:", res)
+
+res2 = libreria.restar(100, 25)
+imprimir("La resta de 100 y 25 es:", res2)

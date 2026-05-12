@@ -1,0 +1,29 @@
+// Test Nexus Phase 6
+// Features: Dot Chaining & Advanced AI
+
+node Sensor = 0.8
+node Pesos = [0.1, 0.5, 0.9]
+node Objetivo = 0.7
+
+// Caso 1: Sintaxis Estándar
+node Prediccion1 = AI.predict(Sensor, Pesos)
+
+// Caso 2: Encadenamiento de Métodos (Novedad Fase 6)
+node Prediccion2 = Sensor.AI.predict(Pesos)
+
+// Caso 3: Gradiente para ajuste
+node Error = Prediccion2.AI.gradient(Objetivo)
+
+node Resultado = Match Error {
+    0.0 => "Perfecto"
+    _ => "Ajustando..."
+}
+
+// Conexiones visuales/lógicas
+Sensor -> Prediccion1
+Pesos -> Prediccion1
+Sensor -> Prediccion2
+Pesos -> Prediccion2
+Prediccion2 -> Error
+Objetivo -> Error
+Error -> Resultado

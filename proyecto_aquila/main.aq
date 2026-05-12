@@ -1,0 +1,27 @@
+// --- AQUILA 2.0 VISUAL DASHBOARD: SALES MONITOR ---
+asincrono funcion main() {
+    imprimir("🛰️ Iniciando Servidor de Monitoreo Visual (Aquila 8080)...")
+    
+    db = nuevo BaseDatos("ventas.db")
+    esperar db.ejecutar("CREATE TABLE IF NOT EXISTS ventas (id INTEGER PRIMARY KEY, producto TEXT, total REAL, fecha TEXT)")
+    
+    // Insertamos datos de prueba si está vacía
+    conteo = esperar db.consultar("SELECT COUNT(*) as total FROM ventas")
+    // (Lógica simplificada para demo)
+    esperar db.ejecutar("INSERT INTO ventas (producto, total, fecha) VALUES ('Nexus Pro', 1200.50, '2026-05-11')")
+    
+    servidor = nuevo ServidorWeb(8080)
+    
+    asincrono funcion api_datos(peticion) {
+        datos = esperar db.consultar("SELECT * FROM ventas ORDER BY id DESC LIMIT 10")
+        responder(datos)
+    }
+    
+    servidor.ruta("GET", "/api/datos", api_datos)
+    servidor.estatico("/", "index.html")
+    
+    imprimir("🚀 Dashboard disponible en http://localhost:8080")
+    esperar servidor.iniciar()
+}
+
+esperar main()

@@ -1,0 +1,13 @@
+funcion sumar(a, b) {
+    retornar a + b
+}
+
+funcion restar(a, b) {
+    retornar a - b
+}
+
+PI = 3.14159265
+
+exportar sumar
+exportar restar
+exportar PI

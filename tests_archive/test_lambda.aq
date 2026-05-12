@@ -1,0 +1,18 @@
+imprimir("--- Test Bloque 6: Lambdas (Funciones Anonimas) ---")
+
+mi_lambda = funcion(a, b) {
+    retornar a * b
+}
+
+res = mi_lambda(10, 5)
+imprimir("El resultado de 10 * 5 en lambda es:", res)
+
+// Testeando como argumento (Higher order function)
+funcion ejecutar_operacion(op, val1, val2) {
+    retornar op(val1, val2)
+}
+
+res_suma = ejecutar_operacion(funcion(a, b) { retornar a + b }, 100, 200)
+imprimir("Suma higher order:", res_suma)
+
+imprimir("Test finalizado!")

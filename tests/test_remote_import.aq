@@ -1,0 +1,16 @@
+imprimir("===============================")
+imprimir("  TEST: MÓDULOS REMOTOS MÁGICOS")
+imprimir("===============================")
+
+imprimir("Importando módulo matemágico desde la nube (HTTP)...")
+usar "http://127.0.0.1:8000/extras/math_lib.aq" como mates
+
+imprimir("Llamando función remota: sumar(5, 7) =")
+resultado = mates.sumar(5, 7)
+imprimir(resultado)
+
+imprimir("Llamando función remota: cuadrado(9) =")
+res2 = mates.cuadrado(9)
+imprimir(res2)
+
+imprimir("===============================")

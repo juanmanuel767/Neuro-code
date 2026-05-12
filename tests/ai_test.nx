@@ -1,0 +1,23 @@
+// Test Nexus AI Module
+
+node SensorValue = 0.85
+node Threshold = 0.5
+
+// Clasificación inteligente
+node Estado = AI.classify(SensorValue, Threshold)
+
+// Detección de anomalías
+node EsAnomalia = AI.anomaly(SensorValue)
+
+// Lógica reactiva basada en IA
+node AlertaActiva = Match EsAnomalia {
+    true => "PELIGRO: Valor inestable"
+    false => "Sistema Estable"
+    _ => "Estado Desconocido"
+}
+
+// Conexiones (Opcional, el auto-ruteo se encarga si hay fórmulas, pero aquí son llamadas stdlib)
+SensorValue -> Estado
+Threshold -> Estado
+SensorValue -> EsAnomalia
+EsAnomalia -> AlertaActiva

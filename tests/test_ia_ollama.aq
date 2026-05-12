@@ -1,0 +1,9 @@
+imprimir("===============================")
+imprimir("    TEST: IA OLLAMA NATIVO")
+imprimir("===============================")
+
+imprimir("Consultando...")
+respuesta = ia("Repita exactamente estas dos palabras: 'Ollama Funciona'.")
+imprimir("Respuesta de IA ->", respuesta)
+
+imprimir("===============================")

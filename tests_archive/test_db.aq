@@ -1,0 +1,21 @@
+imprimir("--- AQUILA v5.0: Prueba de Base de Datos SQLite ---")
+
+db = nuevo BaseDatos("test_aquila.db")
+imprimir("Base de datos creada:", db)
+
+db.ejecutar("CREATE TABLE IF NOT EXISTS usuarios (nombre TEXT, edad INTEGER)")
+db.ejecutar("DELETE FROM usuarios")
+db.ejecutar("INSERT INTO usuarios VALUES ('Ana', 25)")
+db.ejecutar("INSERT INTO usuarios VALUES ('Carlos', 30)")
+db.ejecutar("INSERT INTO usuarios VALUES ('Maria', 22)")
+
+resultados = db.consultar("SELECT * FROM usuarios")
+imprimir("Usuarios en la base de datos:")
+para usuario en resultados {
+    imprimir("  -", usuario.nombre, "tiene", usuario.edad, "años")
+}
+
+mayores = db.consultar("SELECT * FROM usuarios WHERE edad > 24")
+imprimir("Usuarios mayores de 24:", mayores)
+
+imprimir("Base de datos SQLite funcional!")

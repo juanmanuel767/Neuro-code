@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Tradicional: Carrito de Compras Avanzado</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 30px; background: #f0f2f5; }
+        .carrito { background: white; padding: 25px; border-radius: 12px; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .fila { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;}
+        input { padding: 8px; width: 80px; border: 1px solid #ccc; border-radius: 4px;}
+        .resultado { font-size: 24px; font-weight: bold; color: #ff007f; margin-top: 25px; text-align: right; }
+    </style>
+</head>
+<body>
+    <div class="carrito">
+        <h2>Carrito (El Contrincante Traditional)</h2>
+        <div class="fila"> <label>Precio Monitor ($):</label> <input type="number" id="p_mon" value="200" oninput="calc()"> </div>
+        <div class="fila"> <label>Cantidad Monitores:</label> <input type="number" id="c_mon" value="1" oninput="calc()"> </div>
+        <div class="fila"> <label>Precio Teclado ($):</label> <input type="number" id="p_tec" value="50" oninput="calc()"> </div>
+        <div class="fila"> <label>Cantidad Teclados:</label> <input type="number" id="c_tec" value="1" oninput="calc()"> </div>
+        <hr>
+        <div class="fila"> <label>Impuesto (IVA %):</label> <input type="number" id="iva" value="19" oninput="calc()"> </div>
+        <div class="fila"> <label>Desc. Especial (%):</label> <input type="number" id="desc" value="10" oninput="calc()"> </div>
+        
+        <div class="resultado">TOTAL: $<span id="total">267.50</span></div>
+        <p style="font-size:11px; color:#999; margin-top: 15px;">
+            El programador tradicional invirtió ~40 líneas de DOM explícito y JavaScript lógico sólo para hacer esta operación.
+        </p>
+    </div>
+
+    <script>
+        function calc() {
+            let p_mon = parseFloat(document.getElementById('p_mon').value) || 0;
+            let c_mon = parseFloat(document.getElementById('c_mon').value) || 0;
+            let p_tec = parseFloat(document.getElementById('p_tec').value) || 0;
+            let c_tec = parseFloat(document.getElementById('c_tec').value) || 0;
+            let iva = parseFloat(document.getElementById('iva').value) || 0;
+            let desc = parseFloat(document.getElementById('desc').value) || 0;
+            
+            let base = (p_mon * c_mon) + (p_tec * c_tec);
+            let con_iva = base * (1 + (iva / 100));
+            let total = con_iva * (1 - (desc / 100));
+            
+            document.getElementById('total').innerText = total.toFixed(2);
+        }
+        calc();
+    </script>
+</body>
+</html>

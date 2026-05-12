@@ -1,0 +1,26 @@
+// NEXUS STRESS TEST & VALIDATION (Sintaxis Corregida v2)
+node sensor_a = 42.0
+node sensor_b = 15.0
+
+node ai_brain = Python("import numpy as np; import time; time.sleep(0.0005); base = (val1 + val2) / 100.0; return [base + n for n in np.random.normal(0, 0.05, 10)]")
+
+// En Python es sum(lista), no lista.sum()
+node promedio_ai = Formula("sum(ai_brain) / 10.0")
+node umbral = 0.5
+node alerta = Formula("promedio_ai > umbral")
+
+// Conexiones explícitas
+node sensor_a -> ai_brain
+node sensor_b -> ai_brain
+node ai_brain -> promedio_ai
+node promedio_ai -> alerta
+node umbral -> alerta
+
+//@layout {
+//  "sensor_a": [50, 50],
+//  "sensor_b": [50, 150],
+//  "umbral": [50, 250],
+//  "ai_brain": [340, 100],
+//  "promedio_ai": [600, 100],
+//  "alerta": [840, 100]
+//}

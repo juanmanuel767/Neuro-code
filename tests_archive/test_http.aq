@@ -1,0 +1,21 @@
+imprimir("--- AQUILA v2.0: PRUEBAS DE CLIENTE HTTP NATIVO ---")
+
+imprimir("\n1. GET Request (Github API)")
+intentar {
+    respuesta = http_get("https://api.github.com/users/rust-lang")
+    imprimir("Nombre:", respuesta.name)
+    imprimir("Repositorios:", respuesta.public_repos)
+} capturar error {
+    imprimir("Error HTTP GET:", error)
+}
+
+imprimir("\n2. POST Request (Dummy API)")
+intentar {
+    datos = {"title": "Aquila", "body": "Depredador de Python", "userId": 1}
+    res_post = http_post("https://jsonplaceholder.typicode.com/posts", datos)
+    imprimir("ID Creado:", res_post.id)
+    imprimir("Título:", res_post.title)
+} capturar error {
+    imprimir("Error HTTP POST:", error)
+}
+imprimir("\nTests HTTP completados!")

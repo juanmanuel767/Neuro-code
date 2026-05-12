@@ -1,0 +1,18 @@
+imprimir("🌐 Creando API REST con Aquila v5.0")
+
+servidor = nuevo ServidorWeb(3000)
+
+servidor.ruta("GET", "/", funcion(req) {
+    retornar {"mensaje": "Bienvenido a Aquila API!", "version": "5.0"}
+})
+
+servidor.ruta("GET", "/salud", funcion(req) {
+    retornar {"status": "activo", "lenguaje": "Aquila"}
+})
+
+servidor.ruta("POST", "/eco", funcion(req) {
+    retornar {"recibido": req.cuerpo_texto, "metodo": req.metodo}
+})
+
+imprimir("Rutas configuradas. Iniciando servidor...")
+servidor.iniciar()

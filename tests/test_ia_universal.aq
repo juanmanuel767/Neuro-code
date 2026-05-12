@@ -1,0 +1,38 @@
+imprimir("--- TEST: IA UNIVERSAL ---")
+
+// 1. Forma normal (debería usar Ollama si no hay AQUILA_AI_KEY)
+// Descomentar si Ollama está encendido.
+// imprimir("> Consultando Default AI...")
+// res1 = ia("Di la palabra 'Pez'.")
+// imprimir("Respuesta 1:", res1)
+
+// 2. Simulando Groq / Together AI (Formato OpenAI)
+// Pongo una key falsa, el servidor debería retornar error 401 si se intenta enviar JSON válido
+intentar {
+    imprimir("> Consultando API Universal Simulada...")
+    config_groq = {
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "clave": "gsk_falsa_123",
+        "modelo": "llama3-8b-8192"
+    }
+    res2 = ia("Hola Groq", config_groq)
+    imprimir("Groq:", res2)
+} capturar e {
+    imprimir("Error esperado (401 Unauthorized API FALSA):", e)
+}
+
+// 3. Simulando Anthropic Claude (Formato Claude, parseo modificado)
+intentar {
+    imprimir("> Consultando API Anthropic Claude...")
+    config_claude = {
+        "url": "https://api.anthropic.com/v1/messages",
+        "clave": "sk-ant-falsa_123",
+        "modelo": "claude-3-haiku-20240307"
+    }
+    res3 = ia("Hola Claude", config_claude)
+    imprimir("Claude:", res3)
+} capturar e {
+    imprimir("Error esperado (401 Unauthorized Claude):", e)
+}
+
+imprimir("--- TST OK ---")

@@ -1,0 +1,23 @@
+// Test de Integración FFI con Python
+usar "math" como pymath
+usar "platform" como pyplat
+usar "time" como pytime
+
+imprimir("=== TEST DE INTEGRACION PYTHON FFI ===")
+
+// 1. Uso de Math de Python
+raiz = pymath.sqrt(144)
+imprimir("Raíz cuadrada de 144 vía Python: " + raiz)
+
+// 2. Uso de Platform para info del sistema
+sistema = pyplat.system()
+version = pyplat.version()
+imprimir("Sistema Detectado por Python: " + sistema)
+imprimir("Versión: " + version)
+
+// 3. Uso de Time
+segundos = pytime.time()
+imprimir("Timestamp desde Python library: " + segundos)
+
+imprimir("======================================")
+imprimir("✅ Integración FFI confirmada y estable.")

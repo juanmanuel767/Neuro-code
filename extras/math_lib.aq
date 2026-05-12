@@ -1,0 +1,11 @@
+// math_lib.aq
+funcion sumar(a, b) {
+    retornar a + b
+}
+
+funcion cuadrado(n) {
+    retornar n * n
+}
+
+exportar sumar
+exportar cuadrado

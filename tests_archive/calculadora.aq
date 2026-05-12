@@ -1,0 +1,30 @@
+imprimir("🧮 CALCULADORA AQUILA v1.0")
+imprimir("---------------------------")
+imprimir("Escribe 'salir' para terminar.")
+
+mientras verdadero {
+    num1 = entrada("Ingresa el primer número: ")
+    si num1 == "salir" { romper }
+    
+    op = entrada("Operación (+, -, *, /): ")
+    si op == "salir" { romper }
+    
+    num2 = entrada("Ingresa el segundo número: ")
+    si num2 == "salir" { romper }
+    
+    n1 = a_numero(num1)
+    n2 = a_numero(num2)
+    
+    si op == "+" { imprimir(">> Resultado:", n1 + n2) }
+    sino si op == "-" { imprimir(">> Resultado:", n1 - n2) }
+    sino si op == "*" { imprimir(">> Resultado:", n1 * n2) }
+    sino si op == "/" {
+        si n2 == 0 { imprimir(">> Error: División por cero") }
+        sino { imprimir(">> Resultado:", n1 / n2) }
+    }
+    sino { imprimir(">> Operación no válida:", op) }
+    
+    imprimir("---")
+}
+
+imprimir("¡Gracias por usar la calculadora del Águila! 🦅")
