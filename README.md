@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="website/assets/logo.png" width="250" alt="Aquila Logo">
+  <img src="website/assets/logo.png" width="300" alt="Aquila Logo">
 </p>
 
 # 🦅 Aquila: El Ecosistema Depredador de Software
@@ -13,25 +13,25 @@
 
 ---
 
-**Aquila** no es simplemente un lenguaje de programación; es un organismo cibernético diseñado para dominar. Forjado en las profundidades de **Rust**, Aquila ha sido programado con una misión genérica: **erradicar el estancamiento de Python** y sustituirlo por una plataforma autónoma de alto rendimiento que piensa, repara y construye en nuestro idioma.
+**Aquila** no es simplemente un lenguaje de programación; es un organismo cibernético diseñado para dominar. Forjado en las profundidades de **Rust**, Aquila nace para **devorar la ineficiencia** y proporcionar una plataforma autónoma que piensa, repara y construye en nuestro idioma.
 
-> "En el código, como en la naturaleza, solo el más rápido sobrevive. La serpiente ha tenido su tiempo. Ahora, el cielo pertenece al águila." — **Juan Manuel Peralta**
+> "La serpiente ha tenido su tiempo. Ahora, el cielo pertenece al águila." — **Juan Manuel Peralta**
 
 ---
 
-## 🔱 La Trinidad del Poder
+## 🔱 Los Sistemas de Dominio
 
 Aquila opera bajo tres entidades autónomas que transforman la experiencia de desarrollo:
 
-### 🛠️ El Constructo (The Architect)
-No escribas arquitectura, descríbela. El **Constructo** es el motor generativo de Aquila que, mediante lenguaje natural, diseña la estructura completa de aplicaciones Full-Stack. Desde el esquema de Base de Datos hasta el Frontend reactivo, el Constructo lo materializa instantáneamente.
-> `aquila crear "Un sistema de inventario con IA que prediga stock"`
+### 🏹 Modo Cazador (The Python Hijacker)
+El **Modo Cazador** es la esencia depredadora de Aquila. Mediante el comando `usar`, Aquila **le roba las librerías a Python** y las integra directamente en su flujo de alto rendimiento. ¿Para qué escribir mil líneas si puedes secuestrar a `numpy`, `pandas` o `torch`? Este modo disminuye drásticamente la carga de trabajo y el código necesario, permitiendo que Aquila use el ecosistema más grande del mundo como su propio terreno de caza.
+
+### 🛠️ El Arquitecto (The Generative Construct)
+No pierdas tiempo diseñando bases, deja que el **Arquitecto** lo haga. Con el comando `aquila crear`, el lenguaje utiliza su red neuronal para diseñar y materializar la estructura completa de un proyecto. Desde el backend en `.aq` hasta el frontend reactivo y la documentación. 
+> `aquila crear "Un dashboard de ventas con IA"`
 
 ### 🛡️ El Guardián (Self-Healing AI)
-Los errores son el alimento del **Guardián**. Cuando un script falla, el Guardián interviene en tiempo real, analiza la traza de error con modelos de lenguaje integrados y **auto-repara** el código fuente. Aquila es el primer lenguaje que se cura a sí mismo.
-
-### 🏹 Modo Cazador (High-Performance Engine)
-El **Modo Cazador** activa el núcleo purista de Rust. Optimizado para ejecución paralela y gestión de memoria zero-cost. En este modo, Aquila no interpreta; ejecuta con la precisión de un depredador, destruyendo cuellos de botella y latencias innecesarias.
+Aquila es el primer lenguaje con instinto de supervivencia. Si tu código falla, el **Guardián** interviene, analiza el error en español y **ofrece reparar el archivo automáticamente**. Olvida el debugging eterno; deja que el águila limpie su propio nido.
 
 ---
 
@@ -39,75 +39,62 @@ El **Modo Cazador** activa el núcleo purista de Rust. Optimizado para ejecució
 
 | Atributo | Python 🐍 | Aquila 🦅 |
 | :--- | :--- | :--- |
-| **ADN** | Interpretado C (Legacy) | **Rust Nativo (Moderno)** |
-| **Instinto** | Pasivo (Espera librerías) | **Activo (IA Integrada)** |
-| **Interoperabilidad** | Difícil (C/C++) | **Depredador FFI (Secuestra Python)** |
-| **Infraestructura** | Fragmentada | **Base de Datos y Web Nativo** |
-| **Lenguaje** | Inglés Obligatorio | **Español Nativo / Natural** |
-| **Distribución** | "Dependencia Hell" | **Binarios Únicos Portátiles** |
+| **ADN** | Interpretado (Lento) | **Rust Nativo (Ultra-rápido)** |
+| **Instinto** | Pasivo (Dependencia-heavy) | **Activo (IA Integrada)** |
+| **Interoperabilidad** | Compleja | **Modo Cazador (Robo de Libs)** |
+| **Infraestructura** | Externa (Flask/SQLite) | **Nativa y Embebida** |
+| **Lenguaje** | Inglés Obligatorio | **Español Nativo** |
+| **Distribución** | Scripting | **Binarios Únicos Portátiles** |
 
 ---
 
-## 🌪️ Capacidades Especiales
+## 🌪️ Ejemplo de Poder Real
 
-### 🧬 Depredador FFI (The Python Hijacker)
-Mediante el comando `usar`, Aquila secuestra cualquier librería de Python (`TensorFlow`, `PyTorch`, `OpenCV`) y la somete a su flujo de control en Rust. No migramos de Python; lo dominamos.
-
-### 🌐 Red Neuronal Nativa
-La función `ia()` es una primitiva del lenguaje. Olvida las configuraciones de API complejas. Aquila se conecta dinámicamente a **Groq, Claude, OpenAI** o modelos locales vía **Ollama**, con balanceo de carga automático.
-
----
-
-## 💻 Manifiesto de Código
-
-### Backend Reactivo con IA en tiempo récord:
+### Backend de Alto Rendimiento con Robo de Librerías:
 ```aquila
-// 🦅 Protocolo Aquila v2.1
-servidor = nuevo ServidorWeb(8080)
+// 🦅 Modo Cazador Activo
+usar "numpy" como np
+usar "math" como mates
 
-// El Guardián vigila esta ruta
-servidor.ruta("POST", "/analizar", funcion(req) {
-    datos = req.cuerpo
+asincrono funcion principal() {
+    // El Arquitecto diseñó este flujo
+    imprimir("📡 Iniciando protocolo depredador...")
     
-    // Consulta al núcleo de IA
-    analisis = ia("Analiza la intención de este mensaje: " + datos.texto)
+    // Usando librería robada de Python para ahorrar código
+    matriz = np.array([1, 2, 3])
+    imprimir("Cálculo FFI: " + a_texto(matriz.mean()))
     
-    retornar {
-        "estado": "confirmado",
-        "ia_output": analisis,
-        "motor": "Aquila-Rust-Engine"
-    }
-})
+    // IA Nativa sin configuraciones
+    respuesta = esperar ia("Genera un reporte de rendimiento")
+    imprimir("Reporte IA: " + respuesta)
+}
 
-imprimir("🏹 Modo Cazador Iniciado en puerto 8080")
-servidor.iniciar()
+esperar principal()
 ```
 
 ---
 
 ## 🛠️ Despegue Inmediato
 
-### Despliegue en un solo comando (Linux/macOS)
+### Despliegue en un solo comando
 ```bash
 curl -fsSL https://aquila-lang.dev/install.sh | bash
 ```
 
-### Comando de Caza (Windows)
+### Binario Portátil
 ```bash
-winget install aquila-lang
+aquila --compilar main.aq mi_app
 ```
 
 ---
 
-## 👤 El Visionario
+## 👤 El Creador
 **Juan Manuel Peralta Chacón**  
 *Ingeniero de Sistemas y Arquitecto de Aquila*
 
-*Mi misión es simple: crear herramientas que piensen más allá de los límites tradicionales y hablen el lenguaje de quienes las crean.*
-
 - 📧 **Contacto:** [peraltachaconjuanmanuel5@gmail.com](mailto:peraltachaconjuanmanuel5@gmail.com)
-- 💬 **Directo:** [+57 321 4281888](https://wa.me/573214281888)
-- 💳 **Soporte al Proyecto:** [paypal.me/JuanPeraltaChacon](https://www.paypal.me/JuanPeraltaChacon)
+- 💬 **WhatsApp:** [+57 321 4281888](https://wa.me/573214281888)
+- 💳 **Soporte:** [paypal.me/JuanPeraltaChacon](https://www.paypal.me/JuanPeraltaChacon)
 
 ---
-<p align="center">Construido con la fuerza de Rust y la visión de la IA. © 2026 Aquila Labs.</p>
+<p align="center">Forjado en Rust · IA Nativa · Python FFI. © 2026 Aquila Labs.</p>
