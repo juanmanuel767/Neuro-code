@@ -418,14 +418,67 @@ footer {
 
 /* ─── Responsive ─── */
 @media (max-width: 768px) {
-    .gradient-text { font-size: 2.8rem; }
-    nav { padding: 1.5rem 5%; }
-    .links a { margin-right: 1rem; font-size: 0.8rem; }
-    .features { flex-direction: column; }
-    .section-title { font-size: 2rem; }
-    section { padding: 4rem 5%; }
+    .gradient-text { font-size: 2.2rem; }
+    .subtitle { font-size: 1rem; padding: 0 10%; }
+    
+    nav { 
+        padding: 0.8rem 3%; 
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .links a { 
+        margin-right: 0.5rem; 
+        font-size: 0.75rem; 
+        background: rgba(255,255,255,0.05);
+        padding: 0.3rem 0.6rem;
+        border-radius: 5px;
+    }
+    
+    .btn-primary { display: none; } /* Ocultar en nav móvil para ahorrar espacio */
+    
+    .features { 
+        flex-direction: column; 
+        padding: 3rem 5%;
+    }
+    
+    .section-title { font-size: 1.8rem; }
+    section { padding: 3rem 5%; }
+    
     .doc-grid { grid-template-columns: 1fr; }
-    .comentarios-marquee { grid-template-columns: 1fr; }
+    
+    .testimonial-card {
+        width: 280px; /* Reducir ancho en móvil */
+        padding: 1rem;
+    }
+
+    .terminal-block {
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 1rem;
+    }
+
+    .code {
+        font-size: 0.75rem;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .gradient-text { font-size: 1.8rem; }
+    .testimonial-card {
+        width: 85vw;
+    }
+    .links a {
+        font-size: 0.7rem;
+    }
 }
 
 /* ─── Testimonials OpenClaw Style ─── */
