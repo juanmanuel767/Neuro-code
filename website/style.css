@@ -1,10 +1,10 @@
 :root {
-    --bg-color: #050508;
-    --primary-color: #f3c75f;
+    --bg-color: #000000;
+    --primary-color: #ededed;
     --accent-color: #3b82f6;
-    --text-color: #e2e8f0;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-color: #a1a1aa;
+    --glass-bg: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.08);
 }
 
 * {
@@ -16,8 +16,9 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Inter', sans-serif;
     line-height: 1.6;
+    letter-spacing: -0.01em;
     overflow-x: hidden;
     width: 100%;
     max-width: 100vw;
@@ -81,23 +82,62 @@ nav {
 }
 
 .gradient-text {
-    font-size: 4.5rem;
-    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: 5rem;
+    color: #fff;
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
     margin-bottom: 1.5rem;
 }
 
 .subtitle {
-    font-size: 1.15rem;
-    color: #94a3b8;
+    font-size: 1.25rem;
+    color: #a1a1aa;
+    font-weight: 400;
     margin-bottom: 3rem;
-    max-width: 600px;
+    max-width: 650px;
     margin-left: auto;
     margin-right: auto;
+    line-height: 1.7;
+}
+
+/* ─── Startup Elements ─── */
+.badge-pill {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.tech-specs {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem 5%;
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.01);
+    width: 100%;
+}
+
+.spec-item h4 {
+    font-size: 0.75rem;
+    color: #71717a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.2rem;
+}
+
+.spec-item p {
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 500;
 }
 
 /* ─── Terminal Block ─── */
@@ -137,36 +177,36 @@ nav {
 
 /* ─── Buttons ─── */
 .btn-primary {
-    background: var(--primary-color);
+    background: #fff;
     color: #000;
     border: none;
-    padding: 0.7rem 1.3rem;
-    border-radius: 8px;
-    font-weight: 700;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
     cursor: pointer;
-    font-family: 'Outfit', sans-serif;
-    transition: transform 0.2s;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: opacity 0.2s;
 }
 
-.btn-primary:hover { transform: translateY(-2px); }
+.btn-primary:hover { opacity: 0.9; }
 
 .btn-glow {
-    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-    color: #fff;
+    background: #fff;
+    color: #000;
     border: none;
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 1.1rem;
+    padding: 0.8rem 1.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-    transition: transform 0.3s, box-shadow 0.3s;
-    font-family: 'Outfit', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Inter', sans-serif;
 }
 
 .btn-glow:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 35px rgba(59, 130, 246, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
 }
 
 .btn-outline {
@@ -195,23 +235,30 @@ nav {
 }
 
 .feature-card {
-    background: var(--glass-bg);
+    background: transparent;
     border: 1px solid var(--glass-border);
-    padding: 2rem;
-    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    border-radius: 8px;
     text-align: left;
     flex: 1;
-    transition: background 0.3s, transform 0.3s;
+    transition: background 0.3s, border-color 0.3s;
 }
 
 .feature-card:hover {
-    background: rgba(255, 255, 255, 0.06);
-    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.icon-glow {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
 }
 
 .feature-card h3 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    font-size: 1.25rem;
 }
 
 .hero-bg-effect {

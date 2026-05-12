@@ -23,7 +23,7 @@
 
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -46,27 +46,29 @@
     <!-- ════════════════════════════════════════════════ -->
     <header class="hero">
         <div class="hero-content">
-            <p style="color: var(--primary-color); font-weight:600; letter-spacing:3px; margin-bottom:1rem; font-size:0.9rem;">VERSIÓN 2.1 — CONSTRUIDO EN RUST</p>
-            <h1 class="gradient-text">La serpiente tiene<br>un nuevo dueño.</h1>
-            <p class="subtitle">Aquila es el lenguaje autónomo que devora el ecosistema de Python y lo ejecuta bajo el motor de Rust. IA nativa. Servidor web integrado. Base de datos embebida. Todo en español.</p>
+            <div class="badge-pill">AQUILA v2.1 (RUST CORE)</div>
+            <h1 class="gradient-text">El futuro del software<br>habla español.</h1>
+            <p class="subtitle">Un lenguaje de programación moderno, compilado en Rust, con integración de Inteligencia Artificial nativa y compatibilidad total (C-FFI) con el ecosistema de Python.</p>
 
             <div class="terminal-block">
                 <div class="terminal-header">
-                    <span class="dot red"></span>
-                    <span class="dot yellow"></span>
-                    <span class="dot green"></span>
-                    <span style="color:#64748b; margin-left:auto; font-size:0.75rem; font-family:'JetBrains Mono'">servidor_ia.aq</span>
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span style="color:#888; font-family:'JetBrains Mono', monospace; font-size: 0.75rem;">main.aq</span>
                 </div>
                 <div class="code">
-<span class="comment">// Un Servidor Web con IA en 5 líneas</span>
-servidor = nuevo ServidorWeb(8080)
+<span class="comment">// 1. Sintaxis limpia y en tu idioma</span>
+si usuario.autenticado == verdadero {
+    imprimir("¡Bienvenido al ecosistema Aquila!")
+}
 
-servidor.ruta("GET", "/pregunta", funcion(req) {
-    respuesta = ia(req.parametros.pregunta)
-    retornar {"respuesta": respuesta}
-})
+<span class="comment">// 2. Modo Depredador: Ejecuta Python sin VM intermedia</span>
+usar "numpy" como np
+array = np.array([1, 2, 3])
+imprimir(array * 2)
 
-servidor.iniciar()</div>
+<span class="comment">// 3. Inteligencia Artificial integrada en el core</span>
+respuesta = ia("Analiza el rendimiento temporal de este array")
+</div>
             </div>
 
             <div style="display:flex; gap:1rem; justify-content:center; margin-top:2rem;">
@@ -77,19 +79,42 @@ servidor.iniciar()</div>
         <div class="hero-bg-effect"></div>
     </header>
 
+    <!-- Tech Specs Strip -->
+    <div class="tech-specs">
+        <div class="spec-item">
+            <h4>Motor</h4>
+            <p>Compilado (Rust LLVM)</p>
+        </div>
+        <div class="spec-item">
+            <h4>Ejecución</h4>
+            <p>Directa Binaria</p>
+        </div>
+        <div class="spec-item">
+            <h4>Tipado</h4>
+            <p>Dinámico / Inferido</p>
+        </div>
+        <div class="spec-item">
+            <h4>Interop</h4>
+            <p>Python C-FFI (Cero latencia VM)</p>
+        </div>
+    </div>
+
     <!-- Features Strip -->
     <div class="features">
         <div class="feature-card">
-            <h3>🧠 IA Nativa</h3>
-            <p>La función <span class="inline-code">ia()</span> conecta con Ollama, OpenAI, Groq o Claude sin configuración extra. Fallback automático a modelo local.</p>
+            <div class="icon-glow">⚡</div>
+            <h3>Rendimiento C/Rust</h3>
+            <p>Al estar cimentado sobre el compilador de Rust, Aquila ejecuta operaciones pesadas directamente a nivel de procesador, sin el *Global Interpreter Lock* de Python.</p>
         </div>
         <div class="feature-card">
-            <h3>🐍 Depredador FFI</h3>
-            <p>El comando <span class="inline-code">usar</span> secuestra toda librería de Python (numpy, pandas, torch) y la ejecuta sobre el motor Rust.</p>
+            <div class="icon-glow">🧠</div>
+            <h3>Ollama & Groq Nativos</h3>
+            <p>No instales librerías. La función global <span class="inline-code">ia()</span> conecta con modelos locales y en la nube de forma transparente.</p>
         </div>
         <div class="feature-card">
-            <h3>⚡ Full-Stack Nativo</h3>
-            <p>Servidor HTTP + Base de Datos SQLite + File I/O integrados directamente en el runtime. Zero dependencias externas.</p>
+            <div class="icon-glow">🐍</div>
+            <h3>Depredador de Librerías</h3>
+            <p>Conecta módulos de Python como `pandas` o `torch` directo desde Aquila, apropiándote del trabajo mundial sin escribir código legacy.</p>
         </div>
     </div>
 
