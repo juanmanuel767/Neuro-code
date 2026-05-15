@@ -66,6 +66,7 @@ pub enum Token {
     Minus,        // -
     Multiply,     // *
     Divide,       // /
+    Modulo,       // %
     
     Illegal(char),
     EOF,
@@ -139,6 +140,7 @@ pub fn tokenize_with_positions(input: &str) -> (Vec<Token>, Vec<SourcePos>) {
             '-' => { push_token(&mut tokens, &mut positions, Token::Minus, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
             '*' => { push_token(&mut tokens, &mut positions, Token::Multiply, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
             '/' => { push_token(&mut tokens, &mut positions, Token::Divide, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '%' => { push_token(&mut tokens, &mut positions, Token::Modulo, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
             '{' => { push_token(&mut tokens, &mut positions, Token::OpenBrace, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
             '}' => { push_token(&mut tokens, &mut positions, Token::CloseBrace, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
             '(' => { push_token(&mut tokens, &mut positions, Token::OpenParen, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },

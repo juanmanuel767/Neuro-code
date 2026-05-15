@@ -379,6 +379,7 @@ pub struct Interpreter {
     pub exported_names: Vec<String>,
     pub base_dir: PathBuf,
     pub resolver: crate::depredactor::DepredactorResolver,
+    pub output_buffer: Option<Arc<Mutex<Vec<String>>>>,
 }
 
 impl Interpreter {
@@ -395,6 +396,7 @@ impl Interpreter {
             exported_names: Vec::new(),
             resolver,
             base_dir,
+            output_buffer: None,
         }
     }
 
@@ -875,7 +877,11 @@ impl Interpreter {
                 
                 if name == "imprimir" || name == "mostrar" {
                     let out_str: Vec<String> = eval_args.iter().map(|a| format!("{}", a)).collect();
-                    println!("{}", out_str.join(" "));
+                    if let Some(buf) = &self.output_buffer {
+                        buf.lock().unwrap().push(out_str.join(" "));
+                    } else {
+                        println!("{}", out_str.join(" "));
+                    }
                     return Ok(RuntimeValue::Null);
                 }
                 
@@ -1765,6 +1771,10 @@ impl Interpreter {
                     if *b == 0 { return Err("División por cero.".into()); }
                     Ok(RuntimeValue::Number(*a as f64 / *b as f64))
                 },
+                "%" => {
+                    if *b == 0 { return Err("Módulo por cero.".into()); }
+                    Ok(RuntimeValue::Int(a % b))
+                },
                 "==" => Ok(RuntimeValue::Boolean(a == b)),
                 "!=" => Ok(RuntimeValue::Boolean(a != b)),
                 ">" => Ok(RuntimeValue::Boolean(a > b)),
@@ -1804,6 +1814,10 @@ impl Interpreter {
             "/" => {
                 if ly == 0.0 { return Err("División por cero.".into()); }
                 Ok(RuntimeValue::Number(lx / ly))
+            },
+            "%" => {
+                if ly == 0.0 { return Err("Módulo por cero.".into()); }
+                Ok(RuntimeValue::Number(lx % ly))
             },
             "==" => Ok(RuntimeValue::Boolean(lx == ly)),
             "!=" => Ok(RuntimeValue::Boolean(lx != ly)),

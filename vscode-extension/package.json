@@ -2,8 +2,9 @@
     "name": "neurocode-lang",
     "displayName": "NeuroCode - Lenguaje IA-Nativo",
     "description": "Syntax highlighting, snippets and tools for NeuroCode, the AI-native programming language in Spanish",
-    "version": "2.1.0",
-    "publisher": "neurocode-labs",
+    "version": "2.2.0",
+    "publisher": "neurocodeoficial",
+    "license": "MIT",
     "icon": "icon.png",
     "engines": {
         "vscode": "^1.50.0"
@@ -13,17 +14,17 @@
         "Snippets"
     ],
     "keywords": [
-        "neurocode", "aquila", "español", "ia", "rust", "programming language"
+        "neurocode", "español", "ia", "rust", "programming language"
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/juanmanuel767/aquila"
+        "url": "https://github.com/juanmanuel767/Neuro-code"
     },
     "contributes": {
         "languages": [{
             "id": "neurocode",
-            "aliases": ["NeuroCode", "neurocode", "Aquila", "aquila"],
-            "extensions": [".neuro", ".aq"],
+            "aliases": ["NeuroCode", "neurocode"],
+            "extensions": [".neuro", ".nc"],
             "configuration": "./language_configuration.json",
             "icon": {
                 "light": "./icon.png",

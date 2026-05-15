@@ -557,10 +557,11 @@ impl Parser {
     fn factor(&mut self) -> Result<Expression, String> {
         let mut expr = self.unary()?;
         
-        while self.match_token(Token::Multiply) || self.match_token(Token::Divide) {
+        while self.match_token(Token::Multiply) || self.match_token(Token::Divide) || self.match_token(Token::Modulo) {
             let operator = match self.previous() {
                 Some(Token::Multiply) => "*",
                 Some(Token::Divide) => "/",
+                Some(Token::Modulo) => "%",
                 _ => unreachable!(),
             }.to_string();
             let right = self.unary()?;

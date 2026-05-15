@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCode Playground</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-editor: #1a1f2e;
+            --accent: #58a6ff;
+            --accent-hover: #3182ce;
+            --accent-green: #3fb950;
+            --accent-red: #f85149;
+            --text-primary: #c9d1d9;
+            --text-muted: #8b949e;
+            --border: #30363d;
+            --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .examples {
+            display: flex;
+            gap: 8px;
+            margin-right: 15px;
+        }
+
+        button {
+            background-color: var(--bg-editor);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background-color: rgba(88, 166, 255, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #0d1117;
+            border-color: var(--accent);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 10px 24px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            color: #fff;
+            border-color: var(--accent-hover);
+        }
+
+        .btn-danger {
+            border-color: var(--border);
+        }
+        
+        .btn-danger:hover {
+            color: var(--accent-red);
+            border-color: var(--accent-red);
+            background-color: rgba(248, 81, 73, 0.1);
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+        }
+
+        .panel-header {
+            padding: 10px 20px;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+            position: relative;
+            background-color: var(--bg-editor);
+        }
+
+        .line-numbers {
+            padding: 15px 10px;
+            background-color: #11151d;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: right;
+            user-select: none;
+            overflow: hidden;
+            border-right: 1px solid var(--border);
+            width: 45px;
+        }
+
+        textarea {
+            flex: 1;
+            background-color: transparent;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.5;
+            padding: 15px;
+            border: none;
+            resize: none;
+            outline: none;
+            white-space: pre;
+            overflow: auto;
+            tab-size: 4;
+        }
+
+        .output-container {
+            flex: 1;
+            background-color: #010409;
+            padding: 15px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+
+        .success { color: var(--accent-green); }
+        .error { color: var(--accent-red); }
+
+        .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading .spinner {
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .main-container { flex-direction: column; }
+            header { flex-direction: column; gap: 15px; padding: 1rem; }
+            .controls { flex-wrap: wrap; justify-content: center; width: 100%; }
+            .panel { border-right: none; border-bottom: 1px solid var(--border); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            🧠 NeuroCode 
+        </div>
+        <div class="controls">
+            <div class="examples">
+                <button onclick="cargarEjemplo('hola')">👋 Hola Mundo</button>
+                <button onclick="cargarEjemplo('fizzbuzz')">🔢 FizzBuzz</button>
+                <button onclick="cargarEjemplo('fibonacci')">🌀 Fibonacci</button>
+            </div>
+            <button class="btn-danger" onclick="limpiar()" title="Limpiar todo">🗑 Limpiar</button>
+            <button class="btn-primary" id="btnRun" onclick="ejecutar()">
+                <div class="spinner"></div>
+                ▶ Ejecutar (Ctrl+Enter)
+            </button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="panel">
+            <div class="panel-header">Código Fuente</div>
+            <div class="editor-container">
+                <div class="line-numbers" id="lineNumbers">1</div>
+                <textarea id="codigo" spellcheck="false" oninput="updateLines()" onscroll="syncScroll()" onkeydown="handleKey(event)"></textarea>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                Terminal de Salida
+                <span id="execTime" style="font-weight: normal; color: var(--text-muted);"></span>
+            </div>
+            <div class="output-container" id="salida"></div>
+        </div>
+    </div>
+
+    <script>
+        const editor = document.getElementById('codigo');
+        const lineNumbers = document.getElementById('lineNumbers');
+        const salida = document.getElementById('salida');
+        const btnRun = document.getElementById('btnRun');
+        const execTime = document.getElementById('execTime');
+
+        const EJEMPLOS = {
+            'hola': `// ¡Bienvenido a NeuroCode!
+imprimir("🧠 ¡Hola desde NeuroCode!")
+imprimir("El lenguaje consciente para el futuro.")
+
+nombre = "Mundo"
+imprimir("¡Hola, " + nombre + "!")
+
+si verdadero {
+    imprimir("¡Todo funciona correctamente!")
+}`,
+            'fizzbuzz': `// Implementación clásica de FizzBuzz
+para i en rango(20) {
+    numero = i + 1
+    si numero % 15 == 0 {
+        imprimir(a_texto(numero) + " -> FizzBuzz")
+    } sino si numero % 3 == 0 {
+        imprimir(a_texto(numero) + " -> Fizz")
+    } sino si numero % 5 == 0 {
+        imprimir(a_texto(numero) + " -> Buzz")
+    } sino {
+        imprimir(a_texto(numero))
+    }
+}
+imprimir("✅ Completado.")`,
+            'fibonacci': `// Generador de la secuencia Fibonacci (recursivo)
+funcion fibonacci(n) {
+    si n <= 1 {
+        retornar n
+    }
+    retornar fibonacci(n - 1) + fibonacci(n - 2)
+}
+
+imprimir("🌀 Serie Fibonacci (primeros 15):")
+para i en rango(15) {
+    resultado = fibonacci(i)
+    imprimir("fib(" + a_texto(i) + ") = " + a_texto(resultado))
+}`
+        };
+
+        function cargarEjemplo(id) {
+            editor.value = EJEMPLOS[id];
+            updateLines();
+            salida.innerHTML = '<span style="color: var(--text-muted)">Haz click en Ejecutar para ver el resultado...</span>';
+            execTime.textContent = '';
+        }
+
+        function limpiar() {
+            editor.value = '';
+            updateLines();
+            salida.innerHTML = '';
+            execTime.textContent = '';
+            editor.focus();
+        }
+
+        function updateLines() {
+            const lines = editor.value.split('\\n').length;
+            const currentLines = lineNumbers.innerHTML.split('<br>').length;
+            if (lines !== currentLines) {
+                lineNumbers.innerHTML = Array(Math.max(1, lines)).fill(0).map((_, i) => i + 1).join('<br>');
+            }
+        }
+
+        function syncScroll() {
+            lineNumbers.scrollTop = editor.scrollTop;
+        }
+
+        function handleKey(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                editor.value = editor.value.substring(0, start) + "    " + editor.value.substring(end);
+                editor.selectionStart = editor.selectionEnd = start + 4;
+            }
+            if (e.ctrlKey && e.key === 'Enter') {
+                ejecutar();
+            }
+        }
+
+        async function ejecutar() {
+            const codigo = editor.value.trim();
+            if (!codigo) return;
+
+            btnRun.classList.add('loading');
+            btnRun.disabled = true;
+            salida.innerHTML = '<span style="color: var(--text-muted)">Ejecutando...</span>';
+            execTime.textContent = '';
+
+            const start = performance.now();
+
+            try {
+                const res = await fetch('/ejecutar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ codigo })
+                });
+
+                const data = await res.json();
+                const end = performance.now();
+                const ms = Math.round(end - start);
+                execTime.textContent = \`[\${ms} ms]\`;
+
+                if (data.ok) {
+                    salida.innerHTML = \`<span class="success">\${escapeHTML(data.resultado)}</span>\`;
+                } else {
+                    salida.innerHTML = \`<span class="error">\${escapeHTML(data.error || 'Error desconocido')}</span>\`;
+                }
+            } catch (err) {
+                salida.innerHTML = \`<span class="error">Error de red: no se pudo contectar al servidor.</span>\`;
+            } finally {
+                btnRun.classList.remove('loading');
+                btnRun.disabled = false;
+            }
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+
+        // Init
+        cargarEjemplo('fizzbuzz');
+    </script>
+</body>
+</html>
