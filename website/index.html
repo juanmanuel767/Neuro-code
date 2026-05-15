@@ -268,6 +268,29 @@
             .grid-layout { grid-template-columns: 1fr; }
         }
 
+        .hero-logo-container {
+            width: clamp(150px, 40vw, 220px);
+            height: clamp(150px, 40vw, 220px);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glass);
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .hero-logo-container:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
+            border-color: var(--primary);
+        }
+        .hero-logo-container img {
+            width: 75%;
+            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+        }
+
     </style>
 </head>
 <body>
@@ -292,6 +315,9 @@
 
     <!-- Hero -->
     <header class="hero fade-in">
+        <div class="hero-logo-container">
+            <img src="https://aquilalang.you/assets/logo.png" alt="NeuroCode Brain Logo">
+        </div>
         <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--primary); padding: 0.4rem 1.2rem; border-radius: 99px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1.5rem;">
             v1.0 ESTABLE • RUST CORE
         </div>
