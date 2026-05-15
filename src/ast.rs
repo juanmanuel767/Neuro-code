@@ -23,6 +23,8 @@ pub enum Expression {
     NewInstance(String, Vec<Expression>),
     LambdaFunction(Vec<Param>, Option<String>, Vec<Statement>),
     Await(Box<Expression>),
+    SuperCall(String, Vec<Expression>), // super.metodo(args)
+    SuperConstructor(Vec<Expression>),  // super(args)
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -39,11 +41,12 @@ pub enum Statement {
     Return(Expression),
     Expression(Expression),
     Usar(String, String), // depredactor/usar modulo/ruta como alias
-    Export(String), // exportar un identificador de variable/función al módulo superior
+    Export(Box<Statement>), // exportar una sentencia (variable/función/clase) al módulo superior
     TryCatch(Vec<Statement>, Option<String>, Vec<Statement>),
     Throw(Expression),
-    Class(String, Vec<Statement>),
+    Class(String, Option<String>, Vec<Statement>), // Nombre, Superclase?, Cuerpo
     Break,
+    Continue,
     Parallel(Vec<Statement>),
     Task(Box<Statement>),
     Block(Vec<Statement>),

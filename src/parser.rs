@@ -95,7 +95,7 @@ impl Parser {
     }
 
     fn declaration(&mut self) -> Result<Statement, String> {
-        if self.match_token(Token::Usar) {
+        if self.match_token(Token::Usar) || self.match_token(Token::Importar) {
             self.usar_declaration()
         } else if self.match_token(Token::Clase) {
             self.class_declaration()
@@ -105,11 +105,8 @@ impl Parser {
             self.consume(Token::Funcion, "Se esperaba 'funcion' después de 'asincrono'.")?;
             self.async_function_declaration()
         } else if self.match_token(Token::Exportar) {
-            if let Some(Token::Identifier(id)) = self.advance().cloned() {
-                Ok(Statement::Export(id))
-            } else {
-                Err("Se esperaba el nombre de la variable o función después de 'exportar'.".into())
-            }
+            let stmt = self.declaration()?;
+            Ok(Statement::Export(Box::new(stmt)))
         } else {
             self.statement()
         }
@@ -174,6 +171,14 @@ impl Parser {
 
     fn class_declaration(&mut self) -> Result<Statement, String> {
         if let Some(Token::Identifier(name)) = self.advance().cloned() {
+            let mut super_class = None;
+            if self.match_token(Token::Hereda) {
+                if let Some(Token::Identifier(parent)) = self.advance().cloned() {
+                    super_class = Some(parent);
+                } else {
+                    return Err("Se esperaba el nombre de la superclase después de 'hereda'.".into());
+                }
+            }
             self.consume(Token::OpenBrace, "Se esperaba '{' antes del cuerpo de la clase.")?;
             let mut methods = Vec::new();
             while !self.check(&Token::CloseBrace) && !self.is_at_end() {
@@ -193,39 +198,57 @@ impl Parser {
                     return Err("Solo se permiten funciones dentro de un cuerpo de clase.".into());
                 }
             }
-            self.consume(Token::CloseBrace, "Se esperaba '}' después del cuerpo de la clase.")?;
-            Ok(Statement::Class(name, methods))
+            self.consume(Token::CloseBrace, "Se esperaba '}' al cerrar la clase.")?;
+            Ok(Statement::Class(name, super_class, methods))
         } else {
             Err("Se esperaba un nombre para la clase.".into())
         }
     }
 
     fn function_declaration(&mut self) -> Result<Statement, String> {
-        if let Some(Token::Identifier(name)) = self.advance().cloned() {
-            self.consume(Token::OpenParen, "Se esperaba '(' después del nombre de la función.")?;
+        let name = if let Some(Token::Identifier(n)) = self.peek().cloned() {
+            self.advance(); n
+        } else if let Some(token) = self.peek().cloned() {
+            match token {
+                Token::Numero => { self.advance(); "numero".to_string() }
+                Token::Texto => { self.advance(); "texto".to_string() }
+                Token::Ruta => { self.advance(); "ruta".to_string() }
+                Token::Api => { self.advance(); "api".to_string() }
+                _ => return Err("Se esperaba nombre de función.".into()),
+            }
+        } else {
+            return Err("Se esperaba nombre de función.".into());
+        };
+        self.consume(Token::OpenParen, "Se esperaba '(' después del nombre de la función.")?;
             let params = self.parse_params(&format!("Normal Function '{}'", name))?;
             self.consume(Token::CloseParen, "Se esperaba ')' después de los parámetros.")?;
             let return_type = self.parse_optional_return_type()?;
             self.consume(Token::OpenBrace, "Se esperaba '{' antes del cuerpo de la función.")?;
             let body = self.block()?;
             Ok(Statement::Function(name, params, return_type, body))
-        } else {
-            Err("Se esperaba nombre de función.".into())
-        }
     }
 
     fn async_function_declaration(&mut self) -> Result<Statement, String> {
-        if let Some(Token::Identifier(name)) = self.advance().cloned() {
-            self.consume(Token::OpenParen, "Se esperaba '(' después del nombre de la función asíncrona.")?;
-            let params = self.parse_params(&format!("Async Function '{}'", name))?;
-            self.consume(Token::CloseParen, "Se esperaba ')' después de los parámetros.")?;
-            let return_type = self.parse_optional_return_type()?;
-            self.consume(Token::OpenBrace, "Se esperaba '{' antes del cuerpo de la función asíncrona.")?;
-            let body = self.block()?;
-            Ok(Statement::AsyncFunction(name, params, return_type, body))
+        let name = if let Some(Token::Identifier(n)) = self.peek().cloned() {
+            self.advance(); n
+        } else if let Some(token) = self.peek().cloned() {
+            match token {
+                Token::Numero => { self.advance(); "numero".to_string() }
+                Token::Texto => { self.advance(); "texto".to_string() }
+                Token::Ruta => { self.advance(); "ruta".to_string() }
+                Token::Api => { self.advance(); "api".to_string() }
+                _ => return Err("Se esperaba nombre de función asíncrona.".into()),
+            }
         } else {
-            Err("Se esperaba nombre de función asíncrona.".into())
-        }
+            return Err("Se esperaba nombre de función asíncrona.".into());
+        };
+        self.consume(Token::OpenParen, "Se esperaba '(' después del nombre de la función asíncrona.")?;
+        let params = self.parse_params(&format!("Async Function '{}'", name))?;
+        self.consume(Token::CloseParen, "Se esperaba ')' después de los parámetros.")?;
+        let return_type = self.parse_optional_return_type()?;
+        self.consume(Token::OpenBrace, "Se esperaba '{' antes del cuerpo de la función asíncrona.")?;
+        let body = self.block()?;
+        Ok(Statement::AsyncFunction(name, params, return_type, body))
     }
 
     fn parse_params(&mut self, context: &str) -> Result<Vec<Param>, String> {
@@ -285,15 +308,19 @@ impl Parser {
             self.throw_statement()
         } else if self.match_token(Token::Romper) {
             Ok(Statement::Break)
+        } else if self.match_token(Token::Continuar) {
+            Ok(Statement::Continue)
         } else if self.match_token(Token::Paralelo) {
             self.parallel_statement()
         } else if self.match_token(Token::Tarea) {
             Ok(Statement::Task(Box::new(self.statement()?)))
         } else if self.match_token(Token::OpenBrace) {
             Ok(Statement::Block(self.block()?))
-        } else if self.match_token(Token::Numero) {
+        } else if self.check(&Token::Numero) && matches!(self.tokens.get(self.pos + 1), Some(Token::Identifier(_))) {
+            self.advance();
             self.typed_init("numero")
-        } else if self.match_token(Token::Texto) {
+        } else if self.check(&Token::Texto) && matches!(self.tokens.get(self.pos + 1), Some(Token::Identifier(_))) {
+            self.advance();
             self.typed_init("texto")
         } else if self.match_token(Token::Reactivo) {
             self.reactive_init()
@@ -451,24 +478,55 @@ impl Parser {
     }
 
     fn expression_statement_or_assign(&mut self) -> Result<Statement, String> {
-        if let Some(Token::Identifier(name)) = self.peek().cloned() {
-            if self.tokens.get(self.pos + 1) == Some(&Token::Colon) {
-                self.advance();
-                self.advance();
-                let type_name = if let Some(Token::Identifier(type_name)) = self.advance().cloned() {
-                    type_name
-                } else {
-                    return Err(self.error_at_current("Se esperaba un tipo después de ':' en la asignación tipada."));
-                };
-                self.consume(Token::Assign, "Se esperaba '=' después del tipo en la asignación tipada.")?;
-                let value = self.expression()?;
-                return Ok(Statement::AssignTyped(name, type_name, value));
+        let mut is_typed_prefix = false;
+        let mut name_prefix = String::new();
+        
+        if let Some(token) = self.peek().cloned() {
+            match token {
+                Token::Identifier(n) => { name_prefix = n; is_typed_prefix = true; }
+                Token::Numero => { name_prefix = "numero".to_string(); is_typed_prefix = true; }
+                Token::Texto => { name_prefix = "texto".to_string(); is_typed_prefix = true; }
+                Token::Ruta => { name_prefix = "ruta".to_string(); is_typed_prefix = true; }
+                _ => {}
             }
         }
 
-        let expr = self.expression()?;
-        if self.match_token(Token::Assign) {
+        if is_typed_prefix && self.tokens.get(self.pos + 1) == Some(&Token::Colon) {
+            self.advance(); // consume name
+            self.advance(); // consume colon
+            let type_name = if let Some(Token::Identifier(type_name)) = self.advance().cloned() {
+                type_name
+            } else {
+                return Err(self.error_at_current("Se esperaba un tipo después de ':' en la asignación tipada."));
+            };
+            self.consume(Token::Assign, "Se esperaba '=' después del tipo en la asignación tipada.")?;
             let value = self.expression()?;
+            return Ok(Statement::AssignTyped(name_prefix, type_name, value));
+        }
+
+        let expr = self.expression()?;
+        
+        let assign_token = if self.match_token(Token::Assign) { Some(Token::Assign) }
+        else if self.match_token(Token::PlusAssign) { Some(Token::PlusAssign) }
+        else if self.match_token(Token::MinusAssign) { Some(Token::MinusAssign) }
+        else if self.match_token(Token::MultiplyAssign) { Some(Token::MultiplyAssign) }
+        else if self.match_token(Token::DivideAssign) { Some(Token::DivideAssign) }
+        else { None };
+
+        if let Some(token) = assign_token {
+            let mut value = self.expression()?;
+            
+            if token != Token::Assign {
+                let op = match token {
+                    Token::PlusAssign => "+",
+                    Token::MinusAssign => "-",
+                    Token::MultiplyAssign => "*",
+                    Token::DivideAssign => "/",
+                    _ => unreachable!(),
+                }.to_string();
+                value = Expression::BinaryOp(Box::new(expr.clone()), op, Box::new(value));
+            }
+            
             match expr {
                 Expression::Identifier(name) => Ok(Statement::Assign(name, value)),
                 Expression::MethodCall(callee, method, args) if args.is_empty() => {
@@ -591,23 +649,65 @@ impl Parser {
             if self.match_token(Token::OpenParen) {
                 expr = self.finish_call(expr)?;
             } else if self.match_token(Token::Dot) {
-                if let Some(Token::Identifier(method)) = self.advance().cloned() {
-                    if self.match_token(Token::OpenParen) {
-                        let mut args = Vec::new();
-                        if !self.check(&Token::CloseParen) {
-                            loop {
-                                args.push(self.expression()?);
-                                if !self.match_token(Token::Comma) { break; }
-                            }
-                        }
-                        self.consume(Token::CloseParen, "Se esperaba ')' después de los argumentos del método o propiedad.")?;
-                        expr = Expression::MethodCall(Box::new(expr), method, args);
-                    } else {
-                        // En Python/Rust, un dot sin paréntesis puede ser acceso a propiedad (ej: np.array).
-                        expr = Expression::MethodCall(Box::new(expr), method, vec![]); 
+                let method = if let Some(Token::Identifier(name)) = self.peek().cloned() {
+                    self.advance();
+                    name
+                } else if let Some(token) = self.peek().cloned() {
+                    match token {
+                        Token::Si => { self.advance(); "si".to_string() }
+                        Token::Sino => { self.advance(); "sino".to_string() }
+                        Token::Mientras => { self.advance(); "mientras".to_string() }
+                        Token::Para => { self.advance(); "para".to_string() }
+                        Token::En => { self.advance(); "en".to_string() }
+                        Token::Funcion => { self.advance(); "funcion".to_string() }
+                        Token::Retornar => { self.advance(); "retornar".to_string() }
+                        Token::Usar => { self.advance(); "usar".to_string() }
+                        Token::Como => { self.advance(); "como".to_string() }
+                        Token::Intentar => { self.advance(); "intentar".to_string() }
+                        Token::Capturar => { self.advance(); "capturar".to_string() }
+                        Token::Lanzar => { self.advance(); "lanzar".to_string() }
+                        Token::Clase => { self.advance(); "clase".to_string() }
+                        Token::Nuevo => { self.advance(); "nuevo".to_string() }
+                        Token::Esto => { self.advance(); "esto".to_string() }
+                        Token::Asincrono => { self.advance(); "asincrono".to_string() }
+                        Token::Esperar => { self.advance(); "esperar".to_string() }
+                        Token::Exportar => { self.advance(); "exportar".to_string() }
+                        Token::Imprimir => { self.advance(); "imprimir".to_string() }
+                        Token::Verdadero => { self.advance(); "verdadero".to_string() }
+                        Token::Falso => { self.advance(); "falso".to_string() }
+                        Token::Nulo => { self.advance(); "nulo".to_string() }
+                        Token::Y => { self.advance(); "y".to_string() }
+                        Token::O => { self.advance(); "o".to_string() }
+                        Token::No => { self.advance(); "no".to_string() }
+                        Token::Romper => { self.advance(); "romper".to_string() }
+                        Token::Continuar => { self.advance(); "continuar".to_string() }
+                        Token::Paralelo => { self.advance(); "paralelo".to_string() }
+                        Token::Tarea => { self.advance(); "tarea".to_string() }
+                        Token::Reactivo => { self.advance(); "reactivo".to_string() }
+                        Token::Cuando => { self.advance(); "cuando".to_string() }
+                        Token::Cambie => { self.advance(); "cambie".to_string() }
+                        Token::Api => { self.advance(); "api".to_string() }
+                        Token::Ruta => { self.advance(); "ruta".to_string() }
+                        Token::Numero => { self.advance(); "numero".to_string() }
+                        Token::Texto => { self.advance(); "texto".to_string() }
+                        _ => return Err("Se esperaba un nombre de método/propiedad después de '.'.".into()),
                     }
                 } else {
                     return Err("Se esperaba un nombre de método/propiedad después de '.'.".into());
+                };
+
+                if self.match_token(Token::OpenParen) {
+                    let mut args = Vec::new();
+                    if !self.check(&Token::CloseParen) {
+                        loop {
+                            args.push(self.expression()?);
+                            if !self.match_token(Token::Comma) { break; }
+                        }
+                    }
+                    self.consume(Token::CloseParen, "Se esperaba ')' después de los argumentos del método o propiedad.")?;
+                    expr = Expression::MethodCall(Box::new(expr), method, args);
+                } else {
+                    expr = Expression::MethodCall(Box::new(expr), method, vec![]); 
                 }
             } else if self.match_token(Token::OpenBracket) {
                 let index = self.expression()?;
@@ -642,6 +742,37 @@ impl Parser {
         if self.match_token(Token::Verdadero) { return Ok(Expression::Boolean(true)); }
         if self.match_token(Token::Nulo) { return Ok(Expression::Null); }
         if self.match_token(Token::Esto) { return Ok(Expression::Identifier("esto".to_string())); }
+        
+        if self.match_token(Token::Super) {
+            if self.match_token(Token::Dot) {
+                if let Some(Token::Identifier(method_name)) = self.advance().cloned() {
+                    self.consume(Token::OpenParen, "Se esperaba '(' después del método 'super'.")?;
+                    let mut args = Vec::new();
+                    if !self.check(&Token::CloseParen) {
+                        loop {
+                            args.push(self.expression()?);
+                            if !self.match_token(Token::Comma) { break; }
+                        }
+                    }
+                    self.consume(Token::CloseParen, "Se esperaba ')' después de los argumentos de 'super'.")?;
+                    return Ok(Expression::SuperCall(method_name, args));
+                } else {
+                    return Err("Se esperaba nombre de método después de 'super.'.".into());
+                }
+            } else if self.match_token(Token::OpenParen) {
+                let mut args = Vec::new();
+                if !self.check(&Token::CloseParen) {
+                    loop {
+                        args.push(self.expression()?);
+                        if !self.match_token(Token::Comma) { break; }
+                    }
+                }
+                self.consume(Token::CloseParen, "Se esperaba ')' después de 'super(...)'.".into())?;
+                return Ok(Expression::SuperConstructor(args));
+            } else {
+                return Err("Se esperaba '.' o '(' después de 'super'.".into());
+            }
+        }
         
         if self.match_token(Token::Funcion) {
             self.consume(Token::OpenParen, "Se esperaba '(' después de 'funcion' anónima.")?;
@@ -684,8 +815,14 @@ impl Parser {
         if let Some(Token::TextString(s)) = self.peek().cloned() {
             self.advance(); return Ok(Expression::Text(s));
         }
-        if let Some(Token::Identifier(id)) = self.peek().cloned() {
-            self.advance(); return Ok(Expression::Identifier(id));
+        if let Some(token) = self.peek().cloned() {
+            match token {
+                Token::Identifier(id) => { self.advance(); return Ok(Expression::Identifier(id)); }
+                Token::Numero => { self.advance(); return Ok(Expression::Identifier("numero".to_string())); }
+                Token::Texto => { self.advance(); return Ok(Expression::Identifier("texto".to_string())); }
+                Token::Ruta => { self.advance(); return Ok(Expression::Identifier("ruta".to_string())); }
+                _ => {}
+            }
         }
         
         if self.match_token(Token::OpenParen) {

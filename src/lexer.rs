@@ -36,6 +36,10 @@ pub enum Token {
     Ruta,
     Numero,
     Texto,
+    Continuar,
+    Importar,
+    Hereda,
+    Super,
     
     // Identificadores y Literales
     Identifier(String),
@@ -67,6 +71,11 @@ pub enum Token {
     Multiply,     // *
     Divide,       // /
     Modulo,       // %
+    
+    PlusAssign,   // +=
+    MinusAssign,  // -=
+    MultiplyAssign, // *=
+    DivideAssign, // /=
     
     Illegal(char),
     EOF,
@@ -130,6 +139,11 @@ pub fn tokenize_with_positions(input: &str) -> (Vec<Token>, Vec<SourcePos>) {
         if ch == '!' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::NotEquals, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
         if ch == '>' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::GreaterEqual, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
         if ch == '<' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::LessEqual, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
+
+        if ch == '+' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::PlusAssign, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
+        if ch == '-' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::MinusAssign, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
+        if ch == '*' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::MultiplyAssign, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
+        if ch == '/' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::DivideAssign, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
         
         // Operadores de un caracter
         match ch {
@@ -233,6 +247,10 @@ pub fn tokenize_with_positions(input: &str) -> (Vec<Token>, Vec<SourcePos>) {
                 "ruta" => Token::Ruta,
                 "numero" => Token::Numero,
                 "texto" => Token::Texto,
+                "continuar" => Token::Continuar,
+                "importar" => Token::Importar,
+                "hereda" => Token::Hereda,
+                "super" => Token::Super,
                 _ => Token::Identifier(word)
             };
             push_token(&mut tokens, &mut positions, token, start_line, start_column);

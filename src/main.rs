@@ -244,6 +244,36 @@ pub fn execute_file(filepath: &str, repair_on_error: bool) -> bool {
 
 
 fn solicitar_reparacion(filepath: &str, code: &str, error: &str) {
+    // 1. Detectar si es un fallo de librería Python (Depredactor)
+    if error.contains("Depredactor no pudo cazar la librería Python") {
+        if let Some(start) = error.find('\'') {
+            let rest = &error[start+1..];
+            if let Some(end) = rest.find('\'') {
+                let lib = &rest[..end];
+                println!("\n📦 [Depredactor] 🦊");
+                println!("Parece que falta la librería Python: '{}'", lib);
+                print!("¿Deseas intentar instalarla ahora con pip? (s/n): ");
+                io::stdout().flush().unwrap();
+                
+                let mut input = String::new();
+                if io::stdin().read_line(&mut input).is_ok() && input.trim().to_lowercase() == "s" {
+                    println!("⏳ Instalando '{}'...", lib);
+                    let mut cmd = std::process::Command::new("pip");
+                    cmd.arg("install").arg(lib);
+                    
+                    match cmd.status() {
+                        Ok(status) if status.success() => {
+                            println!("✅ Librería instalada con éxito. Reintentando ejecución...");
+                            run_file(filepath);
+                            return;
+                        },
+                        _ => println!("❌ Falló la instalación automática. Procediendo con el Guardián IA..."),
+                    }
+                }
+            }
+        }
+    }
+
     if let Some((explicacion, codigo_reparado)) = explain_and_fix_error_with_ai(code, error) {
         println!("\n[Error Inteligente] 🧠");
         println!("{}", explicacion);
@@ -334,7 +364,7 @@ pub fn collect_declared_symbols(statements: &[ast::Statement], symbols: &mut Has
                 symbols.insert(name.clone());
                 collect_declared_symbols(body, symbols);
             },
-            ast::Statement::Class(name, methods) => {
+            ast::Statement::Class(name, _, methods) => {
                 symbols.insert(name.clone());
                 collect_declared_symbols(methods, symbols);
             },
@@ -384,14 +414,15 @@ pub fn validate_statement_symbols(stmt: &ast::Statement, symbols: &HashSet<Strin
         },
         ast::Statement::Function(_, _, _, body) |
         ast::Statement::AsyncFunction(_, _, _, body) |
-        ast::Statement::Class(_, body) => validate_statement_list_symbols(body, symbols),
+        ast::Statement::Class(_, _, body) => validate_statement_list_symbols(body, symbols),
         ast::Statement::TryCatch(try_block, _, catch_block) => {
             validate_statement_list_symbols(try_block, symbols)?;
             validate_statement_list_symbols(catch_block, symbols)
         },
         ast::Statement::Usar(_, _) |
         ast::Statement::Export(_) |
-        ast::Statement::Break => Ok(()),
+        ast::Statement::Break |
+        ast::Statement::Continue => Ok(()),
         ast::Statement::Parallel(stmts) |
         ast::Statement::Block(stmts) => validate_statement_list_symbols(stmts, symbols),
         ast::Statement::Task(stmt) => validate_statement_symbols(stmt, symbols),
@@ -449,6 +480,13 @@ fn validate_expression_symbols(expr: &ast::Expression, symbols: &HashSet<String>
                 Err(format!("Error semántico del parche: clase desconocida '{}'.", class_name))
             }
         },
+        ast::Expression::SuperCall(_, args) |
+        ast::Expression::SuperConstructor(args) => {
+            for arg in args {
+                validate_expression_symbols(arg, symbols)?;
+            }
+            Ok(())
+        },
         ast::Expression::List(items) => {
             for item in items {
                 validate_expression_symbols(item, symbols)?;
@@ -504,14 +542,15 @@ pub fn collect_review_warnings(statements: &[ast::Statement], inside_try: bool, 
             },
             ast::Statement::Function(_, _, _, body) |
             ast::Statement::AsyncFunction(_, _, _, body) |
-            ast::Statement::Class(_, body) => collect_review_warnings(body, inside_try, warnings),
+            ast::Statement::Class(_, _, body) => collect_review_warnings(body, inside_try, warnings),
             ast::Statement::TryCatch(try_block, _, catch_block) => {
                 collect_review_warnings(try_block, true, warnings);
                 collect_review_warnings(catch_block, inside_try, warnings);
             },
             ast::Statement::Usar(_, _) |
             ast::Statement::Export(_) |
-            ast::Statement::Break => {},
+            ast::Statement::Break |
+            ast::Statement::Continue => {},
             ast::Statement::Parallel(stmts) |
             ast::Statement::Block(stmts) => collect_review_warnings(stmts, inside_try, warnings),
             ast::Statement::Task(stmt) => collect_review_warnings(std::slice::from_ref(stmt), inside_try, warnings),
@@ -551,6 +590,8 @@ fn collect_expression_warnings(expr: &ast::Expression, inside_try: bool, warning
             collect_expression_warnings(index, inside_try, warnings);
         },
         ast::Expression::NewInstance(_, args) |
+        ast::Expression::SuperCall(_, args) |
+        ast::Expression::SuperConstructor(args) |
         ast::Expression::List(args) => {
             for arg in args {
                 collect_expression_warnings(arg, inside_try, warnings);
@@ -605,19 +646,22 @@ fn explain_and_fix_error_with_ai(_code: &str, _error: &str) -> Option<(String, S
     pb.enable_steady_tick(Duration::from_millis(120));
 
     let prompt = format!(
-        "Eres el 'Guardián' de 'NeuroCode' v2.1. Tu objetivo es explicar errores y reparar código.\n\
+        "Eres el 'Guardián' de 'NeuroCode' v2.3. Tu objetivo es explicar errores y reparar código de forma experta.\n\
          REGLAS DE EXPLICACION:\n\
          1. Inicia con una frase clara como: 'La variable [nombre] esperaba un tipo [tipo] pero recibió [tipo].'\n\
          2. Explica brevemente por qué es un error (ej: 'No puedes sumar texto con números').\n\
-         3. Sé profesional y directo.\n\n\
+         3. Si el error es una librería Python faltante, indica claramente qué comando de pip usar.\n\
+         4. Sé profesional, directo y alentador.\n\n\
          REGLAS DE REPARACION:\n\
-         1. NO uses 'importar', 'usar' ni 'depredactor' para la clase 'BaseDatos'. Es NATIVA.\n\
+         1. NO uses 'importar' ni 'usar' para la clase 'BaseDatos'. Es NATIVA.\n\
          2. La clase se llama 'BaseDatos'.\n\
-         3. Usa llaves {{ }} en funciones y bucles.\n\
-         4. IA se consulta con 'esperar ia(\"...\")'.\n\
-         5. Al final del código llama con 'esperar principal()' si existe una función principal asíncrona.\n\
-         6. NO envuelvas todo el archivo reparado en llaves {{ }}.\n\
-         7. La SECCION 2 debe contener SOLO código NeuroCode ejecutable entre ---INICIO--- y ---FIN---.\n\n\
+         3. SOPORTA y MANTÉN las sentencias `importar python:modulo como alias` para librerías externas.\n\
+         4. Usa llaves {{ }} en funciones y bucles.\n\
+         5. IA se consulta con 'esperar ia(\"...\")'.\n\
+         6. SOLO llama a 'esperar principal()' SI el código original ya tenía una función principal asíncrona.\n\
+         7. NO envuelvas todo el archivo reparado en llaves {{ }}.\n\
+         8. Usa la nueva sintaxis v2.3: `activar +=`, `-=`, `*=`, `/=` y `continuar` para saltar iteraciones.\n\
+         9. La SECCION 2 debe contener SOLO código NeuroCode ejecutable entre ---INICIO--- y ---FIN---.\n\n\
          Código Original Roto:\n{}\n\n\
          Error de NeuroCode: {}\n\n\
          Debes proporcionar DOS SECCIONES separadas por '---NEUROCODE_DIVISOR---'.\n\

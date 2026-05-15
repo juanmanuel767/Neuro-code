@@ -48,13 +48,14 @@ pub enum RuntimeValue {
     Function(Vec<Param>, Option<String>, Vec<Statement>),
     AsyncFunction(Vec<Param>, Option<String>, Vec<Statement>),
     Promise(Arc<(Mutex<PromiseState>, Condvar)>),
-    Class(String, Arc<Mutex<HashMap<String, RuntimeValue>>>),
+    Class(String, Option<String>, Arc<Mutex<HashMap<String, RuntimeValue>>>), // Nombre, Superclase?, Métodos
     Instance(String, Arc<Mutex<HashMap<String, RuntimeValue>>>, Box<RuntimeValue>),
     Server(Arc<crate::servidor::NeuroServer>),
     Database(Arc<crate::base_datos::AquilaDatabase>),
     PyWrapper(Arc<PyObject>),
     Null,
     Break,
+    Continue,
 }
 
 // Implementación manual de PartialEq ignorando PyWrapper y Function porque no se pueden comparar directamente.
@@ -75,7 +76,7 @@ impl PartialEq for RuntimeValue {
                 let b_lock = b.lock().unwrap();
                 *a_lock == *b_lock
             },
-            (RuntimeValue::Class(n1, _), RuntimeValue::Class(n2, _)) => n1 == n2,
+            (RuntimeValue::Class(n1, s1, _), RuntimeValue::Class(n2, s2, _)) => n1 == n2 && s1 == s2,
             (RuntimeValue::Instance(n1, p1, _), RuntimeValue::Instance(n2, p2, _)) => {
                 let a_lock = p1.lock().unwrap();
                 let b_lock = p2.lock().unwrap();
@@ -89,6 +90,8 @@ impl PartialEq for RuntimeValue {
             (RuntimeValue::Server(_), RuntimeValue::Server(_)) => false,
             (RuntimeValue::Database(_), RuntimeValue::Database(_)) => false,
             (RuntimeValue::Null, RuntimeValue::Null) => true,
+            (RuntimeValue::Break, RuntimeValue::Break) => true,
+            (RuntimeValue::Continue, RuntimeValue::Continue) => true,
             _ => false,
         }
     }
@@ -111,7 +114,13 @@ impl fmt::Display for RuntimeValue {
                 let elements: Vec<String> = d_lock.iter().map(|(k, v)| format!("\"{}\": {}", k, v)).collect();
                 write!(f, "{{{}}}", elements.join(", "))
             },
-            RuntimeValue::Class(name, _) => write!(f, "<clase {}>", name),
+            RuntimeValue::Class(name, super_name, _) => {
+                if let Some(s) = super_name {
+                    write!(f, "<clase {} hereda {}>", name, s)
+                } else {
+                    write!(f, "<clase {}>", name)
+                }
+            },
             RuntimeValue::Instance(name, props_arc, _) => {
                 let props = props_arc.lock().unwrap();
                 let elements: Vec<String> = props.iter().map(|(k, v)| format!("{}={}", k, v)).collect();
@@ -132,6 +141,7 @@ impl fmt::Display for RuntimeValue {
             RuntimeValue::PyWrapper(_) => write!(f, "<Objeto Python>"),
             RuntimeValue::Null => write!(f, "nulo"),
             RuntimeValue::Break => write!(f, "<romper>"),
+            RuntimeValue::Continue => write!(f, "<continuar>"),
         }
     }
 }
@@ -161,7 +171,7 @@ fn val_to_py(py: Python, val: RuntimeValue) -> PyObject {
             }
             py_dict.to_object(py)
         },
-        RuntimeValue::Class(_, _) => py.None(),
+        RuntimeValue::Class(_, _, _) => py.None(),
         RuntimeValue::Instance(_, _, _) => py.None(),
         RuntimeValue::Server(_) => py.None(),
         RuntimeValue::Database(_) => py.None(),
@@ -171,12 +181,39 @@ fn val_to_py(py: Python, val: RuntimeValue) -> PyObject {
 }
 
 fn py_to_val(py: Python, py_obj: PyObject) -> RuntimeValue {
+    if py_obj.is_none(py) { return RuntimeValue::Null; }
+    if let Ok(b) = py_obj.extract::<bool>(py) { return RuntimeValue::Boolean(b); }
     if let Ok(n) = py_obj.extract::<i64>(py) { return RuntimeValue::Int(n); }
     if let Ok(n) = py_obj.extract::<f64>(py) { return RuntimeValue::Number(n); }
-    if let Ok(b) = py_obj.extract::<bool>(py) { return RuntimeValue::Boolean(b); }
     if let Ok(s) = py_obj.extract::<String>(py) { return RuntimeValue::Text(s); }
     
-    // Si es una lista compleja o matriz u objeto (ej., NumPy array), lo envolvemos
+    // Conversión recursiva de Listas/Tuplas
+    if let Ok(list) = py_obj.bind(py).downcast::<pyo3::types::PyList>() {
+        let mut items = Vec::new();
+        for item in list.iter() {
+            items.push(py_to_val(py, item.to_object(py)));
+        }
+        return RuntimeValue::List(Arc::new(Mutex::new(items)));
+    }
+    if let Ok(tuple) = py_obj.bind(py).downcast::<pyo3::types::PyTuple>() {
+        let mut items = Vec::new();
+        for item in tuple.iter() {
+            items.push(py_to_val(py, item.to_object(py)));
+        }
+        return RuntimeValue::List(Arc::new(Mutex::new(items)));
+    }
+    
+    // Conversión recursiva de Diccionarios
+    if let Ok(dict) = py_obj.bind(py).downcast::<pyo3::types::PyDict>() {
+        let mut map = HashMap::new();
+        for (k, v) in dict.iter() {
+            if let Ok(key_str) = k.extract::<String>() {
+                map.insert(key_str, py_to_val(py, v.to_object(py)));
+            }
+        }
+        return RuntimeValue::Dictionary(Arc::new(Mutex::new(map)));
+    }
+    
     RuntimeValue::PyWrapper(Arc::new(py_obj))
 }
 
@@ -223,12 +260,13 @@ fn runtime_type_name(value: &RuntimeValue) -> &'static str {
         RuntimeValue::Function(_, _, _) => "Funcion",
         RuntimeValue::AsyncFunction(_, _, _) => "FuncionAsincrona",
         RuntimeValue::Promise(_) => "Promesa",
-        RuntimeValue::Class(_, _) => "Clase",
+        RuntimeValue::Class(_, _, _) => "Clase",
         RuntimeValue::Instance(_, _, _) => "Instancia",
         RuntimeValue::Server(_) => "Servidor",
         RuntimeValue::Database(_) => "BaseDatos",
         RuntimeValue::PyWrapper(_) => "Python",
         RuntimeValue::Break => "Romper",
+        RuntimeValue::Continue => "Continuar",
     }
 }
 
@@ -520,6 +558,7 @@ impl Interpreter {
                     if !self.is_truthy(&cond_val) { break; }
                     if let Some(ret) = self.execute_block(body.clone(), env)? {
                         if let RuntimeValue::Break = ret { break; }
+                        if let RuntimeValue::Continue = ret { continue; }
                         return Ok(Some(ret));
                     }
                 }
@@ -533,6 +572,7 @@ impl Interpreter {
                         local_env.lock().unwrap().define(var_name.clone(), item);
                         if let Some(ret) = self.execute_block(body.clone(), &local_env)? {
                             if let RuntimeValue::Break = ret { break; }
+                            if let RuntimeValue::Continue = ret { continue; }
                             return Ok(Some(ret));
                         }
                     }
@@ -543,6 +583,9 @@ impl Interpreter {
             Statement::Break => {
                 return Ok(Some(RuntimeValue::Break));
             },
+            Statement::Continue => {
+                return Ok(Some(RuntimeValue::Continue));
+            },
             Statement::Function(name, params, return_type, body) => {
                 env.lock().unwrap().define(name, RuntimeValue::Function(params, return_type, body));
             },
@@ -552,9 +595,19 @@ impl Interpreter {
             Statement::Return(expr) => {
                 return Ok(Some(self.evaluate(expr, env)?));
             },
-             Statement::Export(name) => {
-                 self.exported_names.push(name);
-             },
+            Statement::Export(inner) => {
+                self.execute(*inner.clone(), env)?;
+                match *inner {
+                    Statement::Assign(name, _) |
+                    Statement::AssignTyped(name, _, _) |
+                    Statement::Function(name, _, _, _) |
+                    Statement::AsyncFunction(name, _, _, _) |
+                    Statement::Class(name, _, _) => {
+                        self.exported_names.push(name);
+                    },
+                    _ => {}
+                }
+            },
              Statement::Usar(modulo, alias) => {
                  let source = self.resolver.resolve(&modulo, self);
 
@@ -667,17 +720,17 @@ impl Interpreter {
                  let val = self.evaluate(expr, env)?;
                  return Err(format!("{}", val));
              },
-             Statement::Class(name, methods) => {
-                 let mut method_map = HashMap::new();
-                 for method in methods {
-                     if let Statement::Function(m_name, params, return_type, body) = method {
-                         method_map.insert(m_name, RuntimeValue::Function(params, return_type, body));
-                     } else if let Statement::AsyncFunction(m_name, params, return_type, body) = method {
-                         method_map.insert(m_name, RuntimeValue::AsyncFunction(params, return_type, body));
-                     }
-                 }
-                 env.lock().unwrap().define(name.clone(), RuntimeValue::Class(name, Arc::new(Mutex::new(method_map))));
-             },
+             Statement::Class(name, super_class, methods) => {
+                let mut class_methods = HashMap::new();
+                for method in methods {
+                    if let Statement::Function(m_name, params, ret, body) = method {
+                        class_methods.insert(m_name, RuntimeValue::Function(params, ret, body));
+                    } else if let Statement::AsyncFunction(m_name, params, ret, body) = method {
+                        class_methods.insert(m_name, RuntimeValue::AsyncFunction(params, ret, body));
+                    }
+                }
+                env.lock().unwrap().define(name.clone(), RuntimeValue::Class(name, super_class, Arc::new(Mutex::new(class_methods))));
+            },
              Statement::Parallel(stmts) => {
                  let mut handles = Vec::new();
                  for stmt in stmts {
@@ -801,9 +854,9 @@ impl Interpreter {
                 }
                 
                 let class_val_res = env.lock().unwrap().get(&class_name);
-                if let Ok(RuntimeValue::Class(name, methods_arc)) = class_val_res {
+                if let Ok(RuntimeValue::Class(name, super_class, methods_arc)) = class_val_res {
                     let instance_props = Arc::new(Mutex::new(HashMap::new()));
-                    let instance_val = RuntimeValue::Instance(name.clone(), instance_props, Box::new(RuntimeValue::Class(name, methods_arc.clone())));
+                    let instance_val = RuntimeValue::Instance(name.clone(), instance_props, Box::new(RuntimeValue::Class(name, super_class, methods_arc.clone())));
                     
                     let methods = methods_arc.lock().unwrap();
                     if let Some(RuntimeValue::Function(params, _, body)) = methods.get("crear") {
@@ -908,13 +961,14 @@ impl Interpreter {
                             RuntimeValue::Function(_, _, _) => "funcion",
                             RuntimeValue::AsyncFunction(_, _, _) => "funcion_asincrona",
                             RuntimeValue::Promise(_) => "promesa",
-                            RuntimeValue::Class(_, _) => "clase",
+                            RuntimeValue::Class(_, _, _) => "clase",
                             RuntimeValue::Instance(_, _, _) => "instancia",
                             RuntimeValue::Server(_) => "servidor",
                             RuntimeValue::Database(_) => "base_datos",
                             RuntimeValue::PyWrapper(_) => "python",
                             RuntimeValue::Null => "nulo",
                             RuntimeValue::Break => "romper",
+                            RuntimeValue::Continue => "continuar",
                         };
                         return Ok(RuntimeValue::Text(t.to_string()));
                     }
@@ -1667,22 +1721,83 @@ impl Interpreter {
                         }
                     }
                     
-                    if let RuntimeValue::Class(_, methods_arc) = &**class_box {
-                        let methods = methods_arc.lock().unwrap();
-                        if let Some(RuntimeValue::Function(params, return_type, body)) = methods.get(&method) {
-                            if eval_args.len() != params.len() {
-                                return Err(format!("El método '{}' esperaba {} argumentos pero recibió {}.", method, params.len(), eval_args.len()));
-                            }
-                            let call_env = Arc::new(Mutex::new(Environment::new_with_parent(Arc::clone(env))));
-                            call_env.lock().unwrap().define("esto".to_string(), callee_val.clone()); // INYECTAR `esto`
-                            bind_params(params, &eval_args, &call_env)?;
-                            if let Some(ret) = self.execute_block(body.clone(), &call_env)? {
-                                if let Some(type_name) = return_type {
-                                    validate_runtime_type(&ret, type_name)?;
+                    if let RuntimeValue::Class(_, _, _) = &**class_box {
+                        let mut current_class = Some((**class_box).clone());
+                        let mut method_found = None;
+
+                        while let Some(cls) = current_class {
+                            if let RuntimeValue::Class(_, ref s_name, ref m_arc) = cls {
+                                let m = m_arc.lock().unwrap();
+                                if let Some(f) = m.get(&method) {
+                                    method_found = Some(f.clone());
+                                    break;
                                 }
-                                return Ok(ret);
+                                if let Some(sn) = s_name {
+                                    current_class = env.lock().unwrap().get(sn).ok();
+                                } else {
+                                    current_class = None;
+                                }
+                            } else {
+                                current_class = None;
                             }
-                            return Ok(RuntimeValue::Null);
+                        }
+
+                        if let Some(val) = method_found {
+                            if let RuntimeValue::Function(params, return_type, body) = val {
+                                if eval_args.len() != params.len() {
+                                    return Err(format!("El método '{}' esperaba {} argumentos pero recibió {}.", method, params.len(), eval_args.len()));
+                                }
+                                let call_env = Arc::new(Mutex::new(Environment::new_with_parent(Arc::clone(env))));
+                                call_env.lock().unwrap().define("esto".to_string(), callee_val.clone());
+                                bind_params(&params, &eval_args, &call_env)?;
+                                if let Some(ret) = self.execute_block(body.clone(), &call_env)? {
+                                    if let Some(type_name) = return_type {
+                                        validate_runtime_type(&ret, &type_name)?;
+                                    }
+                                    return Ok(ret);
+                                }
+                                return Ok(RuntimeValue::Null);
+                            } else if let RuntimeValue::AsyncFunction(params, return_type, body) = val {
+                                let mut call_env_inner = Environment::new_with_parent(Arc::clone(env));
+                                call_env_inner.define("esto".to_string(), callee_val.clone());
+                                let call_env = Arc::new(Mutex::new(call_env_inner));
+                                bind_params(&params, &eval_args, &call_env)?;
+                                
+                                let promise_data = Arc::new((Mutex::new(PromiseState::Pending), Condvar::new()));
+                                let promise_data_thread = Arc::clone(&promise_data);
+                                let mut interpreter_thread = self.clone();
+                                let body_thread = body.clone();
+                                let return_type_thread = return_type.clone();
+
+                                std::thread::spawn(move || {
+                                    match interpreter_thread.execute_block(body_thread, &call_env) {
+                                        Ok(Some(ret)) => {
+                                            if let Some(tn) = &return_type_thread {
+                                                if let Err(e) = validate_runtime_type(&ret, tn) {
+                                                    let mut state = promise_data_thread.0.lock().unwrap();
+                                                    *state = PromiseState::Rejected(e);
+                                                    promise_data_thread.1.notify_all();
+                                                    return;
+                                                }
+                                            }
+                                            let mut state = promise_data_thread.0.lock().unwrap();
+                                            *state = PromiseState::Resolved(Box::new(ret));
+                                            promise_data_thread.1.notify_all();
+                                        },
+                                        Ok(None) => {
+                                            let mut state = promise_data_thread.0.lock().unwrap();
+                                            *state = PromiseState::Resolved(Box::new(RuntimeValue::Null));
+                                            promise_data_thread.1.notify_all();
+                                        },
+                                        Err(e) => {
+                                            let mut state = promise_data_thread.0.lock().unwrap();
+                                            *state = PromiseState::Rejected(e);
+                                            promise_data_thread.1.notify_all();
+                                        }
+                                    }
+                                });
+                                return Ok(RuntimeValue::Promise(promise_data));
+                            }
                         }
                     }
                     return Err(format!("La propiedad o método '{}' no existe en esta instancia.", method));
@@ -1757,6 +1872,69 @@ impl Interpreter {
                 } else {
                     Err("Solo se permite acceso por índice a listas, diccionarios u objetos de Python.".into())
                 }
+            },
+            Expression::SuperCall(method, args) => {
+                let esto = env.lock().unwrap().get("esto")?;
+                if let RuntimeValue::Instance(_, _, class_box) = &esto {
+                    if let RuntimeValue::Class(_, super_name_opt, _) = &**class_box {
+                        if let Some(super_name) = super_name_opt {
+                            let super_class = env.lock().unwrap().get(super_name)?;
+                            let mut method_found = None;
+                            let mut current_cls = Some(super_class);
+                            while let Some(cls) = current_cls {
+                                if let RuntimeValue::Class(_, ref s_name, ref m_arc) = cls {
+                                    let m = m_arc.lock().unwrap();
+                                    if let Some(f) = m.get(&method) {
+                                        method_found = Some(f.clone());
+                                        break;
+                                    }
+                                    current_cls = s_name.as_ref().and_then(|sn| env.lock().unwrap().get(sn).ok());
+                                } else { break; }
+                            }
+
+                            if let Some(val) = method_found {
+                                let mut eval_args = Vec::new();
+                                for arg in args {
+                                    eval_args.push(self.evaluate(arg, env)?);
+                                }
+                                if let RuntimeValue::Function(params, return_type, body) = val {
+                                    let call_env = Arc::new(Mutex::new(Environment::new_with_parent(Arc::clone(env))));
+                                    call_env.lock().unwrap().define("esto".to_string(), esto.clone());
+                                    bind_params(&params, &eval_args, &call_env)?;
+                                    if let Some(ret) = self.execute_block(body, &call_env)? {
+                                        if let Some(tn) = return_type { validate_runtime_type(&ret, &tn)?; }
+                                        return Ok(ret);
+                                    }
+                                    return Ok(RuntimeValue::Null);
+                                }
+                            }
+                        }
+                    }
+                }
+                Err("No se puede usar 'super' en este contexto o método no encontrado en el padre.".into())
+            },
+            Expression::SuperConstructor(args) => {
+                let esto = env.lock().unwrap().get("esto")?;
+                if let RuntimeValue::Instance(_, _, class_box) = &esto {
+                    if let RuntimeValue::Class(_, Some(super_name), _) = &**class_box {
+                        let super_class = env.lock().unwrap().get(super_name)?;
+                        if let RuntimeValue::Class(_, _, methods_arc) = super_class {
+                            let methods = methods_arc.lock().unwrap();
+                            if let Some(RuntimeValue::Function(params, _, body)) = methods.get("crear") {
+                                let mut eval_args = Vec::new();
+                                for arg in args {
+                                    eval_args.push(self.evaluate(arg, env)?);
+                                }
+                                let call_env = Arc::new(Mutex::new(Environment::new_with_parent(Arc::clone(env))));
+                                call_env.lock().unwrap().define("esto".to_string(), esto.clone());
+                                bind_params(&params, &eval_args, &call_env)?;
+                                self.execute_block(body.clone(), &call_env)?;
+                                return Ok(RuntimeValue::Null);
+                            }
+                        }
+                    }
+                }
+                Err("No se puede usar 'super()' sin superclase o constructor padre.".into())
             }
         }
     }
@@ -1857,12 +2035,13 @@ impl Interpreter {
             RuntimeValue::Function(_, _, _) => true,
             RuntimeValue::AsyncFunction(_, _, _) => true,
             RuntimeValue::Promise(_) => true,
-            RuntimeValue::Class(_, _) => true,
+            RuntimeValue::Class(_, _, _) => true,
             RuntimeValue::Instance(_, _, _) => true,
             RuntimeValue::Server(_) => true,
             RuntimeValue::Database(_) => true,
             RuntimeValue::PyWrapper(_) => true,
             RuntimeValue::Break => false,
+            RuntimeValue::Continue => false,
         }
     }
 }
