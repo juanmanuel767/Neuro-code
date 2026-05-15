@@ -3,588 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroCode | El Lenguaje IA-Nativo en Español</title>
+    <title>NeuroCode | El Lenguaje IA-Nativo Pro</title>
     
-    <!-- Meta Tags OG -->
-    <meta property="og:title" content="NeuroCode | El Futuro del Software en Español">
-    <meta property="og:description" content="Lenguaje de programación AI-nativo, construido en Rust, con sintaxis 100% en español e integración total con Python.">
-    <meta property="og:url" content="https://aquilalang.you">
-    <meta property="og:image" content="https://aquilalang.you/assets/banner_og.png">
-    <meta property="og:type" content="website">
+    <!-- Meta Tags -->
+    <meta name="description" content="NeuroCode: El primer lenguaje de alto rendimiento en español con IA nativa, herencia avanzada y reactividad.">
     <link rel="icon" type="image/png" href="https://aquilalang.you/assets/logo.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --bg-deep: #0a0a0c;
-            --bg-card: #151518;
-            --primary: #3b82f6;
-            --secondary: #8b5cf6;
-            --accent: #06b6d4;
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
-            --grad-neon: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-            --glow: 0 0 20px rgba(59, 130, 246, 0.4);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --p-clamp: clamp(1rem, 5vw, 3.5rem);
-            --h1-clamp: clamp(2rem, 8vw, 4.5rem);
-            --h2-clamp: clamp(1.8rem, 6vw, 3rem);
-            --p-font: clamp(0.95rem, 2vw, 1.1rem);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: var(--bg-deep);
-            background-image: radial-gradient(circle at center, rgba(10, 10, 12, 0.90) 0%, rgba(10, 10, 12, 0.98) 100%), url('https://aquilalang.you/assets/logo.png');
-            background-size: cover, auto 80vh;
-            background-position: center, center;
-            background-repeat: no-repeat, no-repeat;
-            background-attachment: scroll, fixed;
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-            width: 100%;
-        }
-
-        h1, h2, h3, .tech-font { font-family: 'Space Grotesk', sans-serif; }
-        
-        .gradient-text {
-            background: var(--grad-neon);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* --- Global Styles --- */
-        section {
-            padding: var(--p-clamp) 10%;
-            width: 100%;
-            max-width: 100%;
-        }
-
-        img { max-width: 100%; height: auto; }
-
-        /* --- Components --- */
-        .btn-primary, .btn-outline {
-            min-height: 48px;
-            padding: 0.8rem 1.8rem;
-            border-radius: 12px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            cursor: pointer;
-            width: fit-content;
-        }
-
-        .btn-primary {
-            background: var(--grad-neon);
-            color: white;
-            box-shadow: var(--glow);
-            border: none;
-        }
-        
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
-
-        .btn-outline {
-            border: 1px solid var(--border-glass);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-main);
-        }
-
-        .btn-outline:hover { background: rgba(255, 255, 255, 0.08); }
-
-        /* --- Navbar --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1rem 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(10, 10, 12, 0.85);
-            backdrop-filter: blur(15px);
-            z-index: 2000;
-            border-bottom: 1px solid var(--border-glass);
-            height: 70px;
-        }
-
-        .nav-logo { display: flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1.3rem; }
-        .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; min-height: 44px; display: flex; align-items: center; }
-        .nav-links a:hover { color: var(--primary); }
-
-        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 10px; z-index: 2100; min-height: 44px; justify-content: center; }
-        .menu-toggle span { width: 25px; height: 2px; background: white; transition: 0.3s; }
-
-        /* --- Hero --- */
-        .hero {
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding-top: 120px;
-            position: relative;
-        }
-
-        .hero h1 { font-size: var(--h1-clamp); line-height: 1.1; margin-bottom: 1.5rem; font-weight: 800; max-width: 90%; }
-        .hero p.subtitle { font-size: var(--p-font); color: var(--text-dim); max-width: 750px; margin-bottom: 3rem; }
-
-        .hero-btns { display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; margin-bottom: 4rem; width: 100%; }
-
-        /* Terminal Display */
-        .terminal {
-            width: 100%;
-            max-width: 850px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
-            text-align: left;
-        }
-
-        .terminal-header { padding: 0.8rem 1.2rem; background: rgba(255,255,255,0.03); display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid var(--border-glass); }
-        .dot { width: 10px; height: 10px; border-radius: 50%; }
-        .dot.red { background: #ff5f56; }
-        .dot.yellow { background: #ffbd2e; }
-        .dot.green { background: #27c93f; }
-
-        .terminal-body { padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; overflow-x: auto; white-space: pre; }
-        .code-ia { color: #f3c75f; } .code-keyword { color: #8b5cf6; } .code-string { color: #06b6d4; } .code-comment { color: #64748b; font-style: italic; }
-
-        /* --- Stats --- */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            background: rgba(255, 255, 255, 0.01);
-            text-align: center;
-        }
-
-        .stat-item h3 { font-size: 2.8rem; margin-bottom: 0.2rem; }
-        .stat-item p { color: var(--text-dim); text-transform: uppercase; font-size: 0.8rem; font-weight: 600; }
-
-        /* --- Features --- */
-        .section-header { text-align: center; margin-bottom: 4rem; }
-        .section-header h2 { font-size: var(--h2-clamp); margin-bottom: 1rem; }
-        .section-header p { color: var(--text-dim); max-width: 600px; margin: 0 auto; font-size: var(--p-font); }
-
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            width: 100%;
-        }
-
-        .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            padding: 2.5rem;
-            border-radius: 20px;
-            transition: all 0.3s;
-        }
-
-        .feature-card:hover { border-color: var(--primary); transform: translateY(-5px); }
-        .feature-icon { font-size: 2.5rem; margin-bottom: 1.2rem; display: block; }
-        .feature-card h3 { margin-bottom: 1rem; font-size: 1.4rem; }
-
-        /* --- Installation --- */
-        .install-box { max-width: 900px; margin: 0 auto; background: var(--bg-card); border-radius: 20px; overflow: hidden; border: 1px solid var(--border-glass); }
-        .tabs { display: flex; background: rgba(255,255,255,0.02); overflow-x: auto; }
-        .tab { padding: 1.2rem 2rem; cursor: pointer; color: var(--text-dim); border-bottom: 2px solid transparent; min-width: 120px; text-align: center; font-weight: 600; min-height: 48px; }
-        .tab.active { color: var(--primary); border-bottom-color: var(--primary); background: rgba(59, 130, 246, 0.05); }
-
-        .tab-content { padding: var(--p-clamp); display: none; }
-        .tab-content.active { display: block; }
-        .cmd-line { background: #000; padding: 1.2rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-        .cmd-text { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; overflow-x: auto; }
-
-        /* --- Tables Responsive --- */
-        .table-responsive { width: 100%; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 16px; overflow: hidden; margin-top: 1rem; }
-        th, td { padding: 1.2rem; text-align: left; border-bottom: 1px solid var(--border-glass); }
-        th { background: rgba(255,255,255,0.03); color: var(--primary); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
-
-        /* --- Guardian --- */
-        .guardian { display: flex; align-items: center; gap: 4rem; flex-wrap: wrap; }
-        .guardian-visual { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 1rem; }
-        .step-card { background: var(--bg-card); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 1.2rem; opacity: 0.5; transition: 0.4s; }
-        .step-card.active { opacity: 1; border-color: var(--secondary); box-shadow: 0 0 30px rgba(139, 92, 246, 0.15); }
-        .step-num { width: 34px; height: 34px; background: var(--grad-neon); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
-
-        /* --- Footer --- */
-        footer { background: #050507; padding: 5rem 10% 2rem; border-top: 1px solid var(--border-glass); }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; margin-bottom: 4rem; }
-        .footer-brand p { color: var(--text-dim); margin-top: 1rem; }
-        .footer-links h4 { margin-bottom: 1.5rem; }
-        .footer-links ul { list-style: none; }
-        .footer-links li { margin-bottom: 0.8rem; }
-        .footer-links a { color: var(--text-dim); text-decoration: none; transition: 0.3s; min-height: 40px; display: inline-block; }
-        .footer-links a:hover { color: var(--primary); }
-
-        /* --- Mobile Breakpoints --- */
-        @media (max-width: 900px) {
-            nav { padding: 1rem 5%; }
-            .nav-links {
-                position: fixed; top: 70px; left: 0; width: 100%; height: 0; background: var(--bg-deep);
-                flex-direction: column; justify-content: center; overflow: hidden; transition: 0.4s ease-in-out; border-bottom: 1px solid var(--border-glass);
-            }
-            .nav-links.active { height: 300px; padding: 2rem 0; }
-            .menu-toggle { display: flex; }
-            .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-            .menu-toggle.active span:nth-child(2) { opacity: 0; }
-            .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-            
-            .hero h1 { font-size: 3rem; }
-            .hero-btns { flex-direction: column; align-items: center; }
-            .hero-btns > * { width: 80%; text-align: center; }
-
-            /* Table as Cards */
-            table, thead, tbody, th, td, tr { display: block; }
-            thead tr { position: absolute; top: -9999px; left: -9999px; }
-            tr { border: 1px solid var(--border-glass); margin-bottom: 1.5rem; border-radius: 12px; padding: 1rem; background: var(--bg-card); }
-            td { border: none; position: relative; padding-left: 50%; min-height: 40px; }
-            td::before {
-                content: attr(data-label); position: absolute; left: 1rem; width: 45%; padding-right: 10px;
-                white-space: nowrap; font-weight: 700; color: var(--primary); font-size: 0.7rem; text-transform: uppercase;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 2.2rem; }
-            .btn-primary, .btn-outline { width: 100%; }
-            .stat-item h3 { font-size: 2.2rem; }
-            .grid-layout { grid-template-columns: 1fr; }
-        }
-
-        .hero-logo-container {
-            width: clamp(150px, 40vw, 220px);
-            height: clamp(150px, 40vw, 220px);
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-glass);
-            border-radius: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 0 50px rgba(59, 130, 246, 0.2);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .hero-logo-container:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
-            border-color: var(--primary);
-        }
-        .hero-logo-container img {
-            width: 75%;
-            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
-        }
-
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- Navbar -->
     <nav>
-        <div class="nav-logo">
-            <img src="https://aquilalang.you/assets/logo.png" alt="Logo" width="80">
+        <a href="#" class="nav-logo">
+            <img src="https://aquilalang.you/assets/logo.png" alt="NeuroCode" width="45">
             NEURO<span class="gradient-text">CODE</span>
-        </div>
-        <div class="menu-toggle" id="mobile-menu">
-            <span></span><span></span><span></span>
-        </div>
-        <div class="nav-links" id="nav-links">
-            <a href="#sintaxis">Sintaxis</a>
-            <a href="#builtins">Funciones</a>
-            <a href="#ffi">Depredador</a>
-            <a href="#comunidad">Comunidad</a>
-            <a href="#descargar" class="btn-primary">Descargar</a>
+        </a>
+        <div class="nav-links">
+            <a href="#caracteristicas">Características</a>
+            <a href="#playground">Playground</a>
+            <a href="#poo">POO 2.0</a>
+            <a href="#descargar" class="btn btn-primary" style="padding: 0.6rem 1.5rem; font-size: 0.85rem;">Instalar</a>
         </div>
     </nav>
 
     <!-- Hero -->
-    <header class="hero fade-in">
-        <div class="hero-logo-container">
-            <img src="https://aquilalang.you/assets/logo.png" alt="NeuroCode Brain Logo">
-        </div>
-        <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--primary); padding: 0.4rem 1.2rem; border-radius: 99px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1.5rem;">
-            v2.3.0 ESTABLE • RUST CORE
-        </div>
-        <h1>El futuro del software <br> <span class="gradient-text">habla español.</span></h1>
-        <p class="subtitle">NeuroCode es el primer lenguaje AI-nativo de alto rendimiento. Construido en Rust, diseñado para automatizar y cazar código sin límites.</p>
+    <header class="hero">
+        <div class="hero-glow"></div>
+        <div class="badge-pill fade-in" style="margin-bottom: 2rem;">⚡ NUEVO: VERSIÓN 2.3.0 LANZADA</div>
+        <h1 class="fade-in">Programación <br> <span class="gradient-text">IA-Nativa & Reactiva.</span></h1>
+        <p class="subtitle fade-in">NeuroCode unifica la potencia de Rust con la expresividad del español. Crea sistemas complejos con herencia pro, modularidad y reactividad nativa.</p>
         
-        <div class="hero-btns">
-            <a href="https://github.com/juanmanuel767/Neuro-code" target="_blank" class="btn-primary">⭐ GitHub Oficial</a>
-            <a href="#sintaxis" class="btn-outline">📖 Ver Sintaxis</a>
+        <div class="hero-btns fade-in">
+            <a href="https://github.com/juanmanuel767/Neuro-code" target="_blank" class="btn btn-primary">⭐ GitHub Oficial</a>
+            <a href="#playground" class="btn btn-outline">🕹️ Probar Demo</a>
         </div>
 
-        <div class="terminal">
+        <div class="terminal fade-in">
             <div class="terminal-header">
                 <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
-                <span style="font-size:0.75rem; color:#64748b; margin-left:1rem; font-family:monospace;">main.neuro</span>
+                <span style="font-size:0.8rem; color: #64748b; margin-left:1rem;">lanzamiento_v2_3.neuro</span>
             </div>
-            <div class="terminal-body tech-font">
-<span class="code-comment">// IA Nativa sin librerías externas</span>
-<span class="code-keyword">respuesta</span> = <span class="code-keyword">esperar</span> <span class="code-ia">ia</span>(<span class="code-string">"Optimiza esta lógica"</span>)
+            <div class="terminal-body">
+<span style="color: #64748b;">// Herencia y Reactividad en v2.3.0</span>
+<span style="color: #8b5cf6;">clase</span> <span style="color: #06b6d4;">Asistente</span> <span style="color: #8b5cf6;">hereda</span> <span style="color: #3b82f6;">BotBase</span> {
+    <span style="color: #8b5cf6;">crear</span>(api_key) {
+        <span style="color: #8b5cf6;">super</span>(api_key)
+        <span style="color: #8b5cf6;">reactivo</span> estado = <span style="color: #06b6d4;">"listo"</span>
+    }
+}
 
-<span class="code-comment">// Modo Depredador: Importa Python directo</span>
-<span class="code-keyword">depredactor</span> python:numpy <span class="code-keyword">como</span> np
-<span class="code-keyword">datos</span> = np.array([<span class="code-ia">10, 20, 30</span>])
-
-<span class="code-comment">// Servidor Web en Rust (Cero latencia)</span>
-<span class="code-keyword">servidor</span> = <span class="code-keyword">nuevo</span> <span class="code-ia">ServidorWeb</span>(<span class="code-ia">8080</span>)
-<span class="code-keyword">servidor</span>.iniciar()</div>
+<span style="color: #8b5cf6;">cuando</span> asistente.estado <span style="color: #8b5cf6;">cambie</span> {
+    <span style="color: #3b82f6;">imprimir</span>(<span style="color: #06b6d4;">">>> Sistema:"</span>, asistente.estado)
+}</div>
         </div>
     </header>
 
-    <!-- Stats -->
-    <section class="stats">
-        <div class="stat-item">
-            <h3 class="gradient-text">2.3.0</h3>
-            <p>Versión Estable</p>
-        </div>
-        <div class="stat-item">
-            <h3 class="gradient-text">43</h3>
-            <p>Palabras Clave</p>
-        </div>
-        <div class="stat-item">
-            <h3 class="gradient-text">56+</h3>
-            <p>Pruebas Pasadas</p>
+    <!-- Stats Section -->
+    <section class="section" style="padding-top: 0;">
+        <div style="display: flex; justify-content: center; gap: 5rem; flex-wrap: wrap; text-align: center;">
+            <div><h3 style="font-size: 3rem;" class="gradient-text">2.3.0</h3><p style="color: var(--text-dim); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Versión</p></div>
+            <div><h3 style="font-size: 3rem;" class="gradient-text">98%</h3><p style="color: var(--text-dim); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Eficiencia Rust</p></div>
+            <div><h3 style="font-size: 3rem;" class="gradient-text">∞</h3><p style="color: var(--text-dim); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Posibilidades</p></div>
         </div>
     </section>
 
     <!-- Features -->
-    <section id="ffi">
+    <section id="caracteristicas" class="section">
         <div class="section-header">
-            <h2>Poder <span class="gradient-text">Ilimitado</span></h2>
-            <p>NeuroCode unifica la potencia de Rust con la inteligencia artificial para crear software soberano.</p>
+            <h2>Poder <span class="gradient-text">Arquitectónico</span></h2>
+            <p>Construye software de grado industrial con herramientas diseñadas para el futuro.</p>
         </div>
-
         <div class="grid-layout">
             <div class="feature-card">
                 <span class="feature-icon">🧬</span>
-                <h3>POO 2.0: Herencia</h3>
-                <p>Extiende comportamientos con <span class="inline-code">hereda</span> y <span class="inline-code">super()</span>. Jerarquías reales.</p>
+                <h3>Herencia Pro</h3>
+                <p>Implementa jerarquías complejas con <span class="inline-code">hereda</span> y delegación con <span class="inline-code">super()</span>. POO nivel profesional.</p>
             </div>
             <div class="feature-card">
-                <span class="feature-icon">🦅</span>
-                <h3>Modo Depredador</h3>
-                <p>Caza cualquier librería de Python y úsala como si fuera nativa. Integración total bidireccional.</p>
+                <span class="feature-icon">⚡</span>
+                <h3>Reactividad Nativa</h3>
+                <p>Observa variables con <span class="inline-code">cuando...cambie</span>. El núcleo dispara eventos de forma eficiente.</p>
             </div>
             <div class="feature-card">
                 <span class="feature-icon">📦</span>
-                <h3>Ecosistema Modular</h3>
-                <p>Organiza tu código con el comando <span class="inline-code">importar</span> y sistema de exportación nativo.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🛡️</span>
-                <h3>El Guardián</h3>
-                <p>Sistema inteligente que detecta errores y repara el código fuente automáticamente usando IA.</p>
+                <h3>Módulos Puros</h3>
+                <p>Organiza tu código con un sistema de importación limpio y exportación simplificada.</p>
             </div>
         </div>
     </section>
 
-    <!-- Installation -->
-    <section id="descargar">
+    <!-- Playground -->
+    <section id="playground" class="section">
         <div class="section-header">
-            <h2>Lanzamiento <span class="gradient-text">Final</span></h2>
-            <p>Instala el motor de NeuroCode en segundos en cualquier sistema operativo.</p>
-        </div>
-
-        <div class="install-box">
-            <div class="tabs">
-                <div class="tab active" data-target="linux">Linux</div>
-                <div class="tab" data-target="macos">macOS</div>
-                <div class="tab" data-target="windows">Windows</div>
-            </div>
-            <div id="linux" class="tab-content active">
-                <div class="cmd-line">
-                    <span id="cmd-l" class="cmd-text">curl -fsSL https://aquilalang.you/installer/install.sh | bash</span>
-                    <button class="copy-btn" onclick="copyText('cmd-l', this)">COPIAR</button>
-                </div>
-            </div>
-            <div id="macos" class="tab-content">
-                <div class="cmd-line">
-                    <span id="cmd-m" class="cmd-text">brew install neurocode-lang</span>
-                    <button class="copy-btn" onclick="copyText('cmd-m', this)">COPIAR</button>
-                </div>
-            </div>
-            <div id="windows" class="tab-content">
-                <div class="cmd-line">
-                    <span id="cmd-w" class="cmd-text">winget install NeuroCode.CLI</span>
-                    <button class="copy-btn" onclick="copyText('cmd-w', this)">COPIAR</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Syntax Examples -->
-    <section id="sintaxis">
-        <div class="section-header">
-            <h2>Sintaxis <span class="gradient-text">Expressiva</span></h2>
-            <p>Lee y escribe código como si estuvieras pensando. 100% en español.</p>
-        </div>
-
-        <div class="grid-layout">
-            <div class="feature-card tech-font" style="padding: 1.5rem; background: #0d0d0f;">
-                <h4 style="color:var(--accent); margin-bottom:1rem;">🚀 Básico</h4>
-                <pre style="overflow-x:auto;"><span class="code-keyword">si</span> puntos > 90 {
-    <span class="code-ia">imprimir</span>(<span class="code-string">"¡Bien!"</span>)
-} <span class="code-keyword">sino</span> {
-    <span class="code-ia">imprimir</span>(<span class="code-string">"Falla"</span>)
-}</pre>
-            </div>
-            <div class="feature-card tech-font" style="padding: 1.5rem; background: #0d0d0f;">
-                <h4 style="color:var(--secondary); margin-bottom:1rem;">🧠 IA</h4>
-                <pre style="overflow-x:auto;"><span class="code-keyword">asincrono funcion</span> ia_test() {
-    <span class="code-keyword">res</span> = <span class="code-keyword">esperar</span> <span class="code-ia">ia</span>(<span class="code-string">"Resumen"</span>)
-    <span class="code-ia">imprimir</span>(<span class="code-keyword">res</span>)
-}</pre>
-            </div>
-            <div class="feature-card tech-font" style="padding: 1.5rem; background: #0d0d0f;">
-                <h4 style="color:var(--primary); margin-bottom:1rem;">🌐 Web</h4>
-                <pre style="overflow-x:auto;"><span class="code-keyword">servidor</span> = <span class="code-keyword">nuevo</span> <span class="code-ia">ServidorWeb</span>(80)
-<span class="code-keyword">servidor</span>.ruta(<span class="code-string">"GET"</span>, <span class="code-string">"/"</span>, home)
-<span class="code-keyword">servidor</span>.iniciar()</pre>
-            </div>
-        </div>
-    </section>
-
-    <!-- Functions Table -->
-    <section id="builtins">
-        <div class="section-header">
-            <h2>Librería <span class="gradient-text">Estándar</span></h2>
-            <p>Herramientas atómicas compiladas directamente en Rust.</p>
+            <h2>Experimenta la <span class="gradient-text">Reactividad</span></h2>
+            <p>Mira cómo NeuroCode reacciona a los cambios de estado en tiempo real.</p>
         </div>
         
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr><th>Función</th><th>Parámetros</th><th>Descripción</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td data-label="Función">ia()</td><td data-label="Parámetros">(prompt, [conf])</td><td data-label="Descripción">IA nativa (Ollama/OpenAI)</td></tr>
-                    <tr><td data-label="Función">imprimir()</td><td data-label="Parámetros">(...args)</td><td data-label="Descripción">Salida estándar a consola</td></tr>
-                    <tr><td data-label="Función">http_get()</td><td data-label="Parámetros">(url)</td><td data-label="Descripción">Petición HTTP asíncrona</td></tr>
-                    <tr><td data-label="Función">a_numero()</td><td data-label="Parámetros">(txt)</td><td data-label="Descripción">Conversión segura a número</td></tr>
-                    <tr><td data-label="Función">rango()</td><td data-label="Parámetros">(n)</td><td data-label="Descripción">Genera lista de 0 a n-1</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <!-- Guardian -->
-    <section class="guardian">
-        <div style="flex:1; min-width:300px;">
-            <h2 style="font-size: var(--h2-clamp); margin-bottom:1.5rem;">El <span class="gradient-text">Guardián</span></h2>
-            <p style="color:var(--text-dim); margin-bottom:2rem;">Detección, análisis y reparación automática de errores con inteligencia artificial.</p>
-            <a href="https://github.com/juanmanuel767/Neuro-code" target="_blank" class="btn-primary">Ver Blindaje en GitHub</a>
-        </div>
-        
-        <div class="guardian-visual">
-            <div class="step-card active"><div class="step-num">1</div><div><strong>Detección</strong><p style="font-size:0.8rem; color:#64748b;">Error en ejecución</p></div></div>
-            <div class="step-card"><div class="step-num">2</div><div><strong>Análisis</strong><p style="font-size:0.8rem; color:#64748b;">Cerebro IA local</p></div></div>
-            <div class="step-card"><div class="step-num">3</div><div><strong>Reparación</strong><p style="font-size:0.8rem; color:#64748b;">Parche automático</p></div></div>
-        </div>
-    </section>
-
-    <!-- Community -->
-    <section id="comunidad" style="text-align:center;">
-        <div class="section-header">
-            <h2>Únete al <span class="gradient-text">Nido</span></h2>
-            <p>Sé parte de los primeros desarrolladores del primer lenguaje hispano IA-nativo.</p>
-        </div>
-        <div style="max-width:500px; margin: 0 auto; background: var(--bg-card); padding: clamp(1.5rem, 5vw, 3rem); border-radius: 24px; border: 1px solid var(--border-glass);">
-            <form onsubmit="return false">
-                <div style="margin-bottom:1.2rem; text-align:left;">
-                    <label style="font-size:0.85rem; color:var(--text-dim); display:block; margin-bottom:0.5rem;">Nombre</label>
-                    <input type="text" style="width:100%; padding:0.9rem; background:rgba(0,0,0,0.4); border:1px solid var(--border-glass); border-radius:10px; color:white;">
+        <div class="playground">
+            <div class="playground-code">
+                <div style="margin-bottom: 2rem;">
+                    <span style="color: #8b5cf6;">reactivo</span> <span style="color: #3b82f6;">nivel</span> = <span id="code-value" style="color: #06b6d4;">100</span>
                 </div>
-                <div style="margin-bottom:1.5rem; text-align:left;">
-                    <label style="font-size:0.85rem; color:var(--text-dim); display:block; margin-bottom:0.5rem;">Email</label>
-                    <input type="email" style="width:100%; padding:0.9rem; background:rgba(0,0,0,0.4); border:1px solid var(--border-glass); border-radius:10px; color:white;">
+                <div style="margin-bottom: 2rem;">
+                    <span style="color: #8b5cf6;">cuando</span> nivel <span style="color: #8b5cf6;">cambie</span> {<br>
+                    &nbsp;&nbsp;<span style="color: #3b82f6;">actualizarUI</span>(nivel)<br>
+                    }
                 </div>
-                <button class="btn-primary" style="width:100%;">🧠 REGISTRARME</button>
-            </form>
+                <button class="btn btn-primary" onclick="triggerReactivity()">MODIFICAR VOLTAJE</button>
+            </div>
+            <div class="playground-visual">
+                <div id="react-node" class="node">
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">VOLTAJE</span>
+                    <strong id="visual-value" style="font-size: 2rem;">100V</strong>
+                </div>
+                <div class="connector"></div>
+                <div class="node" style="width: 100px; height: 100px; border-style: dashed; border-color: var(--text-dim); opacity: 0.6;">
+                    <span style="font-size: 0.6rem;">OBSERVADOR</span>
+                </div>
+                <p id="react-log" style="font-size: 0.8rem; color: var(--accent); margin-top: 1rem; opacity: 0;">¡Disparado automáticamente!</p>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <div class="nav-logo" style="margin-bottom:1.5rem;">
-                    <img src="https://aquilalang.you/assets/logo.png" alt="Logo" width="80">
-                    NEUROCODE
-                </div>
-                <p>Potenciado por Rust · IA Nativa · Python FFI.</p>
-            </div>
-            <div class="footer-links">
-                <h4>Proyecto</h4>
-                <ul>
-                    <li><a href="#sintaxis">Sintaxis</a></li>
-                    <li><a href="#descargar">Instalación</a></li>
-                    <li><a href="https://github.com/juanmanuel767/Neuro-code">GitHub</a></li>
-                </ul>
-            </div>
+        <div class="nav-logo" style="justify-content: center; margin-bottom: 2rem; font-size: 1.8rem;">
+            NEURO<span class="gradient-text">CODE</span>
         </div>
-        <div class="copyright">
-            © 2026 NeuroCode Labs. Creado por Juan Manuel Peralta.
+        <div class="footer-nav">
+            <a href="https://github.com/juanmanuel767/Neuro-code">GitHub</a>
+            <a href="#">Documentación</a>
+            <a href="#">Comunidad</a>
+            <a href="#">Licencia MIT</a>
         </div>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">© 2026 NeuroCode Labs. Visionado por Juan Manuel Peralta.</p>
     </footer>
 
-    <script>
-        // Hamburger Menu
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('nav-links');
-        mobileMenu.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-
-        // Tabs
-        document.querySelectorAll('.tab').forEach(t => {
-            t.addEventListener('click', () => {
-                document.querySelectorAll('.tab, .tab-content').forEach(el => el.classList.remove('active'));
-                t.classList.add('active');
-                document.getElementById(t.dataset.target).classList.add('active');
-            });
-        });
-
-        // Copy Helper
-        function copyText(id, btn) {
-            const txt = document.getElementById(id).textContent;
-            navigator.clipboard.writeText(txt);
-            const orig = btn.textContent;
-            btn.textContent = '✅ COPIADO';
-            setTimeout(() => btn.textContent = orig, 1500);
-        }
-
-        // Guardian Loop
-        let step = 0;
-        const sCards = document.querySelectorAll('.step-card');
-        setInterval(() => {
-            sCards[step].classList.remove('active');
-            step = (step + 1) % sCards.length;
-            sCards[step].classList.add('active');
-        }, 3000);
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
