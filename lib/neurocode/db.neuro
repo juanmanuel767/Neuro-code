@@ -1,0 +1,7 @@
+// Modulo estandar de base de datos de NeuroCode.
+
+funcion abrir(ruta) {
+    retornar nuevo BaseDatos(ruta)
+}
+
+exportar abrir

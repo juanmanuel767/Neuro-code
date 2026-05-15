@@ -1,0 +1,27 @@
+// --- AQUILA 2.0 MASTER PROJECT: SMART NOTES ---
+asincrono funcion main() {
+    imprimir("🛡️ Iniciando Servicio de Notas Inteligente (Aquila v2.0)...")
+    db = nuevo BaseDatos("notas.db")
+    esperar db.ejecutar("CREATE TABLE IF NOT EXISTS notas (id INTEGER PRIMARY KEY, contenido TEXT, categoria TEXT)")
+    
+    imprimir("💾 Base de Datos conectada.")
+    contenido = "Necesito comprar café y huevos para el desayuno."
+    imprimir("📝 Nueva nota recibida: " + contenido)
+    
+    prompt = "Categoriza esta nota en una sola palabra: " + contenido
+    categoria = "General"
+    intentar {
+        categoria = esperar ia(prompt)
+    } capturar e {
+        imprimir("⚠️ IA no disponible. Usando categoría por defecto: " + categoria)
+    }
+    
+    imprimir("🧠 IA Categorizó como: " + categoria)
+    esperar db.ejecutar("INSERT INTO notas (contenido, categoria) VALUES (?, ?)", [contenido, categoria])
+    
+    imprimir("✅ Nota guardada con éxito.")
+    notas = esperar db.consultar("SELECT * FROM notas")
+    imprimir(notas)
+}
+
+esperar main()

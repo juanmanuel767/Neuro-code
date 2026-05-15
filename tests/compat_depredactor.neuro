@@ -1,0 +1,16 @@
+usar "tests/eval_framework.neuro" como fw
+
+imprimir("🐍 NEUROCODE: Compatibilidad Depredador (FFI)")
+
+// 1. Python Math
+imprimir("   - Probando depedactor math...")
+depredactor math como m
+fw.afirmar_igual(m.sqrt(16), 4.0, "FFI Python: math.sqrt")
+fw.afirmar_igual(m.pow(2, 3), 8.0, "FFI Python: math.pow")
+
+// 2. Python con alias
+imprimir("   - Probando prefijo python:os...")
+depredactor python:os como sistema
+fw.afirmar(sistema.propiedad("sep") != nulo, "FFI Python: os.sep (usando .propiedad)")
+
+imprimir("✅ Compatibilidad Depredador: OK")

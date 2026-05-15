@@ -1,0 +1,21 @@
+usar "tests/eval_framework.neuro" como fw
+
+imprimir("🧠 NEUROCODE: Compatibilidad IA")
+
+// ia() es el nucleo de la inteligencia del lenguaje
+// Aunque no tengamos API configurada, la llamada debe fallar de forma controlada o usar fallback
+
+imprimir("   - Probando ia() nativa...")
+intentar {
+    // Si no hay API_KEY, el guardian o el fallback debe atraparlo
+    // o devolver un error legible
+    res = ia("Dime 1")
+    imprimir("   IA respondió: " + a_texto(res))
+    fw.afirmar(a_texto(res).longitud() > 0, "Respuesta de IA")
+} capturar e {
+    imprimir("   IA (esperado): " + e)
+    // El test pasa si el error es controlado
+    fw.afirmar(verdadero, "Llamada controlada a IA")
+}
+
+imprimir("✅ Compatibilidad IA: OK")

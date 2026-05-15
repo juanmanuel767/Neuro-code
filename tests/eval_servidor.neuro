@@ -1,0 +1,19 @@
+// Prueba de la librería neuro:web y el servidor integrado
+depredactor neuro:pruebas como pruebas
+depredactor neuro:web como web
+
+imprimir("=================================")
+imprimir("    TEST DE SERVIDOR WEB")
+imprimir("=================================")
+
+// Probar inicialización del servidor básico
+servidor = esperar web.iniciar_servidor(3456)
+tipo_servidor = tipo(servidor)
+pruebas.igual(tipo_servidor, "servidor", "iniciar_servidor retorna un objeto ServidorWeb nativo")
+
+// TODO: Habilitar cuando se implementen closures verdaderos en NeuroCode
+// app = web.crear_app(3457)
+// tipo_app = tipo(app)
+// pruebas.igual(tipo_app, "instancia", "WebApp es una instancia de clase")
+
+imprimir("✅ SERVIDOR WEB OK")

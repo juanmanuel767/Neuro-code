@@ -1,0 +1,17 @@
+// Modulo estandar de archivos de NeuroCode.
+
+funcion leer(ruta) {
+    retornar leer_archivo(ruta)
+}
+
+funcion escribir(ruta, contenido) {
+    retornar escribir_archivo(ruta, contenido)
+}
+
+funcion existe(ruta) {
+    retornar archivo_existe(ruta)
+}
+
+exportar leer
+exportar escribir
+exportar existe

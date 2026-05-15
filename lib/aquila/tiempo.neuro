@@ -1,0 +1,12 @@
+// Modulo estandar de tiempo de Aquila.
+
+funcion ahora_unix() {
+    retornar timestamp()
+}
+
+funcion esperar_ms(milisegundos) {
+    retornar dormir(milisegundos)
+}
+
+exportar ahora_unix
+exportar esperar_ms

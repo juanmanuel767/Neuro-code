@@ -1,0 +1,33 @@
+usar "neuro:pruebas" como fw
+
+imprimir("=================================")
+imprimir("    TEST DE LIBRERÍA ESTÁNDAR")
+imprimir("=================================")
+
+// Test Matemáticas
+usar "neuro:matematicas" como math
+fw.igual(math.abs(-5), 5, "abs(-5)")
+fw.igual(math.abs(3), 3, "abs(3)")
+fw.igual(math.max(10, 20), 20, "max(10, 20)")
+fw.igual(math.min(10, 20), 10, "min(10, 20)")
+fw.igual(math.potencia(2, 3), 8, "potencia(2, 3)")
+
+// Test Colecciones
+usar "neuro:colecciones" como col
+lista1 = [1, 2, 3]
+fw.afirmar(col.contiene(lista1, 2), "lista contiene 2")
+fw.afirmar(no col.contiene(lista1, 5), "lista no contiene 5")
+inv = col.invertir(lista1)
+fw.igual(inv[0], 3, "invertido indice 0")
+fw.igual(inv[2], 1, "invertido indice 2")
+
+// Test Texto (Requiere Python subyacente para métodos upper/lower)
+// Desactivado temporalmente o probado de forma ligera si es que se ha importado bien.
+// usar "neuro:texto" como txt
+// fw.igual(txt.mayusculas("hola"), "HOLA", "mayusculas()")
+
+// Test HTTP (Solo verifica que la función base existe)
+usar "neuro:http" como net
+fw.afirmar(tipo(net.obtener) == "funcion", "obtener es funcion")
+
+imprimir("✅ LIBRERÍA ESTÁNDAR OK")

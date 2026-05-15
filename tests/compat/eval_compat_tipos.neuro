@@ -1,0 +1,68 @@
+depredactor neurocode:pruebas como pruebas
+
+imprimir("=================================")
+imprimir("       COMPAT: TIPOS OPCIONALES")
+imprimir("=================================")
+
+edad: Entero = 20
+nombre: Texto = "Ana"
+activo: Booleano = verdadero
+precio: Decimal = 12.5
+items: Lista = [1, 2, 3]
+config: Diccionario = {"modo": "test"}
+libre: Cualquiera = "texto"
+
+pruebas.igual(edad + 2, 22, "Entero tipado funciona")
+pruebas.igual(nombre + " Maria", "Ana Maria", "Texto tipado funciona")
+pruebas.igual(activo, verdadero, "Booleano tipado funciona")
+pruebas.igual(precio > 10, verdadero, "Decimal tipado funciona")
+pruebas.igual(items[2], 3, "Lista tipada funciona")
+pruebas.igual(config["modo"], "test", "Diccionario tipado funciona")
+
+libre = 99
+pruebas.igual(libre, 99, "Cualquiera permite reasignar")
+
+error_tipo = falso
+intentar {
+    edad = "veinte"
+} capturar e {
+    error_tipo = verdadero
+}
+
+pruebas.igual(error_tipo, verdadero, "reasignacion incompatible falla")
+
+funcion sumar_tipado(a: Entero, b: Entero) {
+    retornar a + b
+}
+
+pruebas.igual(sumar_tipado(4, 5), 9, "parametros tipados aceptan enteros")
+
+error_parametro = falso
+intentar {
+    malo = sumar_tipado("4", 5)
+} capturar e {
+    error_parametro = verdadero
+}
+
+pruebas.igual(error_parametro, verdadero, "parametros tipados rechazan tipos incompatibles")
+
+funcion etiqueta(valor: Entero) -> Texto {
+    retornar "id-" + texto(valor)
+}
+
+pruebas.igual(etiqueta(7), "id-7", "retorno tipado acepta valor correcto")
+
+funcion retorno_malo() -> Entero {
+    retornar "no soy entero"
+}
+
+error_retorno = falso
+intentar {
+    valor_malo = retorno_malo()
+} capturar e {
+    error_retorno = verdadero
+}
+
+pruebas.igual(error_retorno, verdadero, "retorno tipado rechaza valor incompatible")
+
+imprimir("OK COMPAT TIPOS")

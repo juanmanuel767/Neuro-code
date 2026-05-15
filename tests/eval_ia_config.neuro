@@ -1,0 +1,26 @@
+// Test de configuración IA de NeuroCode
+// Verifica que el ecosistema IA está correctamente configurado.
+
+depredactor neuro:pruebas como pruebas
+
+imprimir("=================================")
+imprimir("    TEST DE CONFIGURACIÓN IA")
+imprimir("=================================")
+
+// Verificar que el módulo neuro:ia se puede cargar
+depredactor neuro:ia como ia_mod
+
+// Verificar que las funciones de alto nivel existen en el módulo
+tipo_preguntar = tipo(ia_mod.preguntar)
+pruebas.igual(tipo_preguntar, "funcion_asincrona", "ia_mod.preguntar es funcion asincrona")
+
+tipo_resumir = tipo(ia_mod.resumir)
+pruebas.igual(tipo_resumir, "funcion_asincrona", "ia_mod.resumir es funcion asincrona")
+
+tipo_traducir = tipo(ia_mod.traducir)
+pruebas.igual(tipo_traducir, "funcion_asincrona", "ia_mod.traducir es funcion asincrona")
+
+tipo_clasificar = tipo(ia_mod.clasificar)
+pruebas.igual(tipo_clasificar, "funcion_asincrona", "ia_mod.clasificar es funcion asincrona")
+
+imprimir("✅ CONFIGURACIÓN IA OK")

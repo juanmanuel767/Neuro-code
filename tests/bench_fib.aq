@@ -1,9 +1,0 @@
-// Fibonacci recursivo en Aquila
-funcion fib(n) {
-    si (n <= 1) { retornar n }
-    retornar fib(n-1) + fib(n-2)
-}
-
-imprimir("Calculando Fibonacci(30) en Aquila nativo...")
-result = fib(30)
-imprimir("Resultado: " + result)

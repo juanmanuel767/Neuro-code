@@ -1,0 +1,21 @@
+// Utilidades para listas y diccionarios
+
+funcion contiene(lista, elemento) {
+    para item en lista {
+        si item == elemento { retornar verdadero }
+    }
+    retornar falso
+}
+
+funcion invertir(lista) {
+    resultado = []
+    i = longitud(lista) - 1
+    mientras i >= 0 {
+        agregar(resultado, lista[i])
+        i = i - 1
+    }
+    retornar resultado
+}
+
+exportar contiene
+exportar invertir

@@ -1,0 +1,14 @@
+usar "../eval_framework.neuro" como fw
+depredactor python:math como mate
+depredactor python:xml.etree.ElementTree como xml
+depredactor neurocode:"../eval_framework.neuro" como modulo
+
+imprimir("=================================")
+imprimir("  COMPAT: DEPREDADOR CON PREFIJOS")
+imprimir("=================================")
+
+fw.afirmar_igual(mate.sqrt(49), 7, "prefijo python importa math")
+fw.afirmar_igual(tipo(xml), "python", "prefijo python importa modulo con puntos")
+modulo.afirmar_igual(3 * 3, 9, "prefijo neurocode importa archivo local")
+
+imprimir("OK COMPAT DEPREDADOR PREFIJOS")

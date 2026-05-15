@@ -1,0 +1,36 @@
+depredactor neurocode:json como json
+depredactor neurocode:pruebas como pruebas
+depredactor neurocode:web como web
+depredactor neurocode:db como db
+depredactor neurocode:archivos como archivos
+depredactor neurocode:tiempo como tiempo
+
+imprimir("=================================")
+imprimir("     COMPAT: BIBLIOTECA ESTANDAR")
+imprimir("=================================")
+
+data = json.parsear("{\"nombre\":\"NeuroCode\",\"ok\":true}")
+pruebas.igual(data["nombre"], "NeuroCode", "stdlib json parsea texto")
+pruebas.igual(data["ok"], verdadero, "stdlib json parsea booleano")
+
+texto_json = json.convertir({"n": 12})
+data2 = json.parsear(texto_json)
+pruebas.igual(data2["n"], 12, "stdlib json convierte valores")
+
+servidor = web.servidor(0)
+pruebas.igual(tipo(servidor), "servidor", "stdlib web crea servidor nativo")
+
+base = db.abrir(":memory:")
+pruebas.igual(tipo(base), "base_datos", "stdlib db abre base nativa")
+
+ruta_tmp = "/tmp/neurocode_stdlib_archivos_test.txt"
+archivos.escribir(ruta_tmp, "hola stdlib")
+pruebas.igual(archivos.existe(ruta_tmp), verdadero, "stdlib archivos detecta existencia")
+pruebas.igual(archivos.leer(ruta_tmp), "hola stdlib", "stdlib archivos lee contenido")
+
+antes = tiempo.ahora_unix()
+tiempo.esperar_ms(1)
+despues = tiempo.ahora_unix()
+pruebas.afirmar(despues >= antes, "stdlib tiempo entrega timestamp estable")
+
+imprimir("OK COMPAT STDLIB")

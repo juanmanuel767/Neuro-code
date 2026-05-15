@@ -1,0 +1,10 @@
+imprimir("=================================")
+imprimir("      TEST NEUROCODE ALIAS")
+imprimir("=================================")
+
+depredactor neuro:pruebas como pruebas
+
+nombre: Texto = "NeuroCode"
+pruebas.igual(nombre, "NeuroCode", "alias neuro y extension .neuro")
+
+imprimir("NEUROCODE ALIAS OK")

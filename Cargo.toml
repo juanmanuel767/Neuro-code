@@ -1,8 +1,10 @@
 [package]
-name = "aquila"
-version = "2.1.0"
+name = "neurocode"
+version = "1.0.0"
+description = "El lenguaje de programación AI-nativo para la automatización y el desarrollo en español."
 edition = "2024"
 authors = ["Juan Manuel Peralta"]
+license = "MIT"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }

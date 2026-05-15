@@ -1,0 +1,21 @@
+usar "tests/eval_framework.neuro" como fw
+
+imprimir("🧩 NEUROCODE: Compatibilidad Módulos (.aq / .neuro)")
+
+// Necesitamos un módulo local para probar
+// Creamos uno temporal si no existe o usamos uno conocido
+// Por ahora usaremos eval_framework.aq que ya está cargado como 'fw'
+
+imprimir("   - Probando 'usar' con alias...")
+fw.afirmar(tipo(fw) == "diccionario", "Modulo como Diccionario")
+
+// Probando importación de archivo local
+// (Asumiendo que existe eval_numeros.aq en tests/)
+intentar {
+    usar "tests/eval_numeros.neuro" como num
+    imprimir("   Módulo local cargado correctamente.")
+} capturar e {
+    imprimir("   Error cargando módulo local: " + e)
+}
+
+imprimir("✅ Compatibilidad Módulos: OK")

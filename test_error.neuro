@@ -1,0 +1,2 @@
+numero edad = "hola"
+mostrar(edad + 5)

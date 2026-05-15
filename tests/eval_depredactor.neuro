@@ -1,0 +1,13 @@
+depredactor "eval_framework.neuro" como fw
+depredactor math como pymath
+depredactor xml.etree.ElementTree como xml
+
+imprimir("=================================")
+imprimir("    TEST DE DEPREDADOR NATIVO")
+imprimir("=================================")
+
+fw.afirmar_igual(pymath.sqrt(81), 9, "depredactor importa librerías Python")
+fw.afirmar_igual(tipo(fw.afirmar), "funcion", "depredactor importa módulos NeuroCode")
+fw.afirmar_igual(tipo(xml), "python", "depredactor importa módulos Python con puntos")
+
+imprimir("✅ DEPREDADOR OK")

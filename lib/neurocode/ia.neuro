@@ -1,0 +1,23 @@
+// Módulo estándar de IA de NeuroCode
+// Proporciona funciones de alto nivel para interactuar con la IA integrada.
+
+asincrono funcion preguntar(prompt) {
+    retornar esperar ia(prompt)
+}
+
+asincrono funcion resumir(texto) {
+    retornar esperar ia("Resume el siguiente texto en 3 oraciones concisas:\n" + texto)
+}
+
+asincrono funcion traducir(texto, idioma) {
+    retornar esperar ia("Traduce el siguiente texto a " + idioma + ":\n" + texto)
+}
+
+asincrono funcion clasificar(texto, categorias) {
+    retornar esperar ia("Clasifica el siguiente texto en una de estas categorías: " + categorias + "\nTexto: " + texto)
+}
+
+exportar preguntar
+exportar resumir
+exportar traducir
+exportar clasificar

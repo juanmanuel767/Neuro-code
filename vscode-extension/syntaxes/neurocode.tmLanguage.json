@@ -1,0 +1,142 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "NeuroCode",
+    "scopeName": "source.neuro",
+    "patterns": [
+        { "include": "#comments" },
+        { "include": "#strings" },
+        { "include": "#keywords" },
+        { "include": "#types" },
+        { "include": "#constants" },
+        { "include": "#functions" },
+        { "include": "#builtins" },
+        { "include": "#classes" },
+        { "include": "#operators" },
+        { "include": "#variables" }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.control.flow.neurocode",
+                    "match": "\\b(si|sino|mientras|para|en|retornar|esperar|intentar|capturar|lanzar|romper|continuar)\\b"
+                },
+                {
+                    "name": "keyword.control.import.neurocode",
+                    "match": "\\b(depredactor|usar|como|de|exportar)\\b"
+                },
+                {
+                    "name": "keyword.declaration.neurocode",
+                    "match": "\\b(funcion|asincrono|clase|nuevo)\\b"
+                }
+            ]
+        },
+        "types": {
+            "patterns": [
+                {
+                    "name": "support.type.neurocode",
+                    "match": "\\b(Entero|Decimal|Texto|Booleano|Lista|Diccionario|Nulo|Cualquiera)\\b"
+                },
+                {
+                    "name": "keyword.operator.arrow.neurocode",
+                    "match": "->"
+                }
+            ]
+        },
+        "builtins": {
+            "patterns": [
+                {
+                    "name": "support.function.builtin.neurocode",
+                    "match": "\\b(imprimir|ia|ia_generar_codigo|a_numero|a_texto|longitud|rango|entrada|tipo|agregar|eliminar|contiene|indice|insertar|copiar|ordenar|invertir)\\b"
+                },
+                {
+                    "name": "support.function.http.neurocode",
+                    "match": "\\b(http_get|http_post)\\b"
+                },
+                {
+                    "name": "support.function.json.neurocode",
+                    "match": "\\b(json_parsear|json_texto)\\b"
+                },
+                {
+                    "name": "support.function.io.neurocode",
+                    "match": "\\b(leer_archivo|escribir_archivo)\\b"
+                }
+            ]
+        },
+        "classes": {
+            "patterns": [
+                {
+                    "name": "support.class.builtin.neurocode",
+                    "match": "\\b(BaseDatos|ServidorWeb)\\b"
+                }
+            ]
+        },
+        "functions": {
+            "patterns": [
+                {
+                    "name": "entity.name.function.neurocode",
+                    "match": "\\b([a-zA-Z_áéíóúñÁÉÍÓÚÑ][a-zA-Z0-9_áéíóúñÁÉÍÓÚÑ]*)\\s*(?=\\()"
+                },
+                {
+                    "match": "\\b(funcion)\\s+([a-zA-Z_áéíóúñÁÉÍÓÚÑ][a-zA-Z0-9_áéíóúñÁÉÍÓÚÑ]*)\\b",
+                    "captures": {
+                        "1": { "name": "keyword.declaration.neurocode" },
+                        "2": { "name": "entity.name.function.definition.neurocode" }
+                    }
+                }
+            ]
+        },
+        "strings": {
+            "patterns": [
+                {
+                    "name": "string.quoted.double.neurocode",
+                    "begin": "\"",
+                    "end": "\"",
+                    "patterns": [
+                        { "name": "constant.character.escape.neurocode", "match": "\\\\." }
+                    ]
+                },
+                {
+                    "name": "string.quoted.single.neurocode",
+                    "begin": "'",
+                    "end": "'",
+                    "patterns": [
+                        { "name": "constant.character.escape.neurocode", "match": "\\\\." }
+                    ]
+                }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                { "name": "comment.line.double-slash.neurocode", "match": "//.*$" },
+                { "name": "comment.block.neurocode", "begin": "/\\*", "end": "\\*/" }
+            ]
+        },
+        "constants": {
+            "patterns": [
+                { "name": "constant.language.boolean.neurocode", "match": "\\b(verdadero|falso)\\b" },
+                { "name": "constant.language.null.neurocode", "match": "\\b(nulo)\\b" },
+                { "name": "constant.numeric.float.neurocode", "match": "\\b\\d+\\.\\d+\\b" },
+                { "name": "constant.numeric.integer.neurocode", "match": "\\b\\d+\\b" }
+            ]
+        },
+        "operators": {
+            "patterns": [
+                { "name": "keyword.operator.comparison.neurocode", "match": "==|!=|<=|>=|<|>" },
+                { "name": "keyword.operator.logical.neurocode", "match": "\\b(y|o|no)\\b" },
+                { "name": "keyword.operator.assignment.neurocode", "match": "=" },
+                { "name": "keyword.operator.arithmetic.neurocode", "match": "\\+|-|\\*|/|%" }
+            ]
+        },
+        "variables": {
+            "patterns": [
+                {
+                    "match": "\\b([a-zA-Z_áéíóúñÁÉÍÓÚÑ][a-zA-Z0-9_áéíóúñÁÉÍÓÚÑ]*)\\s*:",
+                    "captures": {
+                        "1": { "name": "variable.other.declaration.neurocode" }
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,12 @@
+// Módulo estándar HTTP de NeuroCode
+
+funcion obtener(url) {
+    retornar http_get(url)
+}
+
+funcion enviar(url, datos) {
+    retornar http_post(url, datos)
+}
+
+exportar obtener
+exportar enviar

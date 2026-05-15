@@ -1,0 +1,28 @@
+usar "../eval_framework.neuro" como fw
+
+imprimir("=================================")
+imprimir("      COMPAT: BASE DEL LENGUAJE")
+imprimir("=================================")
+
+numero = 7
+texto_base = "NeuroCode"
+lista = [1, 2, 3]
+dic = {"nombre": texto_base, "version": numero}
+
+fw.afirmar_igual(numero + 5, 12, "suma basica compatible")
+fw.afirmar_igual(texto_base + " Lang", "NeuroCode Lang", "concatenacion compatible")
+fw.afirmar_igual(lista[1], 2, "listas compatibles")
+fw.afirmar_igual(dic["nombre"], "NeuroCode", "diccionarios compatibles")
+
+total = 0
+para item en lista {
+    total = total + item
+}
+fw.afirmar_igual(total, 6, "bucle para compatible")
+
+funcion doble(valor) {
+    retornar valor * 2
+}
+fw.afirmar_igual(doble(9), 18, "funciones compatibles")
+
+imprimir("OK COMPAT BASE")

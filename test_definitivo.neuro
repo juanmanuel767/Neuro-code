@@ -1,0 +1,46 @@
+// --- TEST DEFINITIVO: NEUROCODE v2.1 ---
+
+// 1. Variables y tipos
+numero edad = 20
+texto nombre = "Juan"
+mostrar("Nombre: " + nombre)
+mostrar("Edad en 5 años: " + a_texto(edad + 5))
+
+// 2. Reactividad
+mostrar("\n🧪 Probando Reactividad...")
+reactivo contador = 0
+cuando contador cambie {
+    mostrar("   [Reactivo] El contador ahora es: " + a_texto(contador))
+}
+
+contador = 1
+contador = 2
+
+// 3. Constructor IA
+mostrar("\n🏗️ Probando Constructor IA...")
+constructor.crear_login()
+
+// 4. Multitarea
+mostrar("\n🚀 Probando Multitarea...")
+paralelo {
+    tarea {
+        mostrar("   [Tarea 1] Iniciando...")
+        esperar ia("Saluda en una palabra")
+        mostrar("   [Tarea 1] Finalizada.")
+    }
+    tarea {
+        mostrar("   [Tarea 2] Iniciando...")
+        esperar ia("Despídete en una palabra")
+        mostrar("   [Tarea 2] Finalizada.")
+    }
+}
+
+// 5. API rápida (Comentado para no bloquear el test en el bot, pero validado en sintaxis)
+// api {
+//     ruta "/hola" { 
+//         imprimir("Peticion recibida")
+//         retornar "Hola Mundo"
+//     }
+// }
+
+mostrar("\n✅ TEST DEFINITIVO COMPLETADO.")

@@ -1,0 +1,14 @@
+usar "../eval_framework.neuro" como fw
+usar "../eval_framework.neuro" como viejo
+depredactor "../eval_framework.neuro" como modnuevo
+depredactor math como mate
+
+imprimir("=================================")
+imprimir("    COMPAT: USAR Y DEPREDADOR")
+imprimir("=================================")
+
+viejo.afirmar_igual(1 + 1, 2, "usar sigue funcionando")
+modnuevo.afirmar_igual(2 + 2, 4, "depredactor sigue funcionando")
+fw.afirmar_igual(mate.sqrt(144), 12, "python ffi sigue funcionando")
+
+imprimir("OK COMPAT DEPREDADOR")

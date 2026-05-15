@@ -1,0 +1,20 @@
+// Módulo estándar de manipulación de Texto
+
+funcion mayusculas(t) {
+    depredactor python:str como s
+    retornar s.upper(t)
+}
+
+funcion minusculas(t) {
+    depredactor python:str como s
+    retornar s.lower(t)
+}
+
+funcion dividir(t, sep) {
+    depredactor python:str como s
+    retornar s.split(t, sep)
+}
+
+exportar mayusculas
+exportar minusculas
+exportar dividir

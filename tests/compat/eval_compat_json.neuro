@@ -1,0 +1,19 @@
+usar "../eval_framework.neuro" como fw
+
+imprimir("=================================")
+imprimir("        COMPAT: JSON NATIVO")
+imprimir("=================================")
+
+raw = "{\"nombre\":\"NeuroCode\",\"niveles\":[1,2,3],\"activo\":true}"
+data = json_parsear(raw)
+
+fw.afirmar_igual(data["nombre"], "NeuroCode", "json_parsear conserva texto")
+fw.afirmar_igual(data["niveles"][2], 3, "json_parsear conserva listas")
+fw.afirmar_igual(data["activo"], verdadero, "json_parsear conserva booleanos")
+
+salida = json_texto({"ok": verdadero, "n": 10})
+data2 = json_parsear(salida)
+fw.afirmar_igual(data2["ok"], verdadero, "json_texto serializa booleanos")
+fw.afirmar_igual(data2["n"], 10, "json_texto serializa enteros")
+
+imprimir("OK COMPAT JSON")

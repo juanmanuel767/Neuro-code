@@ -1,0 +1,24 @@
+usar "tests/eval_framework.neuro" como fw
+
+imprimir("📦 NEUROCODE: Compatibilidad JSON")
+
+// 1. Parsear
+imprimir("   - Probando json_parsear...")
+texto = '{"nombre": "Neuro", "version": 2.1, "activo": true, "lista": [1, 2]}'
+obj = json_parsear(texto)
+
+fw.afirmar_igual(obj.nombre, "Neuro", "JSON: Atributo texto")
+fw.afirmar_igual(obj.version, 2.1, "JSON: Atributo numero")
+fw.afirmar_igual(obj.activo, verdadero, "JSON: Atributo booleano")
+fw.afirmar_igual(obj.lista[0], 1, "JSON: Acceso a lista")
+
+// 2. Serializar
+imprimir("   - Probando json_texto...")
+dict = {
+    "id": 42,
+    "msj": "OK"
+}
+json_out = json_texto(dict)
+fw.afirmar(json_out.contiene("42") y json_out.contiene("OK"), "JSON: Serialización")
+
+imprimir("✅ Compatibilidad JSON: OK")

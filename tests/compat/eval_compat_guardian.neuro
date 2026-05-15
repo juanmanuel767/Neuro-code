@@ -1,0 +1,26 @@
+usar "../eval_framework.neuro" como fw
+
+imprimir("=================================")
+imprimir("      COMPAT: ERRORES SEGUROS")
+imprimir("=================================")
+
+capturado = falso
+intentar {
+    division = 10 / 0
+} capturar e {
+    capturado = verdadero
+}
+
+fw.afirmar_igual(capturado, verdadero, "intentar/capturar sigue atrapando errores")
+
+lista = [1]
+fuera_de_rango = falso
+intentar {
+    valor = lista[8]
+} capturar e {
+    fuera_de_rango = verdadero
+}
+
+fw.afirmar_igual(fuera_de_rango, verdadero, "errores de indice siguen atrapandose")
+
+imprimir("OK COMPAT GUARDIAN")

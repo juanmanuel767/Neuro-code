@@ -21,18 +21,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "aquila"
-version = "2.1.0"
-dependencies = [
- "indicatif",
- "pyo3",
- "rusqlite",
- "serde",
- "serde_json",
- "ureq",
-]
-
-[[package]]
 name = "autocfg"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -402,6 +390,18 @@ checksum = "1fa76a2c86f704bdb222d66965fb3d63269ce38518b83cb0575fca855ebb6316"
 dependencies = [
  "adler2",
  "simd-adler32",
+]
+
+[[package]]
+name = "neurocode"
+version = "1.0.0"
+dependencies = [
+ "indicatif",
+ "pyo3",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "ureq",
 ]
 
 [[package]]

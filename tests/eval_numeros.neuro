@@ -1,0 +1,28 @@
+usar "eval_framework.neuro" como fw
+
+imprimir("=================================")
+imprimir("    TEST DE NUMEROS PULIDOS")
+imprimir("=================================")
+
+suma = 10 + 20
+resta = 20 - 5
+producto = 7 * 6
+division = 7 / 2
+mezcla = 10 + 2.5
+
+fw.afirmar_igual(tipo(suma), "entero", "Entero + Entero conserva entero")
+fw.afirmar_igual(tipo(resta), "entero", "Entero - Entero conserva entero")
+fw.afirmar_igual(tipo(producto), "entero", "Entero * Entero conserva entero")
+fw.afirmar_igual(tipo(division), "numero", "Entero / Entero produce numero decimal")
+fw.afirmar_igual(tipo(mezcla), "numero", "Entero + decimal produce numero")
+
+datos = json_parsear(json_texto({
+    "suma": suma,
+    "producto": producto,
+    "division": division
+}))
+
+fw.afirmar_igual(datos["suma"], 30, "JSON conserva suma entera")
+fw.afirmar_igual(datos["producto"], 42, "JSON conserva producto entero")
+
+imprimir("✅ NUMEROS PULIDOS OK")

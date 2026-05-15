@@ -1,0 +1,7 @@
+// Modulo estandar web de Aquila.
+
+funcion servidor(puerto) {
+    retornar nuevo ServidorWeb(puerto)
+}
+
+exportar servidor

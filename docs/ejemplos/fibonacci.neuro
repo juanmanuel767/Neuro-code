@@ -1,0 +1,10 @@
+a = 0
+b = 1
+imprimir(a)
+imprimir(b)
+para i en rango(8) {
+    c = a + b
+    imprimir(c)
+    a = b
+    b = c
+}

@@ -1,0 +1,12 @@
+// Modulo estandar JSON de Aquila.
+
+funcion parsear(texto_json) {
+    retornar json_parsear(texto_json)
+}
+
+funcion convertir(valor) {
+    retornar json_texto(valor)
+}
+
+exportar parsear
+exportar convertir

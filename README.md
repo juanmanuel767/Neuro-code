@@ -1,103 +1,87 @@
 <p align="center">
-  <img src="website/assets/logo.png" width="300" alt="Aquila Logo">
+  <img src="https://raw.githubusercontent.com/juanmanuel767/aquila/main/website/assets/logo.png" width="300" alt="NeuroCode Logo">
 </p>
 
-# 🦅 Aquila: El Ecosistema Depredador de Software
+# NeuroCode: El Lenguaje IA-Nativo en Español
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Versión-2.1-f3c75f?style=for-the-badge" alt="Version">
-  <img src="https://img.shields.io/badge/Núcleo-Rust_1.75+-black?style=for-the-badge&logo=rust" alt="Rust">
-  <img src="https://img.shields.io/badge/Estado-Depredador-red?style=for-the-badge" alt="Status">
-  <img src="https://img.shields.io/badge/IA-Nativa_Unificada-3b82f6?style=for-the-badge" alt="AI Native">
+  <img src="https://img.shields.io/badge/Versi%C3%B3n-v1.0.0--estable-3b82f6?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/N%C3%BAcleo-Rust-black?style=for-the-badge&logo=rust" alt="Rust">
+  <img src="https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/IA-Nativa-f3c75f?style=for-the-badge" alt="AI Native">
 </p>
 
 ---
 
-## 🌑 La Narrativa de la Cacería
+**NeuroCode** (anteriormente Aquila) es un lenguaje de programación de alto rendimiento construido en **Rust**, diseñado para automatizar procesos, integrar Inteligencia Artificial de forma nativa y permitir el desarrollo de software complejo utilizando una sintaxis expresiva en **español**.
 
-En las densas junglas del software, la **Serpiente (Python)** 🐍 ha reinado durante décadas, moviéndose lenta y pesadamente, asfixiando el rendimiento con su cuerpo pesado y lleno de dependencias.
+## ✨ Características Principales
 
-Pero desde las nubes de hierro de **Rust**, ha descendido un nuevo soberano. El **Águila (Aquila)** 🦅 no espera a que la presa se entregue; la observa desde lo alto con ojos de inteligencia artificial. Cuando el Águila detecta una necesidad, desciende en un picado supersónico (Modo Cazador), entierra sus garras en el cuerpo de la Serpiente y **le arrebata sus librerías más valiosas**. No es una convivencia; es una conquista. Aquila extrae el ADN de Python y lo inyecta en su núcleo de acero para volar más alto, más rápido y con menos esfuerzo.
-
-> "La Serpiente se arrastra. El Águila domina."
-
----
-
-## 🔱 Los Sistemas de Dominio
-
-### 🏹 Modo Cazador (The Python Hijacker)
-Este es el momento del ataque. Cuando activas el comando `usar`, Aquila entra en **Modo Cazador**. Desciende sobre el ecosistema de Python, reclama sus librerías (`numpy`, `pandas`, `pytorch`) y las somete a su voluntad. Al "robar" este conocimiento acumulado, Aquila reduce tu código y tu trabajo a la mitad, ejecutando en milisegundos lo que a la Serpiente le tomaba una eternidad.
-
-### 🛠️ El Arquitecto (The Generative Construct)
-El cerebro detrás de la garra. El **Arquitecto** diseña la estrategia de cada proyecto. Mediante el comando `aquila crear`, el lenguaje materializa arquitecturas completas basadas en tus deseos. Es la inteligencia pura guiando la fuerza bruta de Rust.
-
-### 🛡️ El Guardián (Self-Healing AI)
-Incluso los depredadores más fuertes necesitan sanar. Si un script es herido por un error, el **Guardián** aparece instantáneamente. Analiza la herida, ofrece el remedio en español y repara el código en segundos. Aquila no solo caza; nunca muere.
+- 🧠 **IA Nativa**: Consulta LLMs (Ollama, Anthropic, etc.) directamente con la función `ia()`.
+- 🏹 **Modo Cazador**: Importa y usa cualquier librería de Python de forma transparente.
+- ⚡ **Alto Rendimiento**: Motor de ejecución escrito en Rust, rápido y seguro.
+- 🛡️ **Autocuración**: El "Guardián" integrado analiza y repara errores de código automáticamente usando IA.
+- 🌐 **Servidor Web & Async**: Crea APIs web con un runtime asíncrono moderno.
 
 ---
 
-## ⚔️ Aquila vs. La Serpiente (Python)
+## 🚀 Despegue Rápido
 
-| Atributo | Python 🐍 | Aquila 🦅 |
-| :--- | :--- | :--- |
-| **ADN** | Interpretado (Lento) | **Rust Nativo (Ultra-rápido)** |
-| **Instinto** | Pasivo (Dependencia-heavy) | **Activo (IA Integrada)** |
-| **Interoperabilidad** | Compleja | **Modo Cazador (Robo de Libs)** |
-| **Infraestructura** | Externa (Flask/SQLite) | **Nativa y Embebida** |
-| **Lenguaje** | Inglés Obligatorio | **Español Nativo** |
-| **Distribución** | Scripting | **Binarios Únicos Portátiles** |
+### Requisitos
+- [Rust](https://rustup.rs/) (v1.75 o superior)
+
+### Instalación desde Código Fuente
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/neurocode.git
+   cd neurocode
+   ```
+2. Compila el intérprete:
+   ```bash
+   cargo build --release
+   ```
+3. (Opcional) Mueve el binario a tu path o úsalo directamente:
+   ```bash
+   ./target/release/neurocode mi_script.neuro
+   ```
 
 ---
 
-## 💻 Manifiesto de Cacería
+## 💻 Código de Ejemplo
 
-Así es como Aquila "secuestra" el poder de la serpiente para simplificar tu vida:
+Así de simple es crear lógica potente en NeuroCode:
 
 ```aquila
-// 🦅 Protocolo de Cacería v2.1
-usar "numpy" como np  // Arrebatando el poder matemático de la serpiente
-usar "pandas" como pd // Secuestrando la gestión de datos
-
-asincrono funcion principal() {
-    imprimir("📡 Iniciando rastreo de objetivos...")
-    
-    // El Modo Cazador hace el trabajo sucio por ti
-    datos = np.array([10, 20, 30])
-    imprimir("Analítica FFI: " + a_texto(datos.sum()))
-    
-    // IA Nativa para tomar decisiones críticas
-    reporte = esperar ia("¿Cómo optimizar este ecosistema?")
-    imprimir("Decisión del Águila: " + reporte)
+// Un script que usa lógica y IA
+funcion saludar(nombre) {
+    retornar "Hola, " + nombre + ". ¿En qué puedo ayudarte?"
 }
 
-esperar principal()
+imprimir(saludar("Desarrollador"))
+
+intentar {
+    idea = ia("Dame una idea breve para un agente de automatización")
+    imprimir("Sugerencia de la IA:", idea)
+} capturar error {
+    imprimir("No pude conectar con el cerebro:", error)
+}
 ```
 
 ---
 
-## 🛠️ Despegue Inmediato
+## 📚 Documentación
 
-### Despliegue en un solo comando
-```bash
-curl -fsSL https://aquilalang.you/installer/install.sh | bash
-```
-
-### Binario Portátil
-```bash
-aquila --compilar main.aq mi_app
-```
+- [📖 Guía de Sintaxis](docs/guia-sintaxis.md): Aprende a programar en NeuroCode.
+- [📂 Ejemplos de Integración](docs/ejemplos/):
+    - [FizzBuzz](docs/ejemplos/fizzbuzz.neuro)
+    - [Fibonacci](docs/ejemplos/fibonacci.neuro)
+    - [Encontrar el Mayor](docs/ejemplos/mayor.neuro)
 
 ---
 
 ## 👤 El Visionario
-**Juan Manuel Peralta Chacón**  
-*Arquitecto Maestro de Aquila*
-
-*Mi misión es simple: crear herramientas que piensen más allá de los límites tradicionales y hablen el lenguaje de quienes las crean.*
-
-- 📧 **Contacto:** [peraltachaconjuanmanuel5@gmail.com](mailto:peraltachaconjuanmanuel5@gmail.com)
-- 💬 **WhatsApp:** [+57 321 4281888](https://wa.me/573214281888)
-- 💳 **Soporte:** [paypal.me/JuanPeraltaChacon](https://www.paypal.me/JuanPeraltaChacon)
+**Juan Manuel Peralta**  
+*Arquitecto Maestro de NeuroCode*
 
 ---
-<p align="center">Forjado en Rust · IA Nativa · Python FFI. © 2026 Aquila Labs.</p>
+<p align="center">Forjado en Rust · IA Nativa · Python FFI. © 2026 NeuroCode Labs.</p>

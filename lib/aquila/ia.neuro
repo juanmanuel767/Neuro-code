@@ -1,0 +1,7 @@
+// Modulo estandar de IA de Aquila.
+
+asincrono funcion preguntar(prompt) {
+    retornar esperar ia(prompt)
+}
+
+exportar preguntar

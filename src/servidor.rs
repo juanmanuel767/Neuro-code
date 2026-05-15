@@ -12,15 +12,15 @@ pub struct Route {
 }
 
 #[derive(Debug)]
-pub struct AquilaServer {
+pub struct NeuroServer {
     pub port: u16,
     pub routes: Arc<Mutex<Vec<Route>>>,
     pub static_routes: Arc<Mutex<HashMap<String, String>>>,
 }
 
-impl AquilaServer {
+impl NeuroServer {
     pub fn new(port: u16) -> Self {
-        AquilaServer {
+        NeuroServer {
             port,
             routes: Arc::new(Mutex::new(Vec::new())),
             static_routes: Arc::new(Mutex::new(HashMap::new())),
@@ -45,7 +45,7 @@ impl AquilaServer {
         let listener = TcpListener::bind(&addr)
             .map_err(|e| format!("No se pudo iniciar el servidor en puerto {}: {}", self.port, e))?;
         
-        println!("🌐 Servidor Aquila 🦅 escuchando en http://localhost:{}", self.port);
+        println!("🌐 Servidor NeuroCode escuchando en http://localhost:{}", self.port);
         
         for stream in listener.incoming() {
             match stream {
@@ -59,16 +59,21 @@ impl AquilaServer {
                     
                     let mut matched = false;
                     
+                    // Log de request
+                    println!("  → {} {}", method, path);
+                    
                     // Prioridad 1: Rutas Estáticas
                     let static_routes = self.static_routes.lock().unwrap().clone();
                     if let Some(file_path) = static_routes.get(&path) {
                         matched = true;
-                        if let Ok(content) = std::fs::read_to_string(file_path) {
+                        if let Ok(content) = std::fs::read(file_path) {
+                            let content_type = guess_content_type(file_path);
                             let response = format!(
-                                "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: {}\r\nAccess-Control-Allow-Origin: *\r\n\r\n{}",
-                                content.len(), content
+                                "HTTP/1.1 200 OK\r\nContent-Type: {}\r\nContent-Length: {}\r\nAccess-Control-Allow-Origin: *\r\nCache-Control: public, max-age=3600\r\n\r\n",
+                                content_type, content.len()
                             );
                             let _ = stream.write_all(response.as_bytes());
+                            let _ = stream.write_all(&content);
                         } else {
                             let err = format!("Error al leer archivo estático: {}", file_path);
                             let response = format!(
@@ -279,4 +284,24 @@ pub fn nexus_to_json_string(val: &crate::interpreter::RuntimeValue) -> String {
         },
         _ => "null".to_string()
     }
+}
+
+fn guess_content_type(file_path: &str) -> &'static str {
+    let lower = file_path.to_lowercase();
+    if lower.ends_with(".html") || lower.ends_with(".htm") { "text/html; charset=utf-8" }
+    else if lower.ends_with(".css") { "text/css; charset=utf-8" }
+    else if lower.ends_with(".js") { "application/javascript; charset=utf-8" }
+    else if lower.ends_with(".json") { "application/json; charset=utf-8" }
+    else if lower.ends_with(".png") { "image/png" }
+    else if lower.ends_with(".jpg") || lower.ends_with(".jpeg") { "image/jpeg" }
+    else if lower.ends_with(".gif") { "image/gif" }
+    else if lower.ends_with(".svg") { "image/svg+xml" }
+    else if lower.ends_with(".ico") { "image/x-icon" }
+    else if lower.ends_with(".woff2") { "font/woff2" }
+    else if lower.ends_with(".woff") { "font/woff" }
+    else if lower.ends_with(".ttf") { "font/ttf" }
+    else if lower.ends_with(".xml") { "application/xml" }
+    else if lower.ends_with(".txt") { "text/plain; charset=utf-8" }
+    else if lower.ends_with(".pdf") { "application/pdf" }
+    else { "application/octet-stream" }
 }

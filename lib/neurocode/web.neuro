@@ -1,0 +1,49 @@
+// Librería estándar de servidor web de NeuroCode
+
+asincrono funcion iniciar_servidor(puerto) {
+    imprimir("Iniciando servidor web en puerto " + a_texto(puerto) + "...")
+    servidor = nuevo ServidorWeb(puerto)
+    retornar servidor
+}
+
+// Envuelve la inicialización del servidor para que sea más idiomática
+clase WebApp {
+    funcion crear(puerto) {
+        imprimir("🚀 Configurando WebApp en puerto: " + a_texto(puerto))
+        esto.puerto = puerto
+        esto.servidor = nuevo ServidorWeb(puerto)
+    }
+
+    funcion estatico(ruta, path_archivo) {
+        esto.servidor.estatico(ruta, path_archivo)
+    }
+
+    funcion get(ruta, manejador) {
+        esto.servidor.ruta("GET", ruta, manejador)
+    }
+
+    funcion post(ruta, manejador) {
+        esto.servidor.ruta("POST", ruta, manejador)
+    }
+
+    funcion put(ruta, manejador) {
+        esto.servidor.ruta("PUT", ruta, manejador)
+    }
+
+    funcion delete(ruta, manejador) {
+        esto.servidor.ruta("DELETE", ruta, manejador)
+    }
+
+    asincrono funcion iniciar() {
+        imprimir("🌐 Iniciando WebApp...")
+        esperar esto.servidor.iniciar()
+    }
+}
+
+funcion crear_app(puerto) {
+    retornar nuevo WebApp(puerto)
+}
+
+exportar iniciar_servidor
+exportar crear_app
+exportar WebApp

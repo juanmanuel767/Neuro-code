@@ -1,0 +1,36 @@
+imprimir("=================================")
+imprimir("    BENCHMARK DE RENDIMIENTO")
+imprimir("=================================")
+
+funcion fibonacci(n) {
+    si n <= 1 {
+        retornar n
+    }
+    retornar fibonacci(n - 1) + fibonacci(n - 2)
+}
+
+imprimir("Calculando Fibonacci(25) en NeuroCode...")
+resultado = fibonacci(25)
+imprimir("Resultado:", resultado)
+
+// Collatz intensivo
+funcion collatz_steps(n) {
+    pasos = 0
+    mientras n > 1 {
+        si n / 2 * 2 == n {  // NeuroCode no tiene modulo explícito %, usamos la aproximación
+            n = n / 2
+        } sino {
+            n = (3 * n) + 1
+        }
+        pasos = pasos + 1
+    }
+    retornar pasos
+}
+
+imprimir("Calculando Pasos de Collatz para 1000 iteraciones (N=27)...")
+total_pasos = 0
+para i en rango(1000) {
+    total_pasos = total_pasos + collatz_steps(27)
+}
+imprimir("Collatz Pasos Total:", total_pasos)
+imprimir("✅ ¡TERMINADO!")

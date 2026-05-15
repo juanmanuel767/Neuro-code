@@ -1,0 +1,42 @@
+usar "tests/eval_framework.neuro" como fw
+
+imprimir("🏹 NEUROCODE: Compatibilidad Básica")
+
+// 1. Tipos y Operadores
+imprimir("   - Probando operadores...")
+fw.afirmar_igual(10 + 5 * 2, 20, "Precedencia")
+fw.afirmar_igual(100 / 4, 25.0, "División")
+fw.afirmar_igual("Hola " + "Mundo", "Hola Mundo", "Concatenación")
+
+// 2. Control de Flujo
+imprimir("   - Probando flujo...")
+si verdadero {
+    fw.afirmar(verdadero, "Si - Verdadero")
+} sino {
+    fw.afirmar(falso, "Si - Falso (No debe entrar)")
+}
+
+sum = 0
+para i en [1, 2, 3] {
+    sum = sum + i
+}
+fw.afirmar_igual(sum, 6, "Para")
+
+// 3. Funciones
+imprimir("   - Probando funciones...")
+funcion duplicar(n) {
+    retornar n * 2
+}
+fw.afirmar_igual(duplicar(10), 20, "Funcion simple")
+
+// 4. OOP
+imprimir("   - Probando OOP...")
+clase Base {
+    funcion crear(v) {
+        esto.valor = v
+    }
+}
+b = nuevo Base(42)
+fw.afirmar_igual(b.valor, 42, "Propiedad de instancia")
+
+imprimir("✅ Compatibilidad Básica: OK")

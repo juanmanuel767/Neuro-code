@@ -27,6 +27,15 @@ pub enum Token {
     O,
     No,
     Romper,
+    Paralelo,
+    Tarea,
+    Reactivo,
+    Cuando,
+    Cambie,
+    Api,
+    Ruta,
+    Numero,
+    Texto,
     
     // Identificadores y Literales
     Identifier(String),
@@ -58,59 +67,119 @@ pub enum Token {
     Multiply,     // *
     Divide,       // /
     
+    Illegal(char),
     EOF,
 }
 
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub struct SourcePos {
+    pub line: usize,
+    pub column: usize,
+}
+
 pub fn tokenize(input: &str) -> Vec<Token> {
+    tokenize_with_positions(input).0
+}
+
+pub fn tokenize_with_positions(input: &str) -> (Vec<Token>, Vec<SourcePos>) {
     let mut tokens = Vec::new();
+    let mut positions = Vec::new();
     let chars: Vec<char> = input.chars().collect();
     let mut i = 0;
+    let mut line = 1usize;
+    let mut column = 1usize;
+
+    fn push_token(tokens: &mut Vec<Token>, positions: &mut Vec<SourcePos>, token: Token, line: usize, column: usize) {
+        tokens.push(token);
+        positions.push(SourcePos { line, column });
+    }
+
+    fn advance_char(ch: char, line: &mut usize, column: &mut usize) {
+        if ch == '\n' {
+            *line += 1;
+            *column = 1;
+        } else {
+            *column += 1;
+        }
+    }
     
     while i < chars.len() {
         let ch = chars[i];
         
-        if ch.is_whitespace() { i += 1; continue; }
-        
-        // Comentarios
-        if ch == '/' && i + 1 < chars.len() && chars[i+1] == '/' {
-            while i < chars.len() && chars[i] != '\n' { i += 1; }
+        if ch.is_whitespace() {
+            advance_char(ch, &mut line, &mut column);
+            i += 1;
             continue;
         }
         
+        // Comentarios
+        if ch == '/' && i + 1 < chars.len() && chars[i+1] == '/' {
+            while i < chars.len() && chars[i] != '\n' {
+                advance_char(chars[i], &mut line, &mut column);
+                i += 1;
+            }
+            continue;
+        }
+
+        let start_line = line;
+        let start_column = column;
+        
         // Operadores de dos caracteres
-        if ch == '=' && i + 1 < chars.len() && chars[i+1] == '=' { tokens.push(Token::Equals); i += 2; continue; }
-        if ch == '!' && i + 1 < chars.len() && chars[i+1] == '=' { tokens.push(Token::NotEquals); i += 2; continue; }
-        if ch == '>' && i + 1 < chars.len() && chars[i+1] == '=' { tokens.push(Token::GreaterEqual); i += 2; continue; }
-        if ch == '<' && i + 1 < chars.len() && chars[i+1] == '=' { tokens.push(Token::LessEqual); i += 2; continue; }
+        if ch == '=' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::Equals, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
+        if ch == '!' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::NotEquals, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
+        if ch == '>' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::GreaterEqual, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
+        if ch == '<' && i + 1 < chars.len() && chars[i+1] == '=' { push_token(&mut tokens, &mut positions, Token::LessEqual, start_line, start_column); advance_char(chars[i], &mut line, &mut column); advance_char(chars[i+1], &mut line, &mut column); i += 2; continue; }
         
         // Operadores de un caracter
         match ch {
-            '=' => { tokens.push(Token::Assign); i += 1; continue; },
-            '>' => { tokens.push(Token::GreaterThan); i += 1; continue; },
-            '<' => { tokens.push(Token::LessThan); i += 1; continue; },
-            '+' => { tokens.push(Token::Plus); i += 1; continue; },
-            '-' => { tokens.push(Token::Minus); i += 1; continue; },
-            '*' => { tokens.push(Token::Multiply); i += 1; continue; },
-            '/' => { tokens.push(Token::Divide); i += 1; continue; },
-            '{' => { tokens.push(Token::OpenBrace); i += 1; continue; },
-            '}' => { tokens.push(Token::CloseBrace); i += 1; continue; },
-            '(' => { tokens.push(Token::OpenParen); i += 1; continue; },
-            ')' => { tokens.push(Token::CloseParen); i += 1; continue; },
-            '[' => { tokens.push(Token::OpenBracket); i += 1; continue; },
-            ']' => { tokens.push(Token::CloseBracket); i += 1; continue; },
-            ',' => { tokens.push(Token::Comma); i += 1; continue; },
-            '.' => { tokens.push(Token::Dot); i += 1; continue; },
-            ':' => { tokens.push(Token::Colon); i += 1; continue; },
+            '=' => { push_token(&mut tokens, &mut positions, Token::Assign, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '>' => { push_token(&mut tokens, &mut positions, Token::GreaterThan, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '<' => { push_token(&mut tokens, &mut positions, Token::LessThan, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '+' => { push_token(&mut tokens, &mut positions, Token::Plus, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '-' => { push_token(&mut tokens, &mut positions, Token::Minus, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '*' => { push_token(&mut tokens, &mut positions, Token::Multiply, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '/' => { push_token(&mut tokens, &mut positions, Token::Divide, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '{' => { push_token(&mut tokens, &mut positions, Token::OpenBrace, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '}' => { push_token(&mut tokens, &mut positions, Token::CloseBrace, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '(' => { push_token(&mut tokens, &mut positions, Token::OpenParen, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            ')' => { push_token(&mut tokens, &mut positions, Token::CloseParen, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '[' => { push_token(&mut tokens, &mut positions, Token::OpenBracket, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            ']' => { push_token(&mut tokens, &mut positions, Token::CloseBracket, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            ',' => { push_token(&mut tokens, &mut positions, Token::Comma, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            '.' => { push_token(&mut tokens, &mut positions, Token::Dot, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
+            ':' => { push_token(&mut tokens, &mut positions, Token::Colon, start_line, start_column); advance_char(ch, &mut line, &mut column); i += 1; continue; },
             '"' | '\'' => {
                 let quote = ch;
+                advance_char(ch, &mut line, &mut column);
                 i += 1;
                 let mut val = String::new();
                 while i < chars.len() && chars[i] != quote {
-                    val.push(chars[i]);
+                    if chars[i] == '\\' && i + 1 < chars.len() {
+                        let escaped = chars[i + 1];
+                        let resolved = match escaped {
+                            'n' => '\n',
+                            't' => '\t',
+                            'r' => '\r',
+                            '\\' => '\\',
+                            '"' => '"',
+                            '\'' => '\'',
+                            other => other,
+                        };
+                        val.push(resolved);
+                        advance_char(chars[i], &mut line, &mut column);
+                        advance_char(chars[i + 1], &mut line, &mut column);
+                        i += 2;
+                    } else {
+                        val.push(chars[i]);
+                        advance_char(chars[i], &mut line, &mut column);
+                        i += 1;
+                    }
+                }
+                push_token(&mut tokens, &mut positions, Token::TextString(val), start_line, start_column);
+                if i < chars.len() {
+                    advance_char(chars[i], &mut line, &mut column);
                     i += 1;
                 }
-                tokens.push(Token::TextString(val));
-                if i < chars.len() { i += 1; }
                 continue;
             },
             _ => {}
@@ -121,38 +190,50 @@ pub fn tokenize(input: &str) -> Vec<Token> {
             let mut word = String::new();
             while i < chars.len() && (chars[i].is_alphanumeric() || chars[i] == '_') {
                 word.push(chars[i]);
+                advance_char(chars[i], &mut line, &mut column);
                 i += 1;
             }
             
-            match word.as_str() {
-                "si" => tokens.push(Token::Si),
-                "sino" => tokens.push(Token::Sino),
-                "mientras" => tokens.push(Token::Mientras),
-                "para" => tokens.push(Token::Para),
-                "en" => tokens.push(Token::En),
-                "funcion" => tokens.push(Token::Funcion),
-                "retornar" => tokens.push(Token::Retornar),
-                "usar" => tokens.push(Token::Usar),
-                "como" => tokens.push(Token::Como),
-                "intentar" => tokens.push(Token::Intentar),
-                "capturar" => tokens.push(Token::Capturar),
-                "lanzar" => tokens.push(Token::Lanzar),
-                "clase" => tokens.push(Token::Clase),
-                "nuevo" => tokens.push(Token::Nuevo),
-                "esto" => tokens.push(Token::Esto),
-                "asincrono" => tokens.push(Token::Asincrono),
-                "esperar" => tokens.push(Token::Esperar),
-                "exportar" => tokens.push(Token::Exportar),
-                "imprimir" => tokens.push(Token::Imprimir),
-                "verdadero" => tokens.push(Token::Verdadero),
-                "falso" => tokens.push(Token::Falso),
-                "nulo" => tokens.push(Token::Nulo),
-                "y" => tokens.push(Token::Y),
-                "o" => tokens.push(Token::O),
-                "no" => tokens.push(Token::No),
-                "romper" => tokens.push(Token::Romper),
-                _ => tokens.push(Token::Identifier(word))
-            }
+            let token = match word.as_str() {
+                "si" => Token::Si,
+                "sino" => Token::Sino,
+                "mientras" => Token::Mientras,
+                "para" => Token::Para,
+                "en" => Token::En,
+                "funcion" => Token::Funcion,
+                "retornar" => Token::Retornar,
+                "usar" => Token::Usar,
+                "depredactor" => Token::Usar,
+                "como" => Token::Como,
+                "intentar" => Token::Intentar,
+                "capturar" => Token::Capturar,
+                "lanzar" => Token::Lanzar,
+                "clase" => Token::Clase,
+                "nuevo" => Token::Nuevo,
+                "esto" => Token::Esto,
+                "asincrono" => Token::Asincrono,
+                "esperar" => Token::Esperar,
+                "exportar" => Token::Exportar,
+                "imprimir" => Token::Imprimir,
+                "verdadero" => Token::Verdadero,
+                "falso" => Token::Falso,
+                "nulo" => Token::Nulo,
+                "y" => Token::Y,
+                "o" => Token::O,
+                "no" => Token::No,
+                "romper" => Token::Romper,
+                "paralelo" => Token::Paralelo,
+                "tarea" => Token::Tarea,
+                "reactivo" => Token::Reactivo,
+                "cuando" => Token::Cuando,
+                "cambie" => Token::Cambie,
+                "api" => Token::Api,
+                "ruta" => Token::Ruta,
+                "numero" => Token::Numero,
+                "texto" => Token::Texto,
+                _ => Token::Identifier(word)
+            };
+            push_token(&mut tokens, &mut positions, token, start_line, start_column);
             continue;
         }
         
@@ -161,25 +242,28 @@ pub fn tokenize(input: &str) -> Vec<Token> {
             let mut num_str = String::new();
             while i < chars.len() && (chars[i].is_ascii_digit() || chars[i] == '.') {
                 num_str.push(chars[i]);
+                advance_char(chars[i], &mut line, &mut column);
                 i += 1;
             }
             if num_str.contains('.') {
                 if let Ok(num) = num_str.parse::<f64>() {
-                    tokens.push(Token::Number(num));
+                    push_token(&mut tokens, &mut positions, Token::Number(num), start_line, start_column);
                 }
             } else {
                 if let Ok(num) = num_str.parse::<i64>() {
-                    tokens.push(Token::IntNumber(num));
+                    push_token(&mut tokens, &mut positions, Token::IntNumber(num), start_line, start_column);
                 }
             }
             continue;
         }
         
-        i += 1; // Skip character if unmatched
+        push_token(&mut tokens, &mut positions, Token::Illegal(ch), start_line, start_column);
+        advance_char(ch, &mut line, &mut column);
+        i += 1;
     }
     
-    tokens.push(Token::EOF);
-    tokens
+    push_token(&mut tokens, &mut positions, Token::EOF, line, column);
+    (tokens, positions)
 }
 
 #[cfg(test)]
@@ -196,5 +280,83 @@ mod tests {
         assert_eq!(tokens[4], Token::Identifier("edad".to_string()));
         assert_eq!(tokens[5], Token::Assign);
         assert_eq!(tokens[6], Token::IntNumber(25));
+    }
+
+    #[test]
+    fn test_depredactor_alias() {
+        let tokens = tokenize("depredactor math como m");
+        assert_eq!(tokens[0], Token::Usar);
+        assert_eq!(tokens[1], Token::Identifier("math".to_string()));
+        assert_eq!(tokens[2], Token::Como);
+        assert_eq!(tokens[3], Token::Identifier("m".to_string()));
+    }
+
+    #[test]
+    fn test_token_positions() {
+        let (tokens, positions) = tokenize_with_positions("imprimir(\"ok\")\nedad = 25");
+        assert_eq!(tokens[0], Token::Imprimir);
+        assert_eq!(positions[0], SourcePos { line: 1, column: 1 });
+        assert_eq!(tokens[4], Token::Identifier("edad".to_string()));
+        assert_eq!(positions[4], SourcePos { line: 2, column: 1 });
+    }
+
+    #[test]
+    fn test_string_escapes() {
+        let tokens = tokenize(r#"json = "{\"nombre\":\"Aquila\"}"
+texto = 'linea\nnueva\tok'"#);
+        assert_eq!(tokens[2], Token::TextString("{\"nombre\":\"Aquila\"}".to_string()));
+        assert_eq!(tokens[5], Token::TextString("linea\nnueva\tok".to_string()));
+    }
+
+    #[test]
+    fn test_edge_cases() {
+        // Empty strings
+        let tokens = tokenize("\"\"");
+        assert_eq!(tokens[0], Token::TextString("".to_string()));
+
+        // Negative numbers (as operators + numbers)
+        let tokens = tokenize("-123 -45.67");
+        assert_eq!(tokens[0], Token::Minus);
+        assert_eq!(tokens[1], Token::IntNumber(123));
+        assert_eq!(tokens[2], Token::Minus);
+        assert_eq!(tokens[3], Token::Number(45.67));
+
+        // Invalid characters
+        let tokens = tokenize("@#$");
+        assert_eq!(tokens[0], Token::Illegal('@'));
+        assert_eq!(tokens[1], Token::Illegal('#'));
+        assert_eq!(tokens[2], Token::Illegal('$'));
+    }
+
+    #[test]
+    fn test_all_token_types() {
+        let code = "si sino mientras para en funcion retornar usar como intentar capturar lanzar clase nuevo esto asincrono esperar exportar imprimir verdadero falso nulo y o no romper paralelo tarea reactivo cuando cambie api ruta numero texto var_123 100 3.14 \"cadena\" + - * / = == != > < >= <= ( ) { } [ ] , . :";
+        let tokens = tokenize(code);
+        
+        let expected = vec![
+            Token::Si, Token::Sino, Token::Mientras, Token::Para, Token::En, Token::Funcion, 
+            Token::Retornar, Token::Usar, Token::Como, Token::Intentar, Token::Capturar, 
+            Token::Lanzar, Token::Clase, Token::Nuevo, Token::Esto, Token::Asincrono, 
+            Token::Esperar, Token::Exportar, Token::Imprimir, Token::Verdadero, Token::Falso, 
+            Token::Nulo, Token::Y, Token::O, Token::No, Token::Romper, Token::Paralelo, 
+            Token::Tarea, Token::Reactivo, Token::Cuando, Token::Cambie, Token::Api, 
+            Token::Ruta, Token::Numero, Token::Texto,
+            Token::Identifier("var_123".to_string()),
+            Token::IntNumber(100),
+            Token::Number(3.14),
+            Token::TextString("cadena".to_string()),
+            Token::Plus, Token::Minus, Token::Multiply, Token::Divide, Token::Assign,
+            Token::Equals, Token::NotEquals, Token::GreaterThan, Token::LessThan,
+            Token::GreaterEqual, Token::LessEqual,
+            Token::OpenParen, Token::CloseParen,
+            Token::OpenBrace, Token::CloseBrace,
+            Token::OpenBracket, Token::CloseBracket,
+            Token::Comma, Token::Dot, Token::Colon,
+            Token::EOF
+        ];
+        
+        for (i, t) in expected.iter().enumerate() {
+            assert_eq!(tokens[i], *t, "Mismatch at index {}", i);
+        }
     }
 }

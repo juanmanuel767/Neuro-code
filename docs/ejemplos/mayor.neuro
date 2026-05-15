@@ -1,0 +1,15 @@
+funcion encontrar_mayor(lista) {
+    si longitud(lista) == 0 { retornar nulo }
+    mayor = lista[0]
+    para x en lista {
+        si x > mayor {
+            mayor = x
+        }
+    }
+    retornar mayor
+}
+
+nums = [10, 5, 20, 15, 8]
+mayor = encontrar_mayor(nums)
+imprimir("Lista:", nums)
+imprimir("El mayor es:", mayor)

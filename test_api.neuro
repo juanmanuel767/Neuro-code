@@ -1,0 +1,7 @@
+imprimir("Levantando API de prueba en puerto 8080...")
+api {
+    ruta "/hola" {
+        imprimir("Petición GET /hola recibida!")
+        retornar "Hola desde NeuroCode API"
+    }
+}

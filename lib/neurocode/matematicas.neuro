@@ -1,0 +1,29 @@
+// Módulo estándar de Matemáticas de NeuroCode
+
+funcion abs(n) {
+    si n < 0 { retornar n * -1 }
+    retornar n
+}
+
+funcion max(a, b) {
+    si a > b { retornar a }
+    retornar b
+}
+
+funcion min(a, b) {
+    si a < b { retornar a }
+    retornar b
+}
+
+funcion potencia(base, exp) {
+    resultado = 1
+    para i en rango(exp) {
+        resultado = resultado * base
+    }
+    retornar resultado
+}
+
+exportar abs
+exportar max
+exportar min
+exportar potencia

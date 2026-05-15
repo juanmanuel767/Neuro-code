@@ -1,41 +1,67 @@
 {
-    "name": "aquila-lang",
-    "displayName": "Aquila Programming Language",
-    "description": "Syntax highlighting for the Aquila Autonomous Language",
-    "version": "1.0.0",
+    "name": "neurocode-lang",
+    "displayName": "NeuroCode - Lenguaje IA-Nativo",
+    "description": "Syntax highlighting, snippets and tools for NeuroCode, the AI-native programming language in Spanish",
+    "version": "2.1.0",
+    "publisher": "neurocode-labs",
+    "icon": "icon.png",
     "engines": {
         "vscode": "^1.50.0"
     },
     "categories": [
-        "Programming Languages"
+        "Programming Languages",
+        "Snippets"
     ],
+    "keywords": [
+        "neurocode", "aquila", "español", "ia", "rust", "programming language"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/juanmanuel767/aquila"
+    },
     "contributes": {
         "languages": [{
-            "id": "aquila",
-            "aliases": ["Aquila", "aquila"],
-            "extensions": [".aq"],
-            "configuration": "./language-configuration.json"
+            "id": "neurocode",
+            "aliases": ["NeuroCode", "neurocode", "Aquila", "aquila"],
+            "extensions": [".neuro", ".aq"],
+            "configuration": "./language_configuration.json",
+            "icon": {
+                "light": "./icon.png",
+                "dark": "./icon.png"
+            }
         }],
         "grammars": [{
-            "language": "aquila",
-            "scopeName": "source.aq",
-            "path": "./syntaxes/aquila.tmLanguage.json"
+            "language": "neurocode",
+            "scopeName": "source.neuro",
+            "path": "./syntaxes/neurocode.tmLanguage.json"
+        }],
+        "snippets": [{
+            "language": "neurocode",
+            "path": "./snippets/neurocode.json"
         }],
         "commands": [{
-            "command": "aquila.run",
-            "title": "Aquila: Ejecutar Script con 'aq'",
-            "category": "Aquila"
+            "command": "neurocode.run",
+            "title": "NeuroCode: Ejecutar Script",
+            "category": "NeuroCode"
+        }, {
+            "command": "neurocode.test",
+            "title": "NeuroCode: Ejecutar Tests",
+            "category": "NeuroCode"
         }],
         "keybindings": [{
-            "command": "aquila.run",
+            "command": "neurocode.run",
             "key": "ctrl+f5",
-            "when": "editorLangId == aquila"
+            "when": "editorLangId == neurocode"
+        }, {
+            "command": "neurocode.test",
+            "key": "ctrl+shift+f5",
+            "when": "editorLangId == neurocode"
         }],
         "menus": {
             "editor/context": [{
-                "command": "aquila.run",
+                "command": "neurocode.run",
                 "group": "navigation",
-                "when": "editorLangId == aquila"
+                "when": "editorLangId == neurocode"
             }]
         }
     }

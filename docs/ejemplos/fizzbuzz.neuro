@@ -1,0 +1,15 @@
+para i en rango(20) {
+    num = i + 1
+    div3 = entero(num / 3) * 3 == num
+    div5 = entero(num / 5) * 5 == num
+    
+    si div3 y div5 {
+        imprimir("FizzBuzz")
+    } sino si div3 {
+        imprimir("Fizz")
+    } sino si div5 {
+        imprimir("Buzz")
+    } sino {
+        imprimir(num)
+    }
+}

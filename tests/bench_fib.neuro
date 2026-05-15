@@ -1,0 +1,9 @@
+// Fibonacci recursivo en NeuroCode
+funcion fib(n) {
+    si (n <= 1) { retornar n }
+    retornar fib(n-1) + fib(n-2)
+}
+
+imprimir("Calculando Fibonacci(30) en NeuroCode nativo...")
+result = fib(30)
+imprimir("Resultado: " + result)
