@@ -17,7 +17,7 @@ mkdir -p ~/.vscode/extensions/neurocode-lang
 # 3. Descargar/Instalar Binario
 # Nota: Aquí es donde descargaremos el binario oficial desde GitHub Releases en el futuro.
 echo "📥 Descargando motor de Rust de NeuroCode..."
-# curl -L https://github.com/juanmanuel767/aquila/releases/latest/download/neurocode -o /tmp/neurocode
+# curl -L https://github.com/juanmanuel767/Neuro-code/releases/latest/download/neurocode -o /tmp/neurocode
 # sudo mv /tmp/neurocode /usr/local/bin/neuro
 
 # Por ahora, si estás en modo desarrollo:

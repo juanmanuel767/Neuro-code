@@ -42,13 +42,13 @@ const NOMBRES = [
 const DESCARGA_BASE = 920;
 
 function getDescargas() {
-    const extra = parseInt(localStorage.getItem('aquila_descargas_extra') || '0');
+    const extra = parseInt(localStorage.getItem('neurocode_descargas_extra') || '0');
     return DESCARGA_BASE + extra;
 }
 
 function incrementarDescargas() {
-    const extra = parseInt(localStorage.getItem('aquila_descargas_extra') || '0');
-    localStorage.setItem('aquila_descargas_extra', (extra + 1).toString());
+    const extra = parseInt(localStorage.getItem('neurocode_descargas_extra') || '0');
+    localStorage.setItem('neurocode_descargas_extra', (extra + 1).toString());
     actualizarContador();
 }
 
@@ -67,9 +67,9 @@ function registrarUsuario(e) {
     const email = document.getElementById('reg-email').value;
     const github = document.getElementById('reg-github').value;
     const rol = document.getElementById('reg-rol').value;
-    const registros = JSON.parse(localStorage.getItem('aquila_registros') || '[]');
+    const registros = JSON.parse(localStorage.getItem('neurocode_registros') || '[]');
     registros.push({ nombre, email, github, rol, fecha: new Date().toISOString() });
-    localStorage.setItem('aquila_registros', JSON.stringify(registros));
+    localStorage.setItem('neurocode_registros', JSON.stringify(registros));
     
     // Ocultar formulario y mostrar éxito con invitación a comentar
     document.getElementById('registro-form').style.display = 'none';
@@ -88,9 +88,9 @@ function enviarComentario(e) {
     e.preventDefault();
     const nombre = document.getElementById('com-nombre').value;
     const texto = document.getElementById('com-texto').value;
-    const comentarios = JSON.parse(localStorage.getItem('aquila_comentarios') || '[]');
+    const comentarios = JSON.parse(localStorage.getItem('neurocode_comentarios') || '[]');
     comentarios.push({ nombre, texto, fecha: new Date().toISOString() });
-    localStorage.setItem('aquila_comentarios', JSON.stringify(comentarios));
+    localStorage.setItem('neurocode_comentarios', JSON.stringify(comentarios));
     
     // Añadir el comentario a las filas en movimiento (OpenClaw style)
     const row = document.getElementById('row-1');
@@ -117,7 +117,7 @@ function agregarComentarioDOM(nombre, texto, fecha) {
 }
 
 function actualizarContadorComentarios() {
-    const userComments = JSON.parse(localStorage.getItem('aquila_comentarios') || '[]').length;
+    const userComments = JSON.parse(localStorage.getItem('neurocode_comentarios') || '[]').length;
     const total = 200 + userComments;
     const el = document.getElementById('comment-count');
     if (el) el.textContent = total.toLocaleString();
@@ -165,14 +165,14 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     // Cargar comentarios del usuario
-    var userComments = JSON.parse(localStorage.getItem('aquila_comentarios') || '[]');
+    var userComments = JSON.parse(localStorage.getItem('neurocode_comentarios') || '[]');
     userComments.forEach(function(c) {
         var fecha = new Date(c.fecha).toLocaleDateString('es-ES');
         agregarComentarioDOM(c.nombre, c.texto, fecha);
     });
 
     // Verificar registro previo
-    var registros = JSON.parse(localStorage.getItem('aquila_registros') || '[]');
+    var registros = JSON.parse(localStorage.getItem('neurocode_registros') || '[]');
     if (registros.length > 0) {
         var form = document.getElementById('registro-form');
         var exito = document.getElementById('registro-exito');
