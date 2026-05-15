@@ -1,597 +1,884 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroCode | El Lenguaje Consciente</title>
-    <meta name="description" content="NeuroCode: El lenguaje de programación autónomo construido en Rust con IA nativa y FFI de Python.">
+    <title>NeuroCode | El Lenguaje IA-Nativo en Español</title>
     
-    <!-- Open Graph / Facebook -->
+    <!-- Meta Tags OG -->
+    <meta property="og:title" content="NeuroCode | El Futuro del Software en Español">
+    <meta property="og:description" content="Lenguaje de programación AI-nativo, construido en Rust, con sintaxis 100% en español e integración total con Python.">
+    <meta property="og:url" content="https://aquilalang.you">
+    <meta property="og:image" content="https://aquilalang.you/assets/banner_og.png">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://neurocode.you/">
-    <meta property="og:title" content="NeuroCode | El Lenguaje Consciente">
-    <meta property="og:description" content="Domina la construcción de software con IA nativa y el motor de Rust. 100% en español.">
-    <meta property="og:image" content="https://neurocodelang.you/assets/banner_og.png">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://neurocodelang.you/">
-    <meta property="twitter:title" content="NeuroCode | El Lenguaje Depredador de Python">
-    <meta property="twitter:description" content="Domina la cacería de software con IA nativa y el motor de Rust. 100% en español.">
-    <meta property="twitter:image" content="https://neurocodelang.you/assets/banner_og.png">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0a0a0c;
+            --bg-card: #151518;
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --grad-neon: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            --glow: 0 0 20px rgba(59, 130, 246, 0.4);
+            --border-glass: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .tech-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .gradient-text {
+            background: var(--grad-neon);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* --- Components --- */
+        .btn-primary {
+            background: var(--grad-neon);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* --- Navbar --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 12, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* --- Hero --- */
+        .hero {
+            padding: 10rem 10% 6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .badge-v {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .hero p.subtitle {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Terminal Display */
+        .terminal {
+            width: 100%;
+            max-width: 800px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            text-align: left;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .terminal-header {
+            padding: 1rem;
+            background: rgba(255,255,255,0.02);
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        .terminal-body {
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+        }
+
+        .code-ia { color: #f3c75f; }
+        .code-keyword { color: #8b5cf6; }
+        .code-string { color: #06b6d4; }
+        .code-comment { color: #64748b; font-style: italic; }
+
+        /* --- Stats --- */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 4rem 10%;
+            border-top: 1px solid var(--border-glass);
+            border-bottom: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.01);
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-item p {
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* --- Features --- */
+        .section-header {
+            text-align: center;
+            padding: 6rem 10% 4rem;
+        }
+
+        .section-header h2 { font-size: 3rem; margin-bottom: 1rem; }
+        .section-header p { color: var(--text-dim); max-width: 600px; margin: 0 auto; }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 10% 6rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            padding: 2.5rem;
+            border-radius: 20px;
+            transition: border-color 0.3s, transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            background: var(--grad-neon);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card h3 { margin-bottom: 1rem; font-size: 1.5rem; }
+        .feature-card p { color: var(--text-dim); font-size: 0.95rem; }
+
+        /* --- Installation --- */
+        .install-box {
+            max-width: 800px;
+            margin: 0 auto 6rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            color: var(--text-dim);
+            border-bottom: 2px solid transparent;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .tab-content {
+            padding: 2rem;
+            display: none;
+        }
+
+        .tab-content.active { display: block; }
+
+        .cmd-line {
+            background: #000;
+            padding: 1.2rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--border-glass);
+            color: var(--text-dim);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .copy-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+        /* --- Syntax Examples --- */
+        .syntax-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            padding: 0 10% 6rem;
+        }
+
+        .syntax-card {
+            background: #0d0d0f;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-glass);
+        }
+
+        .syntax-card h4 { margin-bottom: 1rem; color: var(--accent); }
+
+        /* --- Functions Table --- */
+        .table-section { padding: 0 10% 6rem; }
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.8rem 1.2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 1.2rem;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        th { background: rgba(255,255,255,0.02); color: var(--primary); text-transform: uppercase; font-size: 0.75rem; }
+
+        /* --- Guardian --- */
+        .guardian {
+            padding: 6rem 10%;
+            background: radial-gradient(circle at center, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .guardian-visual {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .step-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+
+        .step-card.active {
+            opacity: 1;
+            border-color: var(--secondary);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+        }
+
+        .step-num {
+            width: 30px;
+            height: 30px;
+            background: var(--grad-neon);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* --- Community --- */
+        .community {
+            padding: 6rem 10%;
+            text-align: center;
+        }
+
+        .reg-form {
+            max-width: 500px;
+            margin: 3rem auto;
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid var(--border-glass);
+        }
+
+        .form-group { text-align: left; margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-dim); }
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            color: white;
+            outline: none;
+        }
+
+        .form-group input:focus { border-color: var(--primary); }
+
+        /* --- Footer --- */
+        footer {
+            padding: 6rem 10% 3rem;
+            border-top: 1px solid var(--border-glass);
+            background: #050507;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .footer-brand p { color: var(--text-dim); max-width: 300px; }
+
+        .footer-links h4 { margin-bottom: 1.5rem; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 0.8rem; }
+        .footer-links a { color: var(--text-dim); text-decoration: none; transition: 0.3s; }
+        .footer-links a:hover { color: var(--primary); }
+
+        .copyright {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-glass);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        /* --- Animations --- */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in { animation: fadeIn 1s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .nav-links { display: none; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .hero-btns { flex-direction: column; width: 100%; }
+            .hero-btns > * { width: 100%; text-align: center; justify-content: center; }
+            .syntax-examples { grid-template-columns: 1fr; }
+        }
+
+    </style>
 </head>
-
 <body>
-    <!-- Navigation -->
+
+    <!-- Navbar -->
     <nav>
-        <div class="logo" style="display: flex; align-items: center; gap: 0.8rem;">
-            <img src="assets/logo.png" alt="Icon" style="width: 35px; border-radius: 8px; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);">
-            NEUROCODE
+        <div class="nav-logo">
+            <img src="https://aquilalang.you/assets/logo.png" alt="Logo" width="32">
+            NEURO<span class="gradient-text">CODE</span>
         </div>
-        <div class="links">
-            <a href="https://github.com/juanmanuel767/Neuro-code" target="_blank">Descargar</a>
-            <a href="#cli">CLI</a>
+        <div class="nav-links">
             <a href="#sintaxis">Sintaxis</a>
             <a href="#builtins">Funciones</a>
             <a href="#ffi">Depredador</a>
             <a href="#comunidad">Comunidad</a>
-            <button class="btn-primary" onclick="window.open('https://github.com/juanmanuel767/Neuro-code', '_blank')">DESCARGAR</button>
+            <a href="#descargar" class="btn-primary">Descargar</a>
         </div>
     </nav>
 
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 1. HERO SECTION                                 -->
-    <!-- ════════════════════════════════════════════════ -->
+    <!-- Hero -->
     <header class="hero">
-        <div class="hero-content">
-            <img src="assets/logo.png" alt="NeuroCode Logo" style="width: 120px; margin-bottom: 2rem; border-radius: 24px; box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);">
-            <div class="badge-pill">NEUROCODE v2.1 (RUST CORE)</div>
-            <h1 class="gradient-text">El futuro del software<br>habla español.</h1>
-            <p class="subtitle">Un lenguaje de programación moderno, compilado en Rust, con integración de Inteligencia Artificial nativa y compatibilidad total (C-FFI) con el ecosistema de Python.</p>
+        <div class="badge-v">v2.1 RUST CORE • IA NATIVA</div>
+        <h1 class="fade-in">El futuro del software <br> <span class="gradient-text">habla español.</span></h1>
+        <p class="subtitle fade-in">Un lenguaje de alto rendimiento basado en Rust, diseñado para automatizar, integrar modelos de IA y cazar librerías de Python sin fricción.</p>
+        
+        <div class="hero-btns">
+            <a href="https://github.com/juanmanuel767/Neuro-code" target="_blank" class="btn-primary">⭐ Ver en GitHub</a>
+            <a href="#docs" class="btn-outline">📖 Documentación</a>
+        </div>
 
-            <div class="terminal-block">
-                <div class="terminal-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-                    <span style="color:#888; font-family:'JetBrains Mono', monospace; font-size: 0.75rem;">main.neuro</span>
-                </div>
-                <div class="code">
-<span class="comment">// 1. Sintaxis limpia y en tu idioma</span>
-si usuario.autenticado == verdadero {
-    imprimir("¡Bienvenido al ecosistema NeuroCode!")
-}
-
-<span class="comment">// 2. Modo Depredador: Ejecuta Python sin VM intermedia</span>
-usar "numpy" como np
-array = np.array([1, 2, 3])
-imprimir(array * 2)
-
-<span class="comment">// 3. Inteligencia Artificial integrada en el core</span>
-respuesta = ia("Analiza el rendimiento temporal de este array")
-</div>
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                <span style="font-size:0.7rem; color:#64748b; margin-left:1rem; font-family:monospace;">main.neuro</span>
             </div>
-
-            <div style="display:flex; gap:1rem; justify-content:center; margin-top:2rem;">
-                <button class="btn-glow" onclick="document.getElementById('cli').scrollIntoView({behavior:'smooth'})">📖 Documentación Completa</button>
-                <a href="https://github.com/juanmanuel767/Neuro-code" target="_blank" class="btn-outline">⭐ GitHub</a>
+            <div class="terminal-body tech-font">
+                <div><span class="code-comment">// Inteligencia Artificial Nativa</span></div>
+                <div><span class="code-keyword">respuesta</span> = <span class="code-keyword">esperar</span> <span class="code-ia">ia</span>(<span class="code-string">"Analiza este archivo"</span>)</div>
+                <br>
+                <div><span class="code-comment">// Modo Depredador: Caza Python</span></div>
+                <div><span class="code-keyword">depredactor</span> python:numpy <span class="code-keyword">como</span> np</div>
+                <div><span class="code-keyword">datos</span> = np.array([<span class="code-ia">10, 20, 30</span>])</div>
+                <br>
+                <div><span class="code-comment">// Servidor Web en Rust</span></div>
+                <div><span class="code-keyword">servidor</span> = <span class="code-keyword">nuevo</span> <span class="code-ia">ServidorWeb</span>(<span class="code-ia">8080</span>)</div>
+                <div><span class="code-keyword">servidor</span>.iniciar()</div>
             </div>
         </div>
-        <div class="hero-bg-effect"></div>
     </header>
 
-    <!-- Tech Specs Strip -->
-    <div class="tech-specs">
-        <div class="spec-item">
-            <h4>Motor</h4>
-            <p>Compilado (Rust LLVM)</p>
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stat-item">
+            <h3 class="gradient-text">920+</h3>
+            <p>Descargas</p>
         </div>
-        <div class="spec-item">
-            <h4>Ejecución</h4>
-            <p>Directa Binaria</p>
+        <div class="stat-item">
+            <h3 class="gradient-text">22</h3>
+            <p>Built-ins</p>
         </div>
-        <div class="spec-item">
-            <h4>Tipado</h4>
-            <p>Dinámico / Inferido</p>
+        <div class="stat-item">
+            <h3 class="gradient-text">24</h3>
+            <p>Keywords</p>
         </div>
-        <div class="spec-item">
-            <h4>Interop</h4>
-            <p>Python C-FFI (Cero latencia VM)</p>
-        </div>
-    </div>
-
-    <!-- Features Strip -->
-    <div class="features">
-        <div class="feature-card">
-            <div class="icon-glow">⚡</div>
-            <h3>Rendimiento C/Rust</h3>
-            <p>Al estar cimentado sobre el compilador de Rust, NeuroCode ejecuta operaciones pesadas directamente a nivel de procesador, sin el *Global Interpreter Lock* de Python.</p>
-        </div>
-        <div class="feature-card">
-            <div class="icon-glow">🧠</div>
-            <h3>Ollama & Groq Nativos</h3>
-            <p>No instales librerías. La función global <span class="inline-code">ia()</span> conecta con modelos locales y en la nube de forma transparente.</p>
-        </div>
-        <div class="feature-card">
-            <div class="icon-glow">🧩</div>
-            <h3>Módulos de Alta Interop</h3>
-            <p>Conecta módulos de Python como `pandas` o `torch` directo desde NeuroCode, apropiándote del trabajo mundial sin escribir código legacy.</p>
-        </div>
-    </div>
-
-    <!-- Stats Counter -->
-    <div style="display:flex; justify-content:center; gap:4rem; padding:3rem 10%; text-align:center; border-bottom:1px solid var(--glass-border);">
-        <div>
-            <div style="font-size:2.5rem; font-weight:700; color:var(--primary-color);" id="download-count">920</div>
-            <div style="color:#64748b; font-size:0.9rem;">Descargas</div>
-        </div>
-        <div>
-            <div style="font-size:2.5rem; font-weight:700; color:var(--accent-color);" id="comment-count">200</div>
-            <div style="color:#64748b; font-size:0.9rem;">Comentarios</div>
-        </div>
-        <div>
-            <div style="font-size:2.5rem; font-weight:700; color:#27c93f;">24</div>
-            <div style="color:#64748b; font-size:0.9rem;">Palabras Clave</div>
-        </div>
-        <div>
-            <div style="font-size:2.5rem; font-weight:700; color:#ff5f56;">22</div>
-            <div style="color:#64748b; font-size:0.9rem;">Funciones Builtin</div>
-        </div>
-    </div>
-
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- DESCARGAR / INSTALAR                            -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="descargar" style="background: linear-gradient(180deg, rgba(59,130,246,0.05), transparent);">
-        <h2 class="section-title">📥 Instalar NeuroCode</h2>
-        <p style="text-align:center; color:#94a3b8; margin-bottom:3rem; max-width:650px; margin-left:auto; margin-right:auto;">Instala NeuroCode en tu sistema con un solo comando desde la terminal. Disponible para Linux, macOS y Windows.</p>
-        <div class="doc-grid" style="grid-template-columns: repeat(3, 1fr);">
-            <div class="doc-card" style="text-align:center;">
-                <h4>🐧 Linux</h4>
-                <div style="position:relative;">
-                    <div class="example-box" style="text-align:left;"><code id="cmd-linux">curl -fsSL https://neurocodelang.you/installer/install.sh | bash</code></div>
-                    <button class="copy-btn" onclick="copiarComando('cmd-linux')" style="position:absolute; top:0.5rem; right:0.5rem; background:none; border:none; cursor:pointer; font-size:1.2rem;" title="Copiar">📋</button>
-                </div>
-                <p style="color:#64748b; font-size:0.8rem; margin-top:1rem;">Ubuntu, Debian, Fedora, Arch</p>
-            </div>
-            <div class="doc-card" style="text-align:center;">
-                <h4>🍎 macOS</h4>
-                <div style="position:relative;">
-                    <div class="example-box" style="text-align:left;"><code id="cmd-mac">brew install neurocode-lang</code></div>
-                    <button class="copy-btn" onclick="copiarComando('cmd-mac')" style="position:absolute; top:0.5rem; right:0.5rem; background:none; border:none; cursor:pointer; font-size:1.2rem;" title="Copiar">📋</button>
-                </div>
-                <p style="color:#64748b; font-size:0.8rem; margin-top:1rem;">macOS 12+ (Intel y Apple Silicon)</p>
-            </div>
-            <div class="doc-card" style="text-align:center;">
-                <h4>🪟 Windows</h4>
-                <div style="position:relative;">
-                    <div class="example-box" style="text-align:left;"><code id="cmd-win">winget install NeuroCodeLabs.NeuroCode</code></div>
-                    <button class="copy-btn" onclick="copiarComando('cmd-win')" style="position:absolute; top:0.5rem; right:0.5rem; background:none; border:none; cursor:pointer; font-size:1.2rem;" title="Copiar">📋</button>
-                </div>
-                <p style="color:#64748b; font-size:0.8rem; margin-top:1rem;">Windows 10/11 (PowerShell)</p>
-            </div>
-        </div>
-        <div style="text-align:center; margin-top:2rem;">
-            <a href="https://github.com/juanmanuel767/Neuro-code" target="_blank" class="btn-glow" onclick="incrementarDescargas()">⬇️ Ver en GitHub</a>
-            <p style="color:#64748b; font-size:0.85rem; margin-top:1rem;"><span id="download-count-2">920</span> desarrolladores ya usan NeuroCode</p>
+        <div class="stat-item">
+            <h3 class="gradient-text">12</h3>
+            <p>Tipos de Datos</p>
         </div>
     </section>
 
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 2. COMANDOS CLI                                 -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="cli">
-        <h2 class="section-title">⌨️ Comandos de Consola</h2>
-        <p style="text-align:center; color:#94a3b8; margin-bottom:2rem; max-width:600px; margin-left:auto; margin-right:auto;">La interfaz de línea de comandos de NeuroCode permite ejecutar, compilar y crear proyectos completos con IA.</p>
-        <div class="table-container">
-            <table>
+    <!-- Features -->
+    <section id="ffi">
+        <div class="section-header">
+            <h2>Poder <span class="gradient-text">Ilimitado</span></h2>
+            <p>NeuroCode combina la seguridad de Rust con la versatilidad de la IA para una experiencia de desarrollo soberana.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🧠</span>
+                <h3>IA Nativa</h3>
+                <p>Usa Ollama, OpenAI o Groq sin librerías externas. La IA es un ciudadano de primera clase en el lenguaje.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🦅</span>
+                <h3>Modo Depredador</h3>
+                <p>Importa cualquier módulo de Python (pandas, torch, etc.) y ejecútalo a través de FFI sin latencia de VM.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">⚙️</span>
+                <h3>Motor en Rust</h3>
+                <p>Velocidad de ejecución comparable a C++. Compilación estática y manejo de memoria ultra seguro.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🌐</span>
+                <h3>Servidor Web</h3>
+                <p>Crea APIs e interfaces reactivas usando nuestro servidor HTTP embebido de alto rendimiento.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🛡️</span>
+                <h3>El Guardián</h3>
+                <p>Sistema reactivo que analiza errores en tiempo real y sugiere parches automáticos usando LLMs.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🗄️</span>
+                <h3>SQLite Embebido</h3>
+                <p>Base de datos nativa sin configuraciones pesadas. SQL puro desde la primera línea.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation -->
+    <section id="descargar" style="padding: 0 10%;">
+        <div class="section-header">
+            <h2>Instalación <span class="gradient-text">Instantánea</span></h2>
+            <p>Elige tu plataforma y prepárate para cazar código.</p>
+        </div>
+
+        <div class="install-box tech-font">
+            <div class="tabs">
+                <div class="tab active" data-target="linux">Linux</div>
+                <div class="tab" data-target="macos">macOS</div>
+                <div class="tab" data-target="windows">Windows</div>
+            </div>
+            <div id="linux" class="tab-content active">
+                <div class="cmd-line">
+                    <span id="cmd-l">curl -fsSL https://aquilalang.you/installer/install.sh | bash</span>
+                    <button class="copy-btn" onclick="copyText('cmd-l', this)">COPIAR</button>
+                </div>
+                <p style="margin-top:1rem; font-size:0.8rem; color:#64748b;">Compatible con Debian, Ubuntu, Arch y Fedora.</p>
+            </div>
+            <div id="macos" class="tab-content">
+                <div class="cmd-line">
+                    <span id="cmd-m">brew install neurocode-lang</span>
+                    <button class="copy-btn" onclick="copyText('cmd-m', this)">COPIAR</button>
+                </div>
+            </div>
+            <div id="windows" class="tab-content">
+                <div class="cmd-line">
+                    <span id="cmd-w">winget install NeuroCode.CLI</span>
+                    <button class="copy-btn" onclick="copyText('cmd-w', this)">COPIAR</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Syntax Examples -->
+    <section id="sintaxis">
+        <div class="section-header">
+            <h2>Sintaxis <span class="gradient-text">Limpia</span></h2>
+            <p>Programar nunca fue tan natural. Lee y escribe lógica compleja en tu propio idioma.</p>
+        </div>
+
+        <div class="syntax-examples">
+            <div class="syntax-card tech-font">
+                <h4>🚀 Básico</h4>
+                <div class="code-block">
+<span class="code-keyword">si</span> puntuacion > <span class="code-ia">90</span> {
+    <span class="code-ia">imprimir</span>(<span class="code-string">"¡Felicidades!"</span>)
+} <span class="code-keyword">sino</span> {
+    <span class="code-ia">imprimir</span>(<span class="code-string">"Sigue intentando"</span>)
+}</div>
+            </div>
+            <div class="syntax-card tech-font">
+                <h4>🧠 Inteligencia Artificial</h4>
+                <div class="code-block">
+<span class="code-keyword">asincrono funcion</span> analizar() {
+    <span class="code-keyword">respuesta</span> = <span class="code-keyword">esperar</span> <span class="code-ia">ia</span>(<span class="code-string">"Optimiza esto"</span>)
+    <span class="code-ia">imprimir</span>(<span class="code-keyword">respuesta</span>)
+}</div>
+            </div>
+            <div class="syntax-card tech-font">
+                <h4>🌐 Web & FFI</h4>
+                <div class="code-block">
+<span class="code-keyword">depredactor</span> python:pandas <span class="code-keyword">como</span> pd
+<span class="code-keyword">servidor</span> = <span class="code-keyword">nuevo</span> <span class="code-ia">ServidorWeb</span>(<span class="code-ia">3000</span>)
+<span class="code-keyword">servidor</span>.ruta(<span class="code-string">"GET"</span>, <span class="code-string">"/"</span>, home)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Functions Table -->
+    <section id="builtins" class="table-section">
+        <div class="section-header">
+            <h2>Librería <span class="gradient-text">Estándar</span></h2>
+            <p>Herramientas potentes disponibles globalmente sin importar nada.</p>
+        </div>
+        
+        <input type="text" id="fnSearch" class="search-box" placeholder="🔎 Buscar funciones (ia, imrpimir, http...)" onkeyup="filterTable()">
+        
+        <div style="overflow-x: auto;">
+            <table id="fnTable">
                 <thead>
                     <tr>
-                        <th>Comando</th>
+                        <th>Función</th>
+                        <th>Parámetros</th>
                         <th>Descripción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><span class="inline-code">neuro &lt;archivo.aq&gt;</span></td>
-                        <td>Ejecuta un script NeuroCode. Si falla, el <strong>Guardián</strong> analiza el error con IA y ofrece reparar el código automáticamente.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="inline-code">neuro --compilar &lt;archivo&gt; [nombre]</span></td>
-                        <td>Genera un <strong>binario independiente</strong> portátil. El usuario final no necesita instalar NeuroCode para ejecutarlo.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="inline-code">neuro crear "descripción"</span></td>
-                        <td>El <strong>Arquitecto</strong> (IA) diseña y genera un proyecto completo: backend <span class="inline-code">.aq</span>, frontend <span class="inline-code">index.html</span> y <span class="inline-code">README.md</span>.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="inline-code">neuro auth [proveedor] "clave"</span></td>
-                        <td>Configura claves API globales (~/.neurocode_keys). Proveedores: <span class="inline-code">openai</span>, <span class="inline-code">groq</span>, <span class="inline-code">claude</span>.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="inline-code">neuro</span> <em>(sin argumentos)</em></td>
-                        <td>Abre el <strong>REPL interactivo</strong> para experimentar con código en tiempo real.</td>
-                    </tr>
+                    <tr><td>ia()</td><td>(prompt, [conf])</td><td>Consulta IA asincrona (Ollama/Groq/etc)</td></tr>
+                    <tr><td>imprimir()</td><td>(...args)</td><td>Salida estándar a consola</td></tr>
+                    <tr><td>http_get()</td><td>(url)</td><td>Petición HTTP GET nativa asincrona</td></tr>
+                    <tr><td>leer_archivo()</td><td>(ruta)</td><td>Lectura de disco en tiempo real</td></tr>
+                    <tr><td>a_numero()</td><td>(valor)</td><td>Casteo seguro a tipo Numérico</td></tr>
+                    <tr><td>rango()</td><td>(n)</td><td>Genera una lista de 0 a n-1</td></tr>
                 </tbody>
             </table>
         </div>
     </section>
 
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 3. SINTAXIS DEL LENGUAJE                       -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="sintaxis" style="background: rgba(255,255,255,0.01);">
-        <h2 class="section-title">📝 24 Palabras Clave — 100% en Español</h2>
-        <p style="text-align:center; color:#94a3b8; margin-bottom:2rem; max-width:600px; margin-left:auto; margin-right:auto;">Toda la sintaxis del lenguaje está diseñada en español. Sin necesidad de aprender inglés para programar.</p>
-        <div class="doc-grid">
-            <div class="doc-card">
-                <h4>🔀 Control de Flujo</h4>
-                <ul>
-                    <li><span class="inline-code">si</span> / <span class="inline-code">sino</span> — Condicionales (if / else)</li>
-                    <li><span class="inline-code">mientras</span> — Bucle condicional (while)</li>
-                    <li><span class="inline-code">para</span> … <span class="inline-code">en</span> — Iteración de listas (for...in)</li>
-                    <li><span class="inline-code">romper</span> — Detener un bucle (break)</li>
-                </ul>
-            </div>
-            <div class="doc-card">
-                <h4>⚙️ Funciones y Módulos</h4>
-                <ul>
-                    <li><span class="inline-code">funcion</span> / <span class="inline-code">retornar</span> — Declaración y retorno</li>
-                    <li><span class="inline-code">asincrono</span> / <span class="inline-code">esperar</span> — Concurrencia nativa</li>
-                    <li><span class="inline-code">usar</span> / <span class="inline-code">como</span> — Importar módulos (FFI)</li>
-                    <li><span class="inline-code">exportar</span> — Exponer símbolos del módulo</li>
-                </ul>
-            </div>
-            <div class="doc-card">
-                <h4>🏗️ Objetos y Errores</h4>
-                <ul>
-                    <li><span class="inline-code">clase</span> / <span class="inline-code">nuevo</span> / <span class="inline-code">esto</span> — OOP completa</li>
-                    <li><span class="inline-code">intentar</span> / <span class="inline-code">capturar</span> — Manejo de excepciones</li>
-                    <li><span class="inline-code">lanzar</span> — Crear error personalizado</li>
-                </ul>
-            </div>
-            <div class="doc-card">
-                <h4>📊 Valores y Lógica</h4>
-                <ul>
-                    <li><span class="inline-code">verdadero</span> / <span class="inline-code">falso</span> — Booleanos nativos</li>
-                    <li><span class="inline-code">nulo</span> — Valor nulo (None)</li>
-                    <li><span class="inline-code">y</span> / <span class="inline-code">o</span> / <span class="inline-code">no</span> — Operadores lógicos</li>
-                    <li><span class="inline-code">imprimir</span> — Salida a consola</li>
-                </ul>
-            </div>
+    <!-- Guardian -->
+    <section id="guardian-sec" class="guardian">
+        <div style="flex:1; min-width:300px;">
+            <h2 style="font-size:3rem; margin-bottom:1.5rem;">El <span class="gradient-text">Guardián</span></h2>
+            <p style="color:var(--text-dim); font-size:1.1rem; margin-bottom:2rem;">Olvida los crasheos frustrantes. NeuroCode no solo te dice que falló, sino que entiende por qué y sabe cómo arreglarlo.</p>
+            <button class="btn-primary">Ver Blindaje en Acción</button>
         </div>
-    </section>
-
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 4. FUNCIONES INTEGRADAS                        -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="builtins">
-        <h2 class="section-title">🛠️ 22 Funciones Integradas</h2>
-        <p style="text-align:center; color:#94a3b8; margin-bottom:2rem; max-width:700px; margin-left:auto; margin-right:auto;">Todas las funciones están disponibles sin importar nada. Son parte del núcleo de NeuroCode compilado en Rust.</p>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr><th>Función</th><th>Ejemplo</th><th>Descripción</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><span class="inline-code">imprimir(x)</span></td><td><span class="inline-code">imprimir("Hola mundo")</span></td><td>Imprime uno o más valores en la consola</td></tr>
-                    <tr><td><span class="inline-code">ia(prompt)</span></td><td><span class="inline-code">ia("¿Qué es Rust?")</span></td><td>Consulta IA (Ollama/OpenAI/Groq/Claude) con fallback automático a modelo local</td></tr>
-                    <tr><td><span class="inline-code">entrada(msg)</span></td><td><span class="inline-code">entrada("Tu nombre: ")</span></td><td>Lee input del usuario por consola (stdin)</td></tr>
-                    <tr><td><span class="inline-code">tipo(x)</span></td><td><span class="inline-code">tipo(42)</span> → <em>"entero"</em></td><td>Retorna el tipo de dato como texto</td></tr>
-                    <tr><td><span class="inline-code">longitud(x)</span></td><td><span class="inline-code">longitud("hola")</span> → <em>4</em></td><td>Longitud de texto o lista</td></tr>
-                    <tr><td><span class="inline-code">rango(n)</span></td><td><span class="inline-code">rango(5)</span> → <em>[0,1,2,3,4]</em></td><td>Genera lista de enteros de 0 a n-1</td></tr>
-                    <tr><td><span class="inline-code">a_numero(x)</span></td><td><span class="inline-code">a_numero("42")</span> → <em>42</em></td><td>Convierte texto a número entero o decimal</td></tr>
-                    <tr><td><span class="inline-code">a_texto(x)</span></td><td><span class="inline-code">a_texto(3.14)</span> → <em>"3.14"</em></td><td>Convierte cualquier valor a texto</td></tr>
-                    <tr><td><span class="inline-code">entero(x)</span></td><td><span class="inline-code">entero("10")</span> → <em>10</em></td><td>Convierte a entero (i64)</td></tr>
-                    <tr><td><span class="inline-code">decimal(x)</span></td><td><span class="inline-code">decimal("3.14")</span> → <em>3.14</em></td><td>Convierte a decimal (f64)</td></tr>
-                    <tr><td><span class="inline-code">texto(x)</span></td><td><span class="inline-code">texto(100)</span> → <em>"100"</em></td><td>Conversión explícita a texto</td></tr>
-                    <tr><td><span class="inline-code">mayusculas(t)</span></td><td><span class="inline-code">mayusculas("hola")</span> → <em>"HOLA"</em></td><td>Convierte texto a mayúsculas</td></tr>
-                    <tr><td><span class="inline-code">minusculas(t)</span></td><td><span class="inline-code">minusculas("ABC")</span> → <em>"abc"</em></td><td>Convierte texto a minúsculas</td></tr>
-                    <tr><td><span class="inline-code">contiene(t, s)</span></td><td><span class="inline-code">contiene("hola", "ol")</span> → <em>verdadero</em></td><td>Verifica si el texto contiene una subcadena</td></tr>
-                    <tr><td><span class="inline-code">dividir(t, sep)</span></td><td><span class="inline-code">dividir("a,b,c", ",")</span> → <em>["a","b","c"]</em></td><td>Divide texto en lista usando separador</td></tr>
-                    <tr><td><span class="inline-code">unir(lista, sep)</span></td><td><span class="inline-code">unir(["a","b"], "-")</span> → <em>"a-b"</em></td><td>Une elementos de lista en texto con separador</td></tr>
-                    <tr><td><span class="inline-code">agregar(l, elem)</span></td><td><span class="inline-code">agregar(mi_lista, 99)</span></td><td>Añade un elemento al final de una lista</td></tr>
-                    <tr><td><span class="inline-code">quitar(l, idx)</span></td><td><span class="inline-code">quitar(mi_lista, 0)</span></td><td>Elimina un elemento por su índice</td></tr>
-                    <tr><td><span class="inline-code">http_get(url)</span></td><td><span class="inline-code">esperar http_get("https://...")</span></td><td>Petición HTTP GET asíncrona, retorna JSON como diccionario</td></tr>
-                    <tr><td><span class="inline-code">http_post(url, body)</span></td><td><span class="inline-code">esperar http_post(url, {"d":1})</span></td><td>Petición HTTP POST asíncrona con cuerpo JSON</td></tr>
-                    <tr><td><span class="inline-code">leer_archivo(ruta)</span></td><td><span class="inline-code">leer_archivo("datos.txt")</span></td><td>Lee contenido de un archivo del disco</td></tr>
-                    <tr><td><span class="inline-code">escribir_archivo(r, d)</span></td><td><span class="inline-code">escribir_archivo("out.txt", "data")</span></td><td>Escribe contenido a un archivo del disco</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 5. PRIMITIVAS NATIVAS                           -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="primitivas" style="background: rgba(59, 130, 246, 0.03);">
-        <h2 class="section-title">🏛️ Primitivas de Alta Performance</h2>
-        <p style="text-align:center; color:#94a3b8; margin-bottom:2rem; max-width:700px; margin-left:auto; margin-right:auto;">Estas clases nativas están compiladas directamente en Rust. No son wrappers, son motores reales embebidos en el runtime.</p>
-        <div class="doc-grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
-
-            <!-- ServidorWeb -->
-            <div class="doc-card">
-                <h4>🌐 ServidorWeb(puerto)</h4>
-                <p style="color:#94a3b8; margin-bottom:1rem;">Servidor HTTP embebido en Rust. Rutas dinámicas, archivos estáticos y manejo de JSON nativo.</p>
-                <div class="table-container" style="margin:0;">
-                    <table>
-                        <tr><td><span class="inline-code">.ruta(método, path, handler)</span></td><td>Registra un endpoint dinámico (GET/POST)</td></tr>
-                        <tr><td><span class="inline-code">.estatico(ruta, archivo)</span></td><td>Sirve un archivo HTML/CSS/JS estático</td></tr>
-                        <tr><td><span class="inline-code">.iniciar()</span></td><td>Arranca el servidor y escucha conexiones</td></tr>
-                    </table>
+        
+        <div class="guardian-visual">
+            <div class="step-card active">
+                <div class="step-num">1</div>
+                <div>
+                    <strong>Detección de Error</strong>
+                    <p style="font-size:0.8rem; color:var(--text-dim);">Detección proactiva en tiempo de ejecución.</p>
                 </div>
-                <div class="example-box">servidor = nuevo ServidorWeb(8080)
-servidor.ruta("GET", "/api", funcion(req) {
-    retornar {"status": "ok"}
-})
-servidor.estatico("/", "index.html")
-servidor.iniciar()</div>
             </div>
-
-            <!-- BaseDatos -->
-            <div class="doc-card">
-                <h4>🗄️ BaseDatos(ruta)</h4>
-                <p style="color:#94a3b8; margin-bottom:1rem;">SQLite embebido directamente en el runtime. Sin ORM, sin capas adicionales. SQL puro a máxima velocidad.</p>
-                <div class="table-container" style="margin:0;">
-                    <table>
-                        <tr><td><span class="inline-code">.ejecutar(sql, [params])</span></td><td>Ejecuta SQL de escritura (CREATE, INSERT, UPDATE, DELETE)</td></tr>
-                        <tr><td><span class="inline-code">.consultar(sql, [params])</span></td><td>Ejecuta SQL de lectura. Retorna lista de diccionarios</td></tr>
-                    </table>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <div>
+                    <strong>Análisis IA</strong>
+                    <p style="font-size:0.8rem; color:var(--text-dim);">LLM analiza el contexto del archivo.</p>
                 </div>
-                <div class="example-box">db = nuevo BaseDatos("app.db")
-db.ejecutar("CREATE TABLE usuarios (nombre TEXT)")
-db.ejecutar("INSERT INTO usuarios VALUES (?)", ["Juan"])
-resultado = db.consultar("SELECT * FROM usuarios")</div>
             </div>
-        </div>
-
-        <!-- ia() -->
-        <div class="doc-card" style="margin-top:2rem;">
-            <h4>🧠 ia(prompt, [config]) — El Cerebro de NeuroCode</h4>
-            <p style="color:#94a3b8; margin-bottom:1rem;">Función universal de inteligencia artificial. Compatible con Ollama (local), OpenAI, Groq y Anthropic Claude. Si la API principal falla, cae automáticamente al modelo local.</p>
-            <div class="example-box">// Uso básico con modelo local
-respuesta = ia("Explica qué es machine learning")
-
-// Uso avanzado con configuración
-respuesta = ia("Resume este texto", {
-    "url": "https://api.groq.com/openai/v1/chat/completions",
-    "clave": "gsk_...",
-    "modelo": "llama-3.3-70b-versatile"
-})</div>
-        </div>
-    </section>
-
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 6. EL DEPREDADOR (usar)                        -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="ffi">
-        <h2 class="section-title">🧩 La Interoperabilidad de NeuroCode</h2>
-        <p style="text-align:center; color:#94a3b8; margin-bottom:3rem; max-width:700px; margin-left:auto; margin-right:auto;">NeuroCode no reinventa la rueda. Aprovecha todo el ecosistema de Python y lo ejecuta bajo su motor de Rust vía PyO3 FFI.</p>
-
-        <div class="doc-grid" style="grid-template-columns: repeat(3, 1fr);">
-            <div class="doc-card" style="text-align:center;">
-                <h4>🐍 Módulo Python</h4>
-                <div class="example-box" style="text-align:left;">usar "numpy" como np
-usar "hashlib" como hash
-usar "pandas" como pd</div>
-                <p style="color:#64748b; font-size:0.85rem; margin-top:1rem;">Importa cualquier librería del ecosistema Python</p>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <div>
+                    <strong>Sugerencia de Parche</strong>
+                    <p style="font-size:0.8rem; color:var(--text-dim);">Generación de código corregido validado.</p>
+                </div>
             </div>
-            <div class="doc-card" style="text-align:center;">
-                <h4>📦 Archivo .aq Local</h4>
-                <div class="example-box" style="text-align:left;">usar "utils.aq" como herramientas
-herramientas.procesar(datos)</div>
-                <p style="color:#64748b; font-size:0.85rem; margin-top:1rem;">Importa módulos NeuroCode propios con <span class="inline-code">exportar</span></p>
-            </div>
-            <div class="doc-card" style="text-align:center;">
-                <h4>☁️ Módulo Remoto</h4>
-                <div class="example-box" style="text-align:left;">usar "https://cdn.../mod.aq" como r
-r.ejecutar()</div>
-                <p style="color:#64748b; font-size:0.85rem; margin-top:1rem;">Descarga, cachea y ejecuta módulos remotos</p>
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <div>
+                    <strong>Reparación Automática</strong>
+                    <p style="font-size:0.8rem; color:var(--text-dim);">El archivo se actualiza tras tu aprobación.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 7. TIPOS DE DATOS                               -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="tipos" style="background: rgba(255,255,255,0.01);">
-        <h2 class="section-title">🔤 12 Tipos de Datos Nativos</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr><th>Tipo</th><th>Ejemplo</th><th>Descripción</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><span class="inline-code">entero</span></td><td><span class="inline-code">42</span></td><td>Número entero de 64 bits (i64)</td></tr>
-                    <tr><td><span class="inline-code">numero</span></td><td><span class="inline-code">3.14</span></td><td>Número decimal de 64 bits (f64)</td></tr>
-                    <tr><td><span class="inline-code">texto</span></td><td><span class="inline-code">"hola mundo"</span></td><td>Cadena de texto UTF-8</td></tr>
-                    <tr><td><span class="inline-code">booleano</span></td><td><span class="inline-code">verdadero / falso</span></td><td>Valor lógico</td></tr>
-                    <tr><td><span class="inline-code">lista</span></td><td><span class="inline-code">[1, "dos", 3]</span></td><td>Arreglo dinámico heterogéneo</td></tr>
-                    <tr><td><span class="inline-code">diccionario</span></td><td><span class="inline-code">{"clave": "valor"}</span></td><td>Mapa clave-valor (HashMap)</td></tr>
-                    <tr><td><span class="inline-code">nulo</span></td><td><span class="inline-code">nulo</span></td><td>Ausencia de valor</td></tr>
-                    <tr><td><span class="inline-code">funcion</span></td><td><span class="inline-code">funcion(x) { ... }</span></td><td>Función de primera clase / Lambda</td></tr>
-                    <tr><td><span class="inline-code">clase / instancia</span></td><td><span class="inline-code">nuevo MiClase()</span></td><td>Objetos con OOP completa</td></tr>
-                    <tr><td><span class="inline-code">servidor</span></td><td><span class="inline-code">nuevo ServidorWeb(8080)</span></td><td>Servidor HTTP nativo en Rust</td></tr>
-                    <tr><td><span class="inline-code">base_datos</span></td><td><span class="inline-code">nuevo BaseDatos("app.db")</span></td><td>Conexión SQLite embebida</td></tr>
-                    <tr><td><span class="inline-code">python</span></td><td><span class="inline-code">usar "numpy" como np</span></td><td>Wrapper de objeto Python via PyO3</td></tr>
-                </tbody>
-            </table>
+    <!-- Community -->
+    <section id="comunidad" class="community">
+        <div class="section-header">
+            <h2>Nace una <span class="gradient-text">Comunidad</span></h2>
+            <p>Únete a los más de <strong id="user-count">920</strong> desarrolladores que ya programan en su idioma.</p>
         </div>
-    </section>
 
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 8. EL GUARDIÁN                                  -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="guardian">
-        <h2 class="section-title">🛡️ El Guardián — Auto-Curación con IA</h2>
-        <p style="text-align:center; color:#94a3b8; margin-bottom:3rem; max-width:700px; margin-left:auto; margin-right:auto;">Cuando tu código falla, el Guardián analiza el error con inteligencia artificial, te explica el problema en español y ofrece reparar tu archivo fuente al instante.</p>
-        <div class="terminal-block" style="max-width:700px; margin:0 auto; border-color: rgba(255, 95, 86, 0.3);">
-            <div class="terminal-header">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span style="color:#ff5f56; margin-left:auto; font-size:0.75rem; font-family:'JetBrains Mono'">ERROR DETECTADO</span>
-            </div>
-            <div class="code">
-<span style="color:#ff5f56;">❌ Error en linea 12:</span> Variable no definida: 'resultado'
-
-<span style="color:#f3c75f;">🔍 El Cerebro está analizando el error...</span>
-
-<span style="color:#27c93f;">💡 Sugerencia:</span> La variable 'resultado' se usa antes de ser
-   declarada. Deberías moverla antes del bucle 'para'.
-
-<span style="color:#3b82f6;">🔧 ¿Deseas que repare el archivo automáticamente? (s/n): _</span></div>
-        </div>
-    </section>
-
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 9. REGISTRO COMUNIDAD                           -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="comunidad" style="background: linear-gradient(180deg, transparent, rgba(243, 199, 95, 0.05));">
-        <h2 class="section-title">🧠 Únete a la Comunidad NeuroCode</h2>
-        <p style="text-align:center; color:#94a3b8; margin-bottom:3rem; max-width:600px; margin-left:auto; margin-right:auto;">
-            Regístrate para recibir actualizaciones, acceder a recursos exclusivos y conectar con otros desarrolladores de NeuroCode.
-        </p>
-        <div style="max-width:500px; margin:0 auto;">
-            <form id="registro-form" onsubmit="registrarUsuario(event)">
+        <div class="reg-form">
+            <form onsubmit="return false">
                 <div class="form-group">
-                    <label for="reg-nombre">Nombre completo</label>
-                    <input type="text" id="reg-nombre" placeholder="Tu nombre" required>
+                    <label>Nombre de usuario</label>
+                    <input type="text" placeholder="juan_dev">
                 </div>
                 <div class="form-group">
-                    <label for="reg-email">Correo electrónico</label>
-                    <input type="email" id="reg-email" placeholder="tu@email.com" required>
+                    <label>Correo electrónico</label>
+                    <input type="email" placeholder="hola@mundo.com">
                 </div>
-                <div class="form-group">
-                    <label for="reg-github">GitHub <span style="color:#64748b;">(opcional)</span></label>
-                    <input type="text" id="reg-github" placeholder="tu-usuario-github">
-                </div>
-                <div class="form-group">
-                    <label for="reg-rol">¿Cómo usarás NeuroCode?</label>
-                    <select id="reg-rol">
-                        <option value="aprendiz">Aprendiendo a programar</option>
-                        <option value="desarrollador">Desarrollo profesional</option>
-                        <option value="ia">Proyectos de IA</option>
-                        <option value="fullstack">Aplicaciones Full-Stack</option>
-                        <option value="otro">Otro</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-glow" style="width:100%; margin-top:1rem;">🧠 Registrarme en la Comunidad</button>
-            </form>
-            <div id="registro-exito" style="display:none; text-align:center; margin-top:2rem;">
-                <h3 style="color:var(--primary-color);">🎉 ¡Bienvenido al nido!</h3>
-                <p style="color:#94a3b8;">Tu registro ha sido recibido. Te notificaremos sobre actualizaciones y eventos.</p>
-            </div>
-        </div>
-
-        <!-- Sección de Contacto Directo -->
-        <div style="margin-top:4rem; text-align:center; padding:2rem; background:rgba(243, 199, 95, 0.03); border-radius:30px; border:1px solid var(--glass-border); max-width:800px; margin-left:auto; margin-right:auto;">
-            <h3 style="color:var(--primary-color); margin-bottom:1rem;">📱 Soporte y Contacto Directo</h3>
-            <p style="color:#94a3b8; margin-bottom:2rem;">¿Tienes dudas técnicas o quieres colaborar? Contacta directamente con el creador.</p>
-            <div style="display:flex; gap:2rem; justify-content:center; flex-wrap:wrap;">
-                <a href="mailto:peraltachaconjuanmanuel5@gmail.com" class="btn-outline" style="display:flex; align-items:center; gap:0.5rem; padding:0.8rem 1.5rem; font-size:1rem;">
-                    📧 peraltachaconjuanmanuel5@gmail.com
-                </a>
-                <a href="https://wa.me/573214281888" target="_blank" class="btn-outline" style="display:flex; align-items:center; gap:0.5rem; padding:0.8rem 1.5rem; font-size:1rem; border-color:#25d366; color:#25d366;">
-                    💬 WhatsApp: +57 321 4281888
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 10. CAJA DE COMENTARIOS                         -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="comentarios">
-        <h2 class="section-title">💬 Lo que dice la comunidad</h2>
-        <p style="text-align:center; color:#94a3b8; margin-bottom:3rem; max-width:600px; margin-left:auto; margin-right:auto;">
-            Más de 200 desarrolladores comparten su experiencia con NeuroCode.
-        </p>
-
-        <!-- Filas horizontales tipo OpenClaw -->
-        <div class="testimonials-wrapper">
-            <div class="testimonial-row scroll-left" id="row-1"></div>
-            <div class="testimonial-row scroll-right" id="row-2"></div>
-            <div class="testimonial-row scroll-left" id="row-3"></div>
-        </div>
-
-        <!-- Formulario de comentario -->
-        <div style="max-width:600px; margin:3rem auto 0;">
-            <form id="comentario-form" onsubmit="enviarComentario(event)">
-                <div class="form-group">
-                    <label for="com-nombre">Tu nombre</label>
-                    <input type="text" id="com-nombre" placeholder="Tu nombre" required>
-                </div>
-                <div class="form-group">
-                    <label for="com-texto">Tu comentario</label>
-                    <textarea id="com-texto" rows="3" placeholder="Escribe tu opinión sobre NeuroCode..." required></textarea>
-                </div>
-                <button type="submit" class="btn-glow" style="width:100%;">📨 Enviar Comentario</button>
+                <button class="btn-primary" style="width:100%; border-radius:10px;">🧠 UNIRME AL NIDO</button>
             </form>
         </div>
-        <div id="comentarios-lista" style="display:none;"></div>
     </section>
 
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- 11. DONACIONES Y SOPORTE                      -->
-    <!-- ════════════════════════════════════════════════ -->
-    <section id="donaciones" style="background: linear-gradient(180deg, rgba(5,5,8,0) 0%, rgba(243, 199, 95, 0.05) 100%);">
-        <div style="max-width:800px; margin:0 auto; text-align:center; padding:4rem 2rem; border-radius:40px; border:1px solid rgba(243, 199, 95, 0.2); background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(20px);">
-            <div style="font-size:3rem; margin-bottom:1.5rem;">❤️</div>
-            <h2 class="section-title" style="margin-top:0;">Apoya el Futuro de NeuroCode</h2>
-            <p style="color:#94a3b8; font-size:1.1rem; margin-bottom:2.5rem; line-height:1.8;">
-                Tu apoyo nos ayuda a cubrir costos de infraestructura IA, servidores y a dedicar más tiempo al desarrollo. 
-                ¡Cada aporte cuenta para que el cerebro de NeuroCode sea más potente!
-            </p>
-            
-            <div style="display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap;">
-                <!-- Nequi (Colombia) -->
-                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(200,37,108,0.4); border-radius:20px; padding:1.5rem 2rem; min-width:220px;">
-                    <div style="font-size:1.5rem; margin-bottom:0.5rem;">📱</div>
-                    <h4 style="color:#c8256c; margin-bottom:0.5rem;">Nequi</h4>
-                    <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:0.5rem;">Colombia</p>
-                    <p style="color:var(--text-color); font-weight:700; font-size:1.1rem; font-family:'JetBrains Mono', monospace;">321 428 1888</p>
-                    <p style="color:#64748b; font-size:0.75rem; margin-top:0.3rem;">Internacional: +57 321 428 1888</p>
-                </div>
-
-                <!-- PayPal (Internacional) -->
-                <a href="https://www.paypal.me/JuanPeraltaChacon" target="_blank" style="text-decoration:none; background:rgba(255,255,255,0.03); border:1px solid rgba(0,112,186,0.4); border-radius:20px; padding:1.5rem 2rem; min-width:220px; transition: border-color 0.3s, transform 0.3s;">
-                    <div style="font-size:1.5rem; margin-bottom:0.5rem;">💳</div>
-                    <h4 style="color:#0070ba; margin-bottom:0.5rem;">PayPal</h4>
-                    <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:0.5rem;">Internacional</p>
-                    <p style="color:var(--text-color); font-weight:600; font-size:0.95rem;">paypal.me/JuanPeraltaChacon</p>
-                </a>
-
-                <!-- WhatsApp para coordinar -->
-                <a href="https://wa.me/573214281888?text=Hola%20Juan!%20Quiero%20apoyar%20el%20proyecto%20NeuroCode" target="_blank" style="text-decoration:none; background:rgba(255,255,255,0.03); border:1px solid rgba(37,211,102,0.4); border-radius:20px; padding:1.5rem 2rem; min-width:220px; transition: border-color 0.3s, transform 0.3s;">
-                    <div style="font-size:1.5rem; margin-bottom:0.5rem;">💬</div>
-                    <h4 style="color:#25d366; margin-bottom:0.5rem;">WhatsApp</h4>
-                    <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:0.5rem;">Consultas / Otros métodos</p>
-                    <p style="color:var(--text-color); font-weight:600; font-size:0.95rem;">+57 321 428 1888</p>
-                </a>
-            </div>
-            
-            <p style="color:#475569; font-size:0.85rem; margin-top:2rem;">
-                🧠 Todas las contribuciones se destinan directamente a la investigación y desarrollo de NeuroCode.
-            </p>
-        </div>
-    </section>
+    <!-- Footer -->
     <footer>
-        <div class="footer-logo">🧠 NEUROCODE</div>
-        <p style="color:var(--text-color);">© 2026 NeuroCode Labs · Desarrollado por <strong>Juan Manuel Peralta</strong></p>
-        <p style="font-size:0.85rem; margin-top:0.5rem; color:#64748b;">peraltachaconjuanmanuel5@gmail.com | +57 321 4281888</p>
-        <p style="font-size:0.85rem; margin-top:0.5rem;">Potenciado por Rust · Python FFI (PyO3) · LLM Transformers · SQLite</p>
-        <div style="margin-top:1.5rem;">
-            <a href="https://github.com/juanmanuel767/Neuro-code" target="_blank" style="color:var(--primary-color); text-decoration:none; margin:0 1rem;">GitHub</a>
-            <a href="#comunidad" style="color:var(--primary-color); text-decoration:none; margin:0 1rem;">Comunidad</a>
-            <a href="#cli" style="color:var(--primary-color); text-decoration:none; margin:0 1rem;">Docs</a>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="nav-logo" style="margin-bottom:1.5rem;">
+                    <img src="https://aquilalang.you/assets/logo.png" alt="Logo" width="40">
+                    NEUROCODE
+                </div>
+                <p>El primer lenguaje AI-Nativo construido en Rust para el mundo hispanohablante.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Proyecto</h4>
+                <ul>
+                    <li><a href="#sintaxis">Documentación</a></li>
+                    <li><a href="#descargar">Instalación</a></li>
+                    <li><a href="https://github.com/juanmanuel767/Neuro-code" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Social</h4>
+                <ul>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">Twitter/X</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 NeuroCode Labs. Todos los derechos reservados. <br>
+            Creado por Juan Manuel Peralta
         </div>
     </footer>
 
-    <script src="app.js"></script>
-</body>
+    <script>
+        // Tabs logic
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.target).classList.add('active');
+            });
+        });
 
+        // Copy logic
+        function copyText(id, btn) {
+            const text = document.getElementById(id).textContent;
+            navigator.clipboard.writeText(text);
+            const original = btn.textContent;
+            btn.textContent = '✅ COPIADO';
+            setTimeout(() => btn.textContent = original, 2000);
+        }
+
+        // Search logic
+        function filterTable() {
+            let input = document.getElementById('fnSearch');
+            let filter = input.value.toLowerCase();
+            let table = document.getElementById('fnTable');
+            let tr = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < tr.length; i++) {
+                let td = tr[i].getElementsByTagName('td')[0];
+                if (td) {
+                    let text = td.textContent || td.innerText;
+                    tr[i].style.display = text.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+                }
+            }
+        }
+
+        // Guardian animation
+        let currentStep = 0;
+        const steps = document.querySelectorAll('.step-card');
+        setInterval(() => {
+            steps[currentStep].classList.remove('active');
+            currentStep = (currentStep + 1) % steps.length;
+            steps[currentStep].classList.add('active');
+        }, 3000);
+    </script>
+</body>
 </html>
