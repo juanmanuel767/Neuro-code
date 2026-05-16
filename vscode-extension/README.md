@@ -24,34 +24,35 @@ Dale vida a tu código. Esta extensión entiende perfectamente la anatomía de N
 ### 🧩 Snippets Inteligentes
 Acelera tu velocidad de escritura al 300%. Solo escribe el comienzo del bloque, presiona *Tab* y deja que la extensión construya bucles `mientras`, peticiones asíncronas, y estructuras de variables complejas en una fracción de segundo.
 
-### 🚀 ¡NUEVO! NeuroCode v2.3.0: Modularidad y Herencia
+### 🚀 ¡NUEVO! NeuroCode v2.3.0: Reactividad y Herencia
 Nuestra mayor actualización hasta la fecha:
+- **Reactividad Nativa**: Observa variables con `cuando...cambie` y dispara eventos automáticos.
 - **Herencia de Clases**: Soporte completo para `hereda`, `super()` y `super.metodo()`.
 - **Integración Python Pro**: Bridge de datos bidireccional y auto-instalación de librerías.
 - **Sistema Modular**: Nueva palabra clave `importar` y exportación simplificada.
-- **Operadores Core**: Adición de `+=`, `-=`, `*=`, `/=`, `%` y `continuar`.
-
-### 🤖 Soporte Claro de Palabras IA
-Identifica visualmente las llamadas crípticas al cerebro matricial como `ia()`, `ia_generar_codigo()` o `depredactor`, de modo que siempre sepas dónde se inyecta el conocimiento del modelo en tu script.
 
 ---
 
 ## 💻 El Arte de NeuroCode en Acción
 
-Mira lo natural que se vuelve crear código complejo:
+NeuroCode unifica la potencia de Rust con la expresividad del español:
 
 ```neurocode
-// Consulta una red neuronal con un solo comando nativo
-funcion analizar_mercado() {
-    intentar {
-        resultado = ia("Dame 3 tendencias tecnológicas del año actual")
-        imprimir("🧠 Visión de la máquina:", resultado)
-    } capturar error {
-        imprimir("❌ Enlace neuronal perdido:", error)
+// Ejemplo de Reactividad y Herencia
+clase Motor hereda Base:
+    crear(v) {
+        super()
+        reactivo voltaje = v
     }
+
+motor = nuevo Motor(220)
+
+cuando motor.voltaje cambie {
+    ia("Ajustar potencia para: " + motor.voltaje)
+    imprimir("> Voltaje actualizado:", motor.voltaje)
 }
 
-analizar_mercado()
+motor.voltaje = 110 // El bloque anterior se dispara solo
 ```
 
 ---

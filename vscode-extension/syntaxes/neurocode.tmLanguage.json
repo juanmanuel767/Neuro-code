@@ -19,15 +19,15 @@
             "patterns": [
                 {
                     "name": "keyword.control.flow.neurocode",
-                    "match": "\\b(si|sino|mientras|para|en|retornar|esperar|intentar|capturar|lanzar|romper|continuar)\\b"
+                    "match": "\\b(si|sino|mientras|para|en|retornar|esperar|intentar|capturar|lanzar|romper|continuar|cuando|cambie)\\b"
                 },
                 {
                     "name": "keyword.control.import.neurocode",
-                    "match": "\\b(depredactor|usar|como|de|exportar)\\b"
+                    "match": "\\b(depredactor|usar|como|de|exportar|importar)\\b"
                 },
                 {
                     "name": "keyword.declaration.neurocode",
-                    "match": "\\b(funcion|asincrono|clase|nuevo)\\b"
+                    "match": "\\b(funcion|asincrono|clase|nuevo|hereda|super|reactivo)\\b"
                 }
             ]
         },
@@ -35,7 +35,7 @@
             "patterns": [
                 {
                     "name": "support.type.neurocode",
-                    "match": "\\b(Entero|Decimal|Texto|Booleano|Lista|Diccionario|Nulo|Cualquiera)\\b"
+                    "match": "\\b(Entero|Decimal|Texto|Booleano|Listas|Diccionarios|Nulo|Cualquiera)\\b"
                 },
                 {
                     "name": "keyword.operator.arrow.neurocode",
@@ -124,7 +124,7 @@
             "patterns": [
                 { "name": "keyword.operator.comparison.neurocode", "match": "==|!=|<=|>=|<|>" },
                 { "name": "keyword.operator.logical.neurocode", "match": "\\b(y|o|no)\\b" },
-                { "name": "keyword.operator.assignment.neurocode", "match": "=" },
+                { "name": "keyword.operator.assignment.neurocode", "match": "\\+=|-=|\\*=|/=|=" },
                 { "name": "keyword.operator.arithmetic.neurocode", "match": "\\+|-|\\*|/|%" }
             ]
         },
